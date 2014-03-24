@@ -16,18 +16,20 @@
         <string>http://fluidapp.com/appcast/fluidapp.rss</string>
         <key>pkginfo</key>
         <dict>
+            <key>blocking_applications</key>
+            <array>
+            	<string>%NAME%</string>
+            </array>
             <key>catalogs</key>
             <array>
                 <string>testing</string>
             </array>
-            <key>description</key>
-            <string>Web applications like Gmail, Facebook, Campfire and Pandora are becoming more and more like desktop applications every day. Running each of these web apps in a separate tab in your browser can be a real pain. Fluid lets you create a Real Mac App (or "Fluid App") out of any website or web application, effectively turning your favorite web apps into OS X desktop apps.</string>
             <key>display_name</key>
-            <string>Fluid</string>
+            <string>%NAME%</string>
             <key>name</key>
             <string>%NAME%</string>
-            <key>unattended_install</key>
-            <true/>
+            <key>description</key>
+            <string>Web applications like Gmail, Facebook, Campfire and Pandora are becoming more and more like desktop applications every day. Running each of these web apps in a separate tab in your browser can be a real pain. Fluid lets you create a Real Mac App (or "Fluid App") out of any website or web application, effectively turning your favorite web apps into OS X desktop apps.</string>
         </dict>
     </dict>
     <key>Process</key>

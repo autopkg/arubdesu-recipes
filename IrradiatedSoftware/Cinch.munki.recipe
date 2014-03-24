@@ -23,11 +23,13 @@
             <key>description</key>
             <string>Cinch allows you to precisely resize a window simply by dragging to the left, right, or top screen edge.</string>
             <key>display_name</key>
-            <string>Cinch</string>
+            <string>%NAME%</string>
             <key>name</key>
             <string>%NAME%</string>
-            <key>unattended_install</key>
-            <true/>
+            <key>blocking_applications</key>
+            <array>
+            	<string>%NAME%</string>
+            </array>
         </dict>
     </dict>
     <key>Process</key>

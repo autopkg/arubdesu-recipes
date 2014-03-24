@@ -16,6 +16,10 @@
         <string>http://fakeapp.com/appcast/fake.rss</string>
         <key>pkginfo</key>
         <dict>
+            <key>blocking_applications</key>
+            <array>
+            	<string>%NAME%</string>
+            </array>
             <key>catalogs</key>
             <array>
                 <string>testing</string>
@@ -26,8 +30,6 @@
             <string>Fake</string>
             <key>name</key>
             <string>%NAME%</string>
-            <key>unattended_install</key>
-            <true/>
         </dict>
     </dict>
     <key>Process</key>

@@ -16,18 +16,20 @@
         <string>http://feeds.feedburner.com/clipmenu-appcast</string>
         <key>pkginfo</key>
         <dict>
+            <key>blocking_applications</key>
+            <array>
+            	<string>%NAME%</string>
+            </array>
             <key>catalogs</key>
             <array>
                 <string>testing</string>
             </array>
-            <key>description</key>
-            <string>ClipMenu can manage clipboard history. You can record 8 clipboard types, from plain text to image.</string>
             <key>display_name</key>
-            <string>ClipMenu</string>
+            <string>%NAME%</string>
             <key>name</key>
             <string>%NAME%</string>
-            <key>unattended_install</key>
-            <true/>
+            <key>description</key>
+            <string>ClipMenu can manage clipboard history. You can record 8 clipboard types, from plain text to image.</string>
         </dict>
     </dict>
     <key>Process</key>

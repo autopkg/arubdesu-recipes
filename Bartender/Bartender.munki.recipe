@@ -26,8 +26,10 @@
             <string>Bartender</string>
             <key>name</key>
             <string>%NAME%</string>
-            <key>unattended_install</key>
-            <true/>
+            <key>blocking_applications</key>
+            <array>
+            	<string>%NAME%</string>
+            </array>
         </dict>
     </dict>
     <key>Process</key>
