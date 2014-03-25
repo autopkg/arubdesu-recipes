@@ -3,15 +3,13 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Downloads the current release version of HipChat and imports into Munki.</string>
-    <key>IDENTIFIER</key>
-    <string>com.github.arubdesu.munki.HipChat</string>
+    <string>Downloads latest version of HipChat and imports it into a Munki repo.</string>
+    <key>Identifier</key>
+    <string>com.github.autopkg.munki.HipChat</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>HipChat</string>
-	    <key>ParentRecipe</key>
-	    <string>com.github.arubdesu.download.HipChat</string>
         <key>MUNKI_REPO_SUBDIR</key>
         <string>apps</string>
         <key>pkginfo</key>
@@ -23,17 +21,23 @@
             <key>description</key>
             <string>HipChat is hosted group chat and IM for companies and teams. Supercharge real-time collaboration with persistent chat rooms, file sharing, and chat history.</string>
             <key>display_name</key>
-            <string>%NAME%</string>
+            <string>HipChat</string>
             <key>name</key>
             <string>%NAME%</string>
-            <key>blocking_applications</key>
-            <array>
-            	<string>%NAME%</string>
-            </array>
+            <key>unattended_install</key>
+            <true/>
         </dict>
     </dict>
+    <key>MinimumVersion</key>
+    <string>0.2.0</string>
+    <key>ParentRecipe</key>
+    <string>com.github.autopkg.download.HipChat</string>
     <key>Process</key>
     <array>
+        <dict>
+            <key>Processor</key>
+            <string>MunkiPkginfoMerger</string>
+        </dict>
         <dict>
             <key>Arguments</key>
             <dict>

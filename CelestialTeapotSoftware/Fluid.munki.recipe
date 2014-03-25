@@ -3,58 +3,40 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Downloads the current release version of Fluid and imports into Munki.</string>
+    <string>Downloads latest version of Fluid and imports it into a Munki repo.</string>
+    <key>Identifier</key>
+    <string>com.github.autopkg.munki.Fluid</string>
     <key>Input</key>
     <dict>
-        <key>IDENTIFIER</key>
-        <string>com.github.arubdesu.munki.Fluid</string>
         <key>NAME</key>
         <string>Fluid</string>
         <key>MUNKI_REPO_SUBDIR</key>
         <string>apps</string>
-        <key>SPARKLE_FEED_URL</key>
-        <string>http://fluidapp.com/appcast/fluidapp.rss</string>
         <key>pkginfo</key>
         <dict>
-            <key>blocking_applications</key>
-            <array>
-            	<string>%NAME%</string>
-            </array>
             <key>catalogs</key>
             <array>
                 <string>testing</string>
             </array>
-            <key>display_name</key>
-            <string>%NAME%</string>
-            <key>name</key>
-            <string>%NAME%</string>
             <key>description</key>
             <string>Web applications like Gmail, Facebook, Campfire and Pandora are becoming more and more like desktop applications every day. Running each of these web apps in a separate tab in your browser can be a real pain. Fluid lets you create a Real Mac App (or "Fluid App") out of any website or web application, effectively turning your favorite web apps into OS X desktop apps.</string>
+            <key>display_name</key>
+            <string>Fluid</string>
+            <key>name</key>
+            <string>%NAME%</string>
+            <key>unattended_install</key>
+            <true/>
         </dict>
     </dict>
+    <key>MinimumVersion</key>
+    <string>0.2.0</string>
+    <key>ParentRecipe</key>
+    <string>com.github.autopkg.download.Fluid</string>
     <key>Process</key>
     <array>
         <dict>
             <key>Processor</key>
-            <string>SparkleUpdateInfoProvider</string>
-            <key>Arguments</key>
-            <dict>
-                <key>appcast_url</key>
-                <string>%SPARKLE_FEED_URL%</string>
-            </dict>
-        </dict>
-        <dict>
-            <key>Processor</key>
-            <string>URLDownloader</string>
-            <key>Arguments</key>
-            <dict>
-                <key>filename</key>
-                <string>%NAME%.zip</string>
-            </dict>
-        </dict>
-        <dict>
-            <key>Processor</key>
-            <string>EndOfCheckPhase</string>
+            <string>MunkiPkginfoMerger</string>
         </dict>
         <dict>
             <key>Arguments</key>
