@@ -3,16 +3,16 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Downloads the current release version of HipChat and converts it into a pkg.</string>
+    <string>Downloads the current release version of LingonX and builds a package.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.HipChat</string>
+    <string>com.aru-b.autopkg.pkg.LingonX</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
-        <string>HipChat</string>
+        <string>LingonX</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.HipChat</string>
+    <string>com.aru-b.autopkg.download.LingonX</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>
@@ -52,7 +52,7 @@
             <key>Arguments</key>
             <dict>
                 <key>input_plist_path</key>
-                <string>%pkgroot%/Applications/HipChat.app/Contents/Info.plist</string>
+                <string>%pkgroot%/Applications/LingonX.app/Contents/Info.plist</string>
                 <key>plist_version_key</key>
                 <string>CFBundleShortVersionString</string>
             </dict>
@@ -69,7 +69,7 @@
                     <key>version</key>
                     <string>%version%</string>
                     <key>id</key>
-                    <string>com.hipchat.HipChat</string>
+                    <string>com.peterborgapps.LingonX</string>
                     <key>options</key>
                     <string>purge_ds_store</string>
                     <key>chown</key>
