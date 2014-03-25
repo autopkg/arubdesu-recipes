@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Downloads the current release version of ClipMenu and builds a package.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.ClipMenu</string>
+    <string>com.github.arubdesu.pkg.ClipMenu</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>ClipMenu</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.ClipMenu</string>
+    <string>com.github.arubdesu.download.ClipMenu</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>

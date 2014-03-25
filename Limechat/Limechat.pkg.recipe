@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Downloads the current release version of Limechat and builds a package.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.Limechat</string>
+    <string>com.github.arubdesu.pkg.Limechat</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>Limechat</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.Limechat</string>
+    <string>com.github.arubdesu.download.Limechat</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>

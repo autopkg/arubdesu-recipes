@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Downloads the current release version of Fake and builds a package.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.Fake</string>
+    <string>com.github.arubdesu.pkg.Fake</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>Fake</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.Fake</string>
+    <string>com.github.arubdesu.download.Fake</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>

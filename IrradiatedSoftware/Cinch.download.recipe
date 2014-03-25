@@ -5,7 +5,7 @@
     <key>Description</key>
     <string>Downloads the current release version of Cinch.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.download.Cinch</string>
+    <string>com.github.arubdesu.download.Cinch</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>

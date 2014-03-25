@@ -5,13 +5,13 @@
     <key>Description</key>
     <string>Downloads the current release version of HipChat and imports into Munki.</string>
     <key>IDENTIFIER</key>
-    <string>com.aru-b.autopkg.munki.HipChat</string>
+    <string>com.github.arubdesu.munki.HipChat</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>HipChat</string>
 	    <key>ParentRecipe</key>
-	    <string>com.aru-b.autopkg.download.HipChat</string>
+	    <string>com.github.arubdesu.download.HipChat</string>
         <key>MUNKI_REPO_SUBDIR</key>
         <string>apps</string>
         <key>pkginfo</key>

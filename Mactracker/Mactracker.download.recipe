@@ -5,7 +5,7 @@
     <key>Description</key>
     <string>Downloads the current release version of Mactracker.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.download.Mactracker</string>
+    <string>com.github.arubdesu.download.Mactracker</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>

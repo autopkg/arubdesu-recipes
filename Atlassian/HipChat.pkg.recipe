@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Downloads the current release version of HipChat and converts it into a pkg.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.HipChat</string>
+    <string>com.github.arubdesu.pkg.HipChat</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>HipChat</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.HipChat</string>
+    <string>com.github.arubdesu.download.HipChat</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>

@@ -7,7 +7,7 @@
     <key>Input</key>
     <dict>
         <key>IDENTIFIER</key>
-        <string>com.aru-b.autopkg.munki.Mactracker</string>
+        <string>com.github.arubdesu.munki.Mactracker</string>
         <key>NAME</key>
         <string>Mactracker</string>
         <key>MUNKI_REPO_SUBDIR</key>

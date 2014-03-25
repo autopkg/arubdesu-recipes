@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Downloads the current release version of Reflector and builds a package.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.Reflector</string>
+    <string>com.github.arubdesu.pkg.Reflector</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>Reflector</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.Reflector</string>
+    <string>com.github.arubdesu.download.Reflector</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>

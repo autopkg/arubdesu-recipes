@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Downloads the current release version of ScreenSharingMenulet and builds a package.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.ScreenSharingMenulet</string>
+    <string>com.github.arubdesu.pkg.ScreenSharingMenulet</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>ScreenSharingMenulet</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.ScreenSharingMenulet</string>
+    <string>com.github.arubdesu.download.ScreenSharingMenulet</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>

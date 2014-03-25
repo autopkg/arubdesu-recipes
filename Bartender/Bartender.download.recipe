@@ -5,7 +5,7 @@
     <key>Description</key>
     <string>Downloads the current release version of Bartender.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.download.Bartender</string>
+    <string>com.github.arubdesu.download.Bartender</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>

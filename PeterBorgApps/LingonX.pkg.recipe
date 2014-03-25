@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Downloads the current release version of LingonX and builds a package.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.LingonX</string>
+    <string>com.github.arubdesu.pkg.LingonX</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>LingonX</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.LingonX</string>
+    <string>com.github.arubdesu.download.LingonX</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>

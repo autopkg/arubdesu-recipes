@@ -5,7 +5,7 @@
     <key>Description</key>
     <string>Downloads the current release version of Pacifist.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.download.Pacifist</string>
+    <string>com.github.arubdesu.download.Pacifist</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>

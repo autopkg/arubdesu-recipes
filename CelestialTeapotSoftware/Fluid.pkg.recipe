@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Downloads the current release version of Fluid and builds a package.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.Fluid</string>
+    <string>com.github.arubdesu.pkg.Fluid</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>Fluid</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.Fluid</string>
+    <string>com.github.arubdesu.download.Fluid</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>

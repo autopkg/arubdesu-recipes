@@ -5,7 +5,7 @@
     <key>Description</key>
     <string>Downloads the current release version of Fluid.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.download.Fluid</string>
+    <string>com.github.arubdesu.download.Fluid</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>

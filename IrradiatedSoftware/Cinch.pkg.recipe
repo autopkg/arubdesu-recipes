@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Downloads the current release version of Cinch and builds a package.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.Cinch</string>
+    <string>com.github.arubdesu.pkg.Cinch</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>Cinch</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.Cinch</string>
+    <string>com.github.arubdesu.download.Cinch</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>

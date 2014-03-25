@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Downloads the current release version of Pacifist and builds a package.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.pkg.Pacifist</string>
+    <string>com.github.arubdesu.pkg.Pacifist</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>Pacifist</string>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.aru-b.autopkg.download.Pacifist</string>
+    <string>com.github.arubdesu.download.Pacifist</string>
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>Process</key>

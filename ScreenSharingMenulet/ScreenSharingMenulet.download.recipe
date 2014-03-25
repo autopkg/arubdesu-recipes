@@ -5,7 +5,7 @@
     <key>Description</key>
     <string>Downloads the current release version of ScreenSharingMenulet.</string>
     <key>Identifier</key>
-    <string>com.aru-b.autopkg.download.ScreenSharingMenulet</string>
+    <string>com.github.arubdesu.download.ScreenSharingMenulet</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
