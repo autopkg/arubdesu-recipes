@@ -5,7 +5,7 @@
     <key>Description</key>
     <string>Downloads latest version of Pacifist and imports it into a Munki repo.</string>
     <key>Identifier</key>
-    <string>com.github.autopkg.munki.Pacifist</string>
+    <string>com.github.arubdesu.munki.Pacifist</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
@@ -31,7 +31,7 @@
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>ParentRecipe</key>
-    <string>com.github.autopkg.download.Pacifist</string>
+    <string>com.github.arubdesu.download.Pacifist</string>
     <key>Process</key>
     <array>
         <dict>

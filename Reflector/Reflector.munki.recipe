@@ -5,7 +5,7 @@
     <key>Description</key>
     <string>Downloads latest version of Reflector and imports it into a Munki repo.</string>
     <key>Identifier</key>
-    <string>com.github.autopkg.munki.Reflector</string>
+    <string>com.github.arubdesu.munki.Reflector</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
@@ -31,7 +31,7 @@
     <key>MinimumVersion</key>
     <string>0.2.0</string>
     <key>ParentRecipe</key>
-    <string>com.github.autopkg.download.Reflector</string>
+    <string>com.github.arubdesu.download.Reflector</string>
     <key>Process</key>
     <array>
         <dict>
