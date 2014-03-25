@@ -4,7 +4,7 @@
 <dict>
     <key>Description</key>
     <string>Downloads the current release version of iTeleport.</string>
-    <key>IDENTIFIER</key>
+    <key>Identifier</key>
     <string>com.aru-b.autopkg.download.iTeleport</string>
     <key>Input</key>
     <dict>

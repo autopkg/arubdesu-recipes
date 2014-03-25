@@ -4,7 +4,7 @@
 <dict>
     <key>Description</key>
     <string>Downloads the current release version of LingonX.</string>
-    <key>IDENTIFIER</key>
+    <key>Identifier</key>
     <string>com.aru-b.autopkg.download.LingonX</string>
     <key>Input</key>
     <dict>
