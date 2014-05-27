@@ -18,24 +18,24 @@
             <string>MunkiAutoPromoter</string>
             <key>Arguments</key>
             <dict>
-							<key>catalog_name</key>
-							<string>production</string>
-							<key>days_until_catalog_added</key>
-							<integer>11</integer>
-							<key>allowed_weekdays_for_promotion</key>
-							<array>
-								<string>Wed</string>
-							</array>
-							<key>testing_catalog</key>
-							<string>stable</string>
-							<key>days_until_test</key>
-							<integer>4</integer>
-							<key>allowed_weekdays_for_test</key>
-							<array>
-								<string>Tue</string>
-								<string>Wed</string>
-								<string>Thu</string>
-							</array>
+				<key>catalog_name</key>
+				<string>production</string>
+				<key>days_until_catalog_added</key>
+				<integer>11</integer>
+				<key>allowed_weekdays_for_promotion</key>
+				<array>
+					<string>Wed</string>
+				</array>
+				<key>testing_catalog</key>
+				<string>stable</string>
+				<key>days_until_test</key>
+				<integer>4</integer>
+				<key>allowed_weekdays_for_test</key>
+				<array>
+					<string>Tue</string>
+					<string>Wed</string>
+					<string>Thu</string>
+				</array>
             </dict>
         </dict>
     </array>
