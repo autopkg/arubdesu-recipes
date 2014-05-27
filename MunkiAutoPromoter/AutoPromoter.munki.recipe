@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Description</key>
+    <string>Promotes.</string>
+    <key>Identifier</key>
+    <string>com.github.autopkg.munki.autopromoter</string>
+    <key>Input</key>
+    <dict>
+    </dict>
+    <key>MinimumVersion</key>
+    <string>0.3.0</string>
+    <key>Process</key>
+    <array>
+        <dict>
+            <key>Processor</key>
+            <string>MunkiAutoPromoter</string>
+            <key>Arguments</key>
+            <dict>
+							<key>catalog_name</key>
+							<string>production</string>
+							<key>days_until_catalog_added</key>
+							<integer>11</integer>
+							<key>allowed_weekdays_for_promotion</key>
+							<array>
+								<string>Wed</string>
+							</array>
+							<key>testing_catalog</key>
+							<string>stable</string>
+							<key>days_until_test</key>
+							<integer>4</integer>
+							<key>allowed_weekdays_for_test</key>
+							<array>
+								<string>Tue</string>
+								<string>Wed</string>
+								<string>Thu</string>
+							</array>
+            </dict>
+        </dict>
+    </array>
+</dict>
+</plist>
