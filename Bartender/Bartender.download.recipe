@@ -11,7 +11,7 @@
         <key>NAME</key>
         <string>Bartender</string>
         <key>SPARKLE_FEED_URL</key>
-        <string>http://www.macbartender.com/updates/updates.php</string>
+        <string>http://www.macbartender.com/updates/Appcast.xml</string>
 	</dict>
     <key>Process</key>
     <array>
