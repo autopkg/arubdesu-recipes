@@ -6,6 +6,8 @@
     <string>Downloads the current release version of Reflector.</string>
     <key>Identifier</key>
     <string>com.github.arubdesu.download.Reflector</string>
+	<key>MinimumVersion</key>
+	<string>0.3.1</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
@@ -37,6 +39,26 @@
             <key>Processor</key>
             <string>EndOfCheckPhase</string>
         </dict>
+        <dict>
+            <key>Processor</key>
+            <string>AppDmgVersioner</string>
+            <key>Arguments</key>
+            <dict>
+                <key>dmg_path</key>
+                <string>%pathname%</string>
+            </dict>
+        </dict>
+		<dict>
+			<key>Processor</key>
+			<string>CodeSignatureVerifier</string>
+			<key>Arguments</key>
+			<dict>
+				<key>input_path</key>
+				<string>%pathname%/%NAME%.app</string>
+				<key>requirement</key>
+				<string>identifier "com.squirrels.Reflection" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "67X2M9MT5G"</string>
+			</dict>
+		</dict>
     </array>
 </dict>
 </plist>
