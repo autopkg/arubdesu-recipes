@@ -45,7 +45,7 @@
                 <key>archive_path</key>
                 <string>%pathname%</string>
                 <key>destination_path</key>
-                <string>%pkgroot%/Applications</string>
+                <string>%RECIPE_CACHE_DIR%/downloads/Applications</string>
                 <key>purge_destination</key>
                 <true/>
             </dict>
