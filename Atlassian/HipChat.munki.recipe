@@ -3,9 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Downloads latest version of HipChat and imports it into a Munki repo.</string>
-    <key>Identifier</key>
+    <string>Downloads the current release version of HipChat and imports into Munki.</string>
+    <key>IDENTIFIER</key>
     <string>com.github.arubdesu.munki.HipChat</string>
+    <key>ParentRecipe</key>
+    <string>com.github.arubdesu.download.HipChat</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
@@ -21,17 +23,15 @@
             <key>description</key>
             <string>HipChat is hosted group chat and IM for companies and teams. Supercharge real-time collaboration with persistent chat rooms, file sharing, and chat history.</string>
             <key>display_name</key>
-            <string>HipChat</string>
+            <string>%NAME%</string>
             <key>name</key>
             <string>%NAME%</string>
-            <key>unattended_install</key>
-            <true/>
+            <key>blocking_applications</key>
+            <array>
+            	<string>%NAME%</string>
+            </array>
         </dict>
     </dict>
-    <key>MinimumVersion</key>
-    <string>0.2.0</string>
-    <key>ParentRecipe</key>
-    <string>com.github.arubdesu.download.HipChat</string>
     <key>Process</key>
     <array>
         <dict>
@@ -39,17 +39,11 @@
             <string>DmgCreator</string>
             <key>Arguments</key>
             <dict>
-                <key>dmg_megabytes</key>
-                <string>300</string>
                 <key>dmg_root</key>
                 <string>%RECIPE_CACHE_DIR%/%NAME%</string>
                 <key>dmg_path</key>
                 <string>%RECIPE_CACHE_DIR%/%NAME%.dmg</string>
             </dict>
-        </dict>
-        <dict>
-            <key>Processor</key>
-            <string>MunkiPkginfoMerger</string>
         </dict>
         <dict>
             <key>Arguments</key>

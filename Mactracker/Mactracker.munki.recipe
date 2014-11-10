@@ -3,11 +3,13 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Downloads latest version of Mactracker and imports it into a Munki repo.</string>
-    <key>Identifier</key>
-    <string>com.github.arubdesu.munki.Mactracker</string>
+    <string>Downloads the current release version of Mactracker and imports into Munki.</string>
+    <key>ParentRecipe</key>
+    <string>com.github.arubdesu.download.Mactracker</string>
     <key>Input</key>
     <dict>
+        <key>IDENTIFIER</key>
+        <string>com.github.arubdesu.munki.Mactracker</string>
         <key>NAME</key>
         <string>Mactracker</string>
         <key>MUNKI_REPO_SUBDIR</key>
@@ -28,29 +30,19 @@
             <true/>
         </dict>
     </dict>
-    <key>MinimumVersion</key>
-    <string>0.2.0</string>
-    <key>ParentRecipe</key>
-    <string>com.github.arubdesu.download.Mactracker</string>
     <key>Process</key>
     <array>
-        <dict>
-            <key>Processor</key>
-            <string>DmgCreator</string>
-            <key>Arguments</key>
-            <dict>
-                <key>dmg_megabytes</key>
-                <string>300</string>
-                <key>dmg_root</key>
-                <string>%RECIPE_CACHE_DIR%/%NAME%</string>
-                <key>dmg_path</key>
-                <string>%RECIPE_CACHE_DIR%/%NAME%.dmg</string>
-            </dict>
-        </dict>
-        <dict>
-            <key>Processor</key>
-            <string>MunkiPkginfoMerger</string>
-        </dict>
+       <dict>
+           <key>Processor</key>
+           <string>DmgCreator</string>
+           <key>Arguments</key>
+           <dict>
+               <key>dmg_root</key>
+               <string>%RECIPE_CACHE_DIR%/%NAME%</string>
+               <key>dmg_path</key>
+               <string>%RECIPE_CACHE_DIR%/%NAME%.dmg</string>
+           </dict>
+       </dict>
         <dict>
             <key>Arguments</key>
             <dict>
