@@ -6,10 +6,10 @@
     <string>Downloads the current release version of Mactracker and imports into Munki.</string>
     <key>ParentRecipe</key>
     <string>com.github.arubdesu.download.Mactracker</string>
+    <key>Identifier</key>
+    <string>com.github.arubdesu.munki.Mactracker</string>
     <key>Input</key>
     <dict>
-        <key>IDENTIFIER</key>
-        <string>com.github.arubdesu.munki.Mactracker</string>
         <key>NAME</key>
         <string>Mactracker</string>
         <key>MUNKI_REPO_SUBDIR</key>

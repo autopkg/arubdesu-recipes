@@ -4,7 +4,7 @@
 <dict>
     <key>Description</key>
     <string>Downloads the current release version of HipChat and imports into Munki.</string>
-    <key>IDENTIFIER</key>
+    <key>Identifier</key>
     <string>com.github.arubdesu.munki.HipChat</string>
     <key>ParentRecipe</key>
     <string>com.github.arubdesu.download.HipChat</string>
