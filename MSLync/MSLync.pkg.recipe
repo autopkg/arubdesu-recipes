@@ -9,8 +9,8 @@ Set CULTURE_CODE to a different value to get a different localization. See
 http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Culture Codes.</string>
     <key>Identifier</key>
     <string>com.github.arubdesu.pkg.LyncInstaller</string>
-	<key>MinimumVersion</key>
-	<string>0.3.1</string>
+    <key>MinimumVersion</key>
+    <string>0.3.1</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
@@ -20,8 +20,6 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
         <key>CULTURE_CODE</key>
         <string>0409</string>
     </dict>
-    <key>MinimumVersion</key>
-    <string>0.2.0</string>
     <key>Process</key>
     <array>
         <dict>
@@ -43,21 +41,21 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
             <key>Processor</key>
             <string>EndOfCheckPhase</string>
         </dict>
-		<dict>
-			<key>Processor</key>
-			<string>CodeSignatureVerifier</string>
-			<key>Arguments</key>
-			<dict>
-				<key>input_path</key>
-				<string>%pathname%/Lync Installer.pkg</string>
-				<key>expected_authority_names</key>
-				<array>
-					<string>Developer ID Installer: Microsoft Corporation</string>
-					<string>Developer ID Certification Authority</string>
-					<string>Apple Root CA</string>
-				</array>
-			</dict>
-		</dict>
+        <dict>
+            <key>Processor</key>
+            <string>CodeSignatureVerifier</string>
+            <key>Arguments</key>
+            <dict>
+                <key>input_path</key>
+                <string>%pathname%/Lync Installer.pkg</string>
+                <key>expected_authority_names</key>
+                <array>
+                    <string>Developer ID Installer: Microsoft Corporation</string>
+                    <string>Developer ID Certification Authority</string>
+                    <string>Apple Root CA</string>
+                </array>
+            </dict>
+        </dict>
         <dict>
             <key>Processor</key>
             <string>PkgCopier</string>
