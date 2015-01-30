@@ -39,8 +39,10 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
             <string>10.9.3</string>
             <key>update_for</key>
             <array>
-                <string>MSOutlook</string>
+                <string>Microsoft Outlook</string>
             </array>
+            <key>category</key>
+            <string>Productivity</string>
         </dict>
     </dict>
     <key>Process</key>
