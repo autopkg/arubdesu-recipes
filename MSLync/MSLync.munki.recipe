@@ -33,10 +33,6 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
             <array>
                 <string>testing</string>
             </array>
-            <key>update_for</key>
-            <array>
-                <string>MSLync</string>
-            </array>
         </dict>
     </dict>
     <key>MinimumVersion</key>
