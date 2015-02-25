@@ -23,23 +23,6 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
         <string>latest</string>
         <key>CULTURE_CODE</key>
         <string>0409</string>
-        <key>pkginfo</key>
-        <dict>
-            <key>blocking_applications</key>
-            <array>
-              <string>Microsoft Outlook</string>
-              <string>Microsoft Error Reporting</string>
-              <string>Microsoft Auto Update</string>
-            </array>
-            <key>catalogs</key>
-            <array>
-                <string>testing</string>
-            </array>
-            <key>minimum_os_version</key>
-            <string>10.9.3</string>
-            <key>category</key>
-            <string>Productivity</string>
-        </dict>
     </dict>
     <key>Process</key>
     <array>
@@ -129,6 +112,22 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
                     </array>
                     <key>version</key>
                     <string>%version%</string>
+                    <key>blocking_applications</key>
+                    <array>
+                      <string>Microsoft Outlook</string>
+                      <string>Microsoft Error Reporting</string>
+                      <string>Microsoft Auto Update</string>
+                    </array>
+                    <key>catalogs</key>
+                    <array>
+                        <string>testing</string>
+                    </array>
+                    <key>minimum_os_version</key>
+                    <string>10.9.3</string>
+                    <key>category</key>
+                    <string>Productivity</string>
+                    <key>display_name</key>
+                    <string>%display_name%</string>
                 </dict>
             </dict>
         </dict>

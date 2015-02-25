@@ -216,7 +216,7 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
         # currently ignoring latest dict and cherry-picking en-US, may revisit
         all_localizations = metadata[0].get("Localized")
         pkginfo["description"] = "<html>%s</html>" % all_localizations['1033']['Short Description']
-        pkginfo["display_name"] = item["Title"]
+        # pkginfo["display_name"] = item["Title"]
         max_os = self.valueToOSVersionString(item['Max OS'])
         min_os = self.valueToOSVersionString(item['Min OS'])
         if max_os != "0.0.0":
