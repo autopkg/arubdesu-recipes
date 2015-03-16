@@ -131,12 +131,8 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
                     <key>receipts</key>
                     <array>
                         <dict>
-                            <key>installed_size</key>
-                            <integer>798157</integer>
                             <key>packageid</key>
                             <string>com.microsoft.package.Microsoft_Outlook.app</string>
-                            <key>version</key>
-                            <string>15.8.1</string>
                         </dict>
                     </array>
                 </dict>
