@@ -47,11 +47,11 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
             <key>Processor</key>
             <string>EndOfCheckPhase</string>
         </dict>
-		<dict>
+        <dict>
             <key>Arguments</key>
             <dict>
                 <key>flat_pkg_path</key>
-                <string>%pathname%/*.pkg</string>
+                <string>%pathname%</string>
                 <key>destination_path</key>
                 <string>%RECIPE_CACHE_DIR%/unpack</string>
             </dict>
@@ -62,7 +62,7 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
             <key>Arguments</key>
             <dict>
                 <key>pkg_payload_path</key>
-                <string>%RECIPE_CACHE_DIR%/unpack/Microsoft_Outlook.pkg/Payload</string>
+                <string>%RECIPE_CACHE_DIR%/unpack/Payload</string>
                 <key>destination_path</key>
                 <string>%RECIPE_CACHE_DIR%/payload</string>
             </dict>
@@ -123,11 +123,22 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
                         <string>testing</string>
                     </array>
                     <key>minimum_os_version</key>
-                    <string>10.9.3</string>
+                    <string>10.10.0</string>
                     <key>category</key>
                     <string>Productivity</string>
                     <key>display_name</key>
                     <string>%display_name%</string>
+                    <key>receipts</key>
+                    <array>
+                        <dict>
+                            <key>installed_size</key>
+                            <integer>798157</integer>
+                            <key>packageid</key>
+                            <string>com.microsoft.package.Microsoft_Outlook.app</string>
+                            <key>version</key>
+                            <string>15.8.1</string>
+                        </dict>
+                    </array>
                 </dict>
             </dict>
         </dict>

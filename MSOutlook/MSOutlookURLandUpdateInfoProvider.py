@@ -39,7 +39,7 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
             "description": ("See "
                 "http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx"
                 " for a table of CultureCodes Defaults to 0409, which "
-                "corresponds to en-US (English - United States)"), 
+                "corresponds to en-US (English - United States)"),
         },
         "base_url": {
             "required": False,
@@ -57,14 +57,14 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
         },
         "pkg_name": {
             "description": "Name of the package within the disk image.",
-        }, 
+        },
         "additional_pkginfo": {
-            "description": 
+            "description":
                 "Some pkginfo fields extracted from the Microsoft metadata.",
         },
     }
     description = __doc__
-    
+
     def sanityCheckExpectedTriggers(self, item):
         """Raises an exeception if the Trigger Condition or
         Triggers for an update don't match what we expect.
@@ -73,21 +73,21 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
         # but it's not buying us much nor utilized at present
         if not item.get("Trigger Condition") == ["and", "Registered File"]:
             raise ProcessorError(
-                "Unexpected Trigger Condition in item %s: %s" 
+                "Unexpected Trigger Condition in item %s: %s"
                 % (item["Title"], item["Trigger Condition"]))
         if not "Registered File" in item.get("Triggers", {}):
             raise ProcessorError(
                 "Missing expected MCP Trigger in item %s" % item["Title"])
-    
+
     def getRequiresFromUpdateItem(self, item):
         """Attempts to determine what earlier updates are
         required by this update"""
-        # currently unused carry-over from original office provider, 
+        # currently unused carry-over from original office provider,
         # but left in just in case we end up needing it
         def compare_versions(a, b):
             """Internal comparison function for use with sorting"""
             return cmp(LooseVersion(a), LooseVersion(b))
-        
+
         self.sanityCheckExpectedTriggers(item)
         munki_update_name = self.env.get("munki_update_name", MUNKI_UPDATE_NAME)
         mcp_versions = item.get(
@@ -101,7 +101,7 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
             # works with original Outlook release, so no requires array
             return None
         return ["%s-%s" % (munki_update_name, mcp_versions[0])]
-    
+
     def getInstallsItems(self, item):
         """Attempts to parse the Triggers to create an installs item"""
         # currently unused, and unnecessary as receipts are sufficient... for now...
@@ -120,17 +120,17 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
         }
         return [installs_item]
         # return None
-    
+
     def getVersion(self, item):
         """Extracts the version of the update item."""
-        # currently unused, and relies on the item having the version 
+        # currently unused, and relies on the item having the version
         # at the end of the URL, then appends to expected major version. e.g.:
         # "http://download.microsoft.com/download/*blah*/MicrosoftOutlook15.6.dmg"
         url_to_parse = self.env["url"]
-        just_minor = re.search("(MicrosoftOutlook15\.)(\d+)(\.dmg)", url_to_parse)
-        version_str = '15.' + just_minor.group(2)
+        just_minor = re.search("(Outlook_)(\d+\.\d+\.\d+)", url_to_parse)
+        version_str = just_minor.group(2)
         return version_str
-    
+
     def valueToOSVersionString(self, value):
         """Converts a value to an OS X version number"""
         if isinstance(value, int):
@@ -181,7 +181,7 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
             f.close()
         except BaseException as err:
             raise ProcessorError("Can't download %s: %s" % (base_url, err))
-        
+
         metadata = plistlib.readPlistFromString(data)
         if version_str == "latest":
             # Outlook 'update' metadata is a list of dicts.
@@ -192,20 +192,20 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
         else:
             # we've been told to find a specific version. Unfortunately, the
             # Outlook updates metadata items don't have a version attibute.
-            # The version is only in text in the update's Title. So we look for 
+            # The version is only in text in the update's Title. So we look for
             # that...although as of January 2015 it's not included...
             # Titles would normally be in the format "Outlook x.y.z Update"
             padded_version_str = " " + version_str + " "
-            matched_items = [item for item in metadata 
+            matched_items = [item for item in metadata
                             if padded_version_str in item["Title"]]
             if len(matched_items) != 1:
                 raise ProcessorError(
                     "Could not find version %s in update metadata. "
-                    "Updates that are available: %s" 
-                    % (version_str, ", ".join(["'%s'" % item["Title"] 
+                    "Updates that are available: %s"
+                    % (version_str, ", ".join(["'%s'" % item["Title"]
                                                for item in metadata])))
             item = matched_items[0]
-        
+
         self.env["url"] = item["Location"]
         self.env["pkg_name"] = item["Payload"]
         self.output("Found URL %s" % self.env["url"])
@@ -230,7 +230,7 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
         if requires:
             pkginfo["requires"] = requires
             self.output(
-                "Update requires previous update version %s" 
+                "Update requires previous update version %s"
                 % requires[0].split("-")[1])
 
         pkginfo['name'] = self.env.get("munki_update_name", MUNKI_UPDATE_NAME)

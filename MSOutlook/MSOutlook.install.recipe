@@ -5,19 +5,24 @@
     <key>Description</key>
     <string>Installs the current release version of MSOutlook.</string>
     <key>Identifier</key>
-    <string>com.github.arubdesu.install.MSOutlook</string>
+    <string>com.github.arubdesu.install.OutlookInstaller</string>
     <key>Input</key>
     <dict>
     </dict>
     <key>MinimumVersion</key>
     <string>0.4.0</string>
     <key>ParentRecipe</key>
-    <string>com.github.arubdesu.pkg.Outlook</string>
+    <string>com.github.arubdesu.pkg.OutlookInstaller</string>
     <key>Process</key>
     <array>
         <dict>
             <key>Processor</key>
             <string>Installer</string>
+            <key>Arguments</key>
+            <dict>
+                <key>pkg_path</key>
+                <string>%pathname%</string>
+            </dict>
         </dict>
     </array>
 </dict>
