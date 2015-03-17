@@ -113,9 +113,9 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
         installs_item = {
             "CFBundleShortVersionString": self.getVersion(item),
             "CFBundleVersion": self.getVersion(item),
-            "path": ("/Applications/Microsoft Outlook/"
-                     "Contents/Info.plist"),
-            "type": "bundle",
+            "path": ("/Applications/Microsoft Outlook.app"),
+            "type": "application",
+            "version": self.getVersion(item),
             "version_comparison_key": "CFBundleShortVersionString"
         }
         return [installs_item]
