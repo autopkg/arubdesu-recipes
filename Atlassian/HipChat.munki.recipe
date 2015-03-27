@@ -21,7 +21,7 @@
                 <string>testing</string>
             </array>
             <key>category</key>
-	          <string>Business</string>
+	    <string>Business</string>
             <key>description</key>
             <string>HipChat is hosted group chat and IM for companies and teams. Supercharge real-time collaboration with persistent chat rooms, file sharing, and chat history.</string>
             <key>developer</key>
