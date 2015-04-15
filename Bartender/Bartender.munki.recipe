@@ -24,6 +24,11 @@
             <string>Bartender</string>
             <key>name</key>
             <string>%NAME%</string>
+            <key>postinstall_script</key>
+            <string>#!/bin/sh
+/usr/bin/ditto /Applications/Bartender.app/Contents/Resources/BartenderHelper.osax /Library/ScriptingAdditions/BartenderHelper.osax
+exit 0
+            </string>
             <key>unattended_install</key>
             <true/>
         </dict>

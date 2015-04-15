@@ -127,7 +127,7 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
         # at the end of the URL, then appends to expected major version. e.g.:
         # "http://download.microsoft.com/download/*blah*/MicrosoftOutlook15.6.dmg"
         url_to_parse = self.env["url"]
-        just_minor = re.search("(Outlook_)(\d+\.\d+\.\d+)", url_to_parse)
+        just_minor = re.search("(Microsoft Outlook Update )(\d+\.\d+)", url_to_parse)
         version_str = just_minor.group(2)
         return version_str
 
@@ -235,6 +235,8 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
 
         pkginfo['name'] = self.env.get("munki_update_name", MUNKI_UPDATE_NAME)
         self.env["additional_pkginfo"] = pkginfo
+        # re-setting so we can substitute in %20's for spaces
+        self.env["url"] = item["Location"].replace(' ', '%20')
         self.output("Additional pkginfo: %s" % self.env["additional_pkginfo"])
 
     def main(self):
