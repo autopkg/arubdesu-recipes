@@ -8,15 +8,15 @@ Set VERSION to a specific version number to download that version instead.
 Set CULTURE_CODE to a different value to get a different localization. See
 http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Culture Codes.</string>
     <key>Identifier</key>
-    <string>com.github.arubdesu.munki.MSWord2016</string>
+    <string>com.github.arubdesu.munki.MSOneNote2016</string>
     <key>MinimumVersion</key>
     <string>0.3.1</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
-        <string>Microsoft Word</string>
+        <string>Microsoft OneNote</string>
         <key>display_name</key>
-        <string>Microsoft Word for Mac</string>
+        <string>Microsoft OneNote for Mac</string>
         <key>MUNKI_REPO_SUBDIR</key>
         <string>apps</string>
         <key>VERSION</key>
@@ -37,16 +37,16 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
             <array>
                 <dict>
                     <key>CFBundleIdentifier</key>
-                    <string>com.microsoft.Word</string>
+                    <string>com.microsoft.onenote.mac</string>
                     <key>CFBundleName</key>
-                    <string>Word</string>
+                    <string>OneNote</string>
                     <key>path</key>
-                    <string>/Applications/Microsoft Word.app</string>
+                    <string>/Applications/Microsoft OneNote.app</string>
                 </dict>
             </array>
             <key>blocking_applications</key>
             <array>
-              <string>Microsoft Word</string>
+              <string>Microsoft OneNote</string>
               <string>Microsoft Error Reporting</string>
               <string>Microsoft Auto Update</string>
             </array>
@@ -57,7 +57,7 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
         </dict>
     </dict>
     <key>ParentRecipe</key>
-    <string>com.github.arubdesu.pkg.MSWord2016</string>
+    <string>com.github.arubdesu.pkg.MSOneNote2016</string>
     <key>Process</key>
     <array>
         <dict>
