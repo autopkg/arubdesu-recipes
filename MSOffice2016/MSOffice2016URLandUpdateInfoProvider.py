@@ -29,7 +29,6 @@ __all__ = ["MSOffice2016URLandUpdateInfoProvider"]
 
 CULTURE_CODE = "0409"
 BASE_URL = "http://www.microsoft.com/mac/autoupdate/%s15.xml"
-MUNKI_UPDATE_NAME = "%s_2016_Installer"
 PROD_DICT = {
     'Excel':'XCEL',
     'PowerPoint':'PPT3',
@@ -158,7 +157,7 @@ class MSOffice2016URLandUpdateInfoProvider(Processor):
         # a User-Agent of 'Python-urllib/2.7' - even a blank User-Agent string
         # passes.
         req.add_header("User-Agent",
-            "Microsoft%20AutoUpdate/3.0.2 CFNetwork/720.2.4 Darwin/14.1.0 (x86_64)")
+            "Microsoft%20AutoUpdate/3.0.6 CFNetwork/720.2.4 Darwin/14.4.0 (x86_64)")
         try:
             f = urllib2.urlopen(req)
             data = f.read()
@@ -211,7 +210,7 @@ class MSOffice2016URLandUpdateInfoProvider(Processor):
         if installs_items:
             pkginfo["installs"] = installs_items
 
-        pkginfo['name'] = self.env.get("munki_update_name", MUNKI_UPDATE_NAME)
+        pkginfo['name'] = self.env.get("munki_update_name", "%s_2016_Installer" % self.env.get("product"))
         self.env["additional_pkginfo"] = pkginfo
         # re-setting so we can substitute in %20's for spaces
         self.env["url"] = item["Location"].replace(' ', '%20')
