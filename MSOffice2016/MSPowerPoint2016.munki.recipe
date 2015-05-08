@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Description</key>
+    <string>Finds latest Outlook installer, downloads the disk image and extracts the pkg.
+Set VERSION to a specific version number to download that version instead.
+Set CULTURE_CODE to a different value to get a different localization. See
+http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Culture Codes.</string>
+    <key>Identifier</key>
+    <string>com.github.arubdesu.munki.MSPowerPoint2016</string>
+    <key>MinimumVersion</key>
+    <string>0.3.1</string>
+    <key>Input</key>
+    <dict>
+        <key>NAME</key>
+        <string>Microsoft PowerPoint</string>
+        <key>display_name</key>
+        <string>Microsoft PowerPoint for Mac</string>
+        <key>MUNKI_REPO_SUBDIR</key>
+        <string>apps</string>
+        <key>VERSION</key>
+        <string>latest</string>
+        <key>CULTURE_CODE</key>
+        <string>0409</string>
+        <key>pkginfo</key>
+        <dict>
+            <key>catalogs</key>
+            <array>
+                <string>testing</string>
+            </array>
+            <key>category</key>
+            <string>Productivity</string>
+            <key>developer</key>
+            <string>Microsoft</string>
+            <key>installs</key>
+            <array>
+                <dict>
+                    <key>CFBundleIdentifier</key>
+                    <string>com.microsoft.Powerpoint</string>
+                    <key>CFBundleName</key>
+                    <string>PowerPoint</string>
+                    <key>path</key>
+                    <string>/Applications/Microsoft PowerPoint.app</string>
+                </dict>
+            </array>
+            <key>blocking_applications</key>
+            <array>
+              <string>Microsoft PowerPoint</string>
+              <string>Microsoft Error Reporting</string>
+              <string>Microsoft Auto Update</string>
+            </array>
+            <key>minimum_os_version</key>
+            <string>10.10.0</string>
+            <key>display_name</key>
+            <string>%display_name%</string>
+        </dict>
+    </dict>
+    <key>ParentRecipe</key>
+    <string>com.github.arubdesu.pkg.MSPowerPoint2016</string>
+    <key>Process</key>
+    <array>
+        <dict>
+            <key>Processor</key>
+            <string>MunkiPkginfoMerger</string>
+        </dict>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>pkg_path</key>
+                <string>%pathname%</string>
+                <key>repo_subdirectory</key>
+                <string>%MUNKI_REPO_SUBDIR%</string>
+            </dict>
+            <key>Processor</key>
+            <string>MunkiImporter</string>
+        </dict>
+    </array>
+</dict>
+</plist>
