@@ -50,6 +50,12 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
             "required": False,
             "description": "Update version number. Defaults to latest.",
         },
+        "munki_update_name": {
+            "required": False,
+            "description": (
+                "Name for the update in Munki repo. Defaults to '%s'"
+                % MUNKI_UPDATE_NAME),
+        },
     }
     output_variables = {
         "url": {
@@ -126,8 +132,8 @@ class MSOutlookURLandUpdateInfoProvider(Processor):
         # currently unused, and relies on the item having the version
         # at the end of the URL, then appends to expected major version. e.g.:
         # "http://download.microsoft.com/download/*blah*/MicrosoftOutlook15.6.dmg"
-        url_to_parse = self.env["url"]
-        just_minor = re.search("(Microsoft Outlook Update )(\d+\.\d+)", url_to_parse)
+        value_to_parse = item["Title"]
+        just_minor = re.search("(Microsoft Outlook Update )(\d+\.\d+\.\d+)", value_to_parse)
         version_str = just_minor.group(2)
         return version_str
 
