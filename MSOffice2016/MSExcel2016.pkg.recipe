@@ -34,6 +34,11 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
         <dict>
             <key>Processor</key>
             <string>URLDownloader</string>
+            <key>Arguments</key>
+            <dict>
+                <key>filename</key>
+                <string>%NAME%_Update.pkg</string>
+            </dict>
         </dict>
         <dict>
             <key>Processor</key>

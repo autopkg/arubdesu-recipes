@@ -59,13 +59,18 @@ class MSOffice2016URLandUpdateInfoProvider(Processor):
             "description": ("Default is %s. If this is given, culture_code "
                 "is ignored." % (BASE_URL % CULTURE_CODE)),
         },
+        "munki_update_name": {
+            "required": False,
+            "description": (
+                "Name for the update in Munki repo. Defaults to product name + '2016 Installer'"),
+        },
     }
     output_variables = {
         "url": {
-            "description": "URL to the latest Outlook installer.",
+            "description": "URL to the latest installer.",
         },
         "pkg_name": {
-            "description": "Name of the package within the disk image.",
+            "description": "Name of the package.",
         },
         "additional_pkginfo": {
             "description":
@@ -109,11 +114,10 @@ class MSOffice2016URLandUpdateInfoProvider(Processor):
 
     def getVersion(self, item):
         """Extracts the version of the update item."""
-        # currentlyrelies on the item having the version at  the end of the URL,
-        # and that it's a pkg with only one decimal. e.g.:
-        # "http://download.microsoft.com/download/*blah*/Microsoft Outlook Update 15.9.pkg"
-        url_to_parse = self.env["url"]
-        just_minor = re.search("(Update )(\d+\.\d+)", url_to_parse)
+        # currentlyrelies on the item having the version at  the end of the title,
+        # e.g.: "Microsoft Excel Update 15.10.0"
+        value_to_parse = item["Title"]
+        just_minor = re.search("( Update )(\d+\.\d+\.\d+)", value_to_parse)
         version_str = just_minor.group(2)
         return version_str
 
@@ -209,8 +213,10 @@ class MSOffice2016URLandUpdateInfoProvider(Processor):
         installs_items = self.getInstallsItems(item)
         if installs_items:
             pkginfo["installs"] = installs_items
-
-        pkginfo['name'] = self.env.get("munki_update_name", "%s_2016_Installer" % self.env.get("product"))
+        if not self.env.get("munki_update_name"):
+            pkginfo['name'] = ("%s_2016_Installer" % self.env.get("product"))
+        else:
+            pkginfo['name'] = self.env["munki_update_name"]
         self.env["additional_pkginfo"] = pkginfo
         # re-setting so we can substitute in %20's for spaces
         self.env["url"] = item["Location"].replace(' ', '%20')

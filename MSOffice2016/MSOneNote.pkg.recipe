@@ -3,20 +3,17 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Finds latest Excel installer, and downloads the pkg.
-Set VERSION to a specific version number to download that version instead.
+    <string>Finds latest OneNote installer, and downloads the pkg.
 Set CULTURE_CODE to a different value to get a different localization. See
 http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Culture Codes.</string>
     <key>Identifier</key>
-    <string>com.github.arubdesu.pkg.MSPowerPoint2016</string>
+    <string>com.github.arubdesu.pkg.MSOneNote2016</string>
     <key>MinimumVersion</key>
     <string>0.3.1</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
-        <string>Microsoft PowerPoint 2016</string>
-        <key>VERSION</key>
-        <string>latest</string>
+        <string>Microsoft OneNote 2016</string>
         <key>CULTURE_CODE</key>
         <string>0409</string>
     </dict>
@@ -28,7 +25,7 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
             <key>Arguments</key>
             <dict>
                 <key>product</key>
-                <string>PowerPoint</string>
+                <string>OneNote</string>
             </dict>
         </dict>
         <dict>
