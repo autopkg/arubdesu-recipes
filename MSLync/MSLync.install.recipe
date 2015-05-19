@@ -5,14 +5,14 @@
     <key>Description</key>
     <string>Installs the current release version of MSLync.</string>
     <key>Identifier</key>
-    <string>com.github.arubdesu.install.MSLync</string>
+    <string>com.github.arubdesu.install.LyncInstaller</string>
     <key>Input</key>
     <dict>
     </dict>
     <key>MinimumVersion</key>
     <string>0.4.0</string>
     <key>ParentRecipe</key>
-    <string>com.github.arubdesu.pkg.MSLync</string>
+    <string>com.github.arubdesu.pkg.LyncInstaller</string>
     <key>Process</key>
     <array>
         <dict>
