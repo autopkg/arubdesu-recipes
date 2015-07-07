@@ -30,7 +30,7 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
             <key>Arguments</key>
             <dict>
                 <key>product</key>
-                <string>Word</string>
+                <string>PowerPoint</string>
                 <key>munki_update_name</key>
                  <string>%MUNKI_UPDATE_NAME%</string>
             </dict>
