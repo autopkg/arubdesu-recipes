@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads the current release version of CharlesProxy.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu.download.CharlesProxy</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>CharlesProxy</string>
+		<key>URL</key>
+		<string>http://www.charlesproxy.com/latest-release/download.do</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>0.4.0</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>URLTextSearcher</string>
+			<key>Arguments</key>
+			<dict>
+				<key>url</key>
+				<string>%URL%</string>
+				<key>re_pattern</key>
+				<string>\d+\.\d+\.\d+</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>url</key>
+				<string>http://www.charlesproxy.com/assets/release/%match%/charles-proxy-%match%.dmg</string>
+			</dict>
+			<key>Processor</key>
+			<string>URLDownloader</string>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>EndOfCheckPhase</string>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>CodeSignatureVerifier</string>
+			<key>Arguments</key>
+			<dict>
+				<key>input_path</key>
+				<string>%pathname%/Charles.app</string>
+				<key>requirement</key>
+				<string>identifier "com.xk72.Charles" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "9A5PCU4FSD"</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
