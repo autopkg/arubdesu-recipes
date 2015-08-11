@@ -18,6 +18,8 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
         <string>0409</string>
         <key>MUNKI_UPDATE_NAME</key>
         <string>OneNote_2016_Installer</string>
+        <key>PKG_NAME</key>
+        <string>%NAME%_Update</string>
     </dict>
     <key>Process</key>
     <array>
@@ -38,7 +40,7 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
             <key>Arguments</key>
             <dict>
                 <key>filename</key>
-                <string>%NAME%_Update.pkg</string>
+                <string>%PKG_NAME%.pkg</string>
             </dict>
         </dict>
         <dict>
