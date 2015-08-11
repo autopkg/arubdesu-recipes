@@ -19,6 +19,8 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
         <string>latest</string>
         <key>CULTURE_CODE</key>
         <string>0409</string>
+        <key>PKG_NAME</key>
+        <string>Microsoft_Outlook_Update</string>
     </dict>
     <key>Process</key>
     <array>
@@ -39,7 +41,7 @@ http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx for a table of Cu
             <key>Arguments</key>
             <dict>
                 <key>filename</key>
-                <string>Microsoft_Outlook_Update.pkg</string>
+                <string>%PKG_NAME%.pkg</string>
             </dict>
         </dict>
         <dict>
