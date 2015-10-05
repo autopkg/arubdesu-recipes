@@ -3,7 +3,15 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Downloads the current release version of Bartender.</string>
+    <string>Downloads the current release version of Bartender.
+
+The SPARKLE_FEED_URL input variable can be overridden to determine which major version of Bartender you want to download.
+  - For Bartender v1.x, use this SPARKLE_FEED_URL:
+    http://www.macbartender.com/updates/Appcast.xml
+  - For Bartender v2.x, use this SPARKLE_FEED_URL:
+    http://www.macbartender.com/B2/updates/Appcast.xml
+
+The Sparkle feed for v1.x is the default.</string>
     <key>Identifier</key>
     <string>com.github.arubdesu.download.Bartender</string>
 	<key>MinimumVersion</key>
