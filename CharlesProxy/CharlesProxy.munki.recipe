@@ -27,7 +27,7 @@
             <key>unattended_install</key>
             <true/>
             <key>postinstall_script</key>
-			<string>#!/bin/sh
+            <string>#!/bin/sh
 
 echo "Setting permissions on Charles.app..."
 chmod -R g+w "$3/Applications/Charles.app"
