@@ -77,6 +77,8 @@
 							<string>admin</string>
 						</dict>
 					</array>
+					<key>scripts</key>
+					<string>Scripts</string>
 				</dict>
 			</dict>
 		</dict>
