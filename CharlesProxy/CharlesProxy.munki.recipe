@@ -14,6 +14,8 @@
         <string>apps</string>
         <key>pkginfo</key>
         <dict>
+            <key>blocking_applications</key>
+            <string>Charles.app</string>
             <key>catalogs</key>
             <array>
                 <string>testing</string>
@@ -26,26 +28,17 @@
             <string>%NAME%</string>
             <key>unattended_install</key>
             <true/>
-            <key>postinstall_script</key>
-            <string>#!/bin/sh
-
-echo "Setting permissions on Charles.app..."
-chmod -R g+w "$3/Applications/Charles.app/Contents/MacOS/Charles Proxy Settings"
-exit $?
-            </string>
         </dict>
     </dict>
     <key>MinimumVersion</key>
     <string>0.4.0</string>
     <key>ParentRecipe</key>
-    <string>com.github.autopkg.arubdesu.download.CharlesProxy</string>
+    <string>com.github.autopkg.pkg.CharlesProxy</string>
     <key>Process</key>
     <array>
         <dict>
             <key>Arguments</key>
             <dict>
-                <key>pkg_path</key>
-                <string>%pathname%</string>
                 <key>repo_subdirectory</key>
                 <string>%MUNKI_REPO_SUBDIR%</string>
             </dict>
