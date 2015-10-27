@@ -20,10 +20,11 @@
 			<string>URLTextSearcher</string>
 			<key>Arguments</key>
 			<dict>
+				<!-- http://macid.co/download/ -->
 				<key>url</key>
-				<string>http://macid.co</string>
+				<string>http://macid.co/get</string>
 				<key>re_pattern</key>
-				<string>(\d+\.\d+\.\d+)</string>
+				<string>Download (\d+\.\d)</string>
 			</dict>
 		</dict>
 		<dict>
