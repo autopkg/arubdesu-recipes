@@ -10,10 +10,6 @@
 	<dict>
 		<key>NAME</key>
 		<string>Synergy</string>
-		<key>version</key>
-		<string>%VERSION%</string>
-		<key>pkgversion</key>
-		<string>%version%</string>
 	</dict>
 	<key>ParentRecipe</key>
 	<string>com.github.autopkg.arubdesu-recipes.download.synergy</string>
@@ -51,16 +47,16 @@
 			<string>PkgCreator</string>
 			<key>Arguments</key>
 			<dict>
-				<key>pkgname</key>
-				<string>%NAME%-%version%</string>
 				<key>pkg_request</key>
 				<dict>
 					<key>pkgname</key>
-					<string>%NAME%-%pkgversion%</string>
+					<string>%NAME%-%VERSION%</string>
+					<key>version</key>
+					<string>%VERSION%</string>
 					<key>pkgdir</key>
 					<string>%RECIPE_CACHE_DIR%</string>
 					<key>id</key>
-					<string>org.synergy-project</string>
+					<string>org.synergy-project.synergy</string>
 					<key>options</key>
 					<string>purge_ds_store</string>
 					<key>chown</key>
