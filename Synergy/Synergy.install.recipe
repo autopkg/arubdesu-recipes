@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Installs the current release version of synergy.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.install.synergy</string>
+	<key>Input</key>
+	<dict>
+		<key>Name</key>
+		<string>Synergy</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>0.5.1</string>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu-recipes.pkg.synergy</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>Installer</string>
+		</dict>
+	</array>
+</dict>
+</plist>
