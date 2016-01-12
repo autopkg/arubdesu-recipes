@@ -7,9 +7,9 @@
 
 The SPARKLE_FEED_URL input variable can be overridden to determine which major version of Bartender you want to download.
   - For Bartender v1.x, use this SPARKLE_FEED_URL:
-    http://www.macbartender.com/updates/Appcast.xml
+    https://www.macbartender.com/updates/Appcast.xml
   - For Bartender v2.x, use this SPARKLE_FEED_URL:
-    http://www.macbartender.com/B2/updates/Appcast.xml
+    https://www.macbartender.com/B2/updates/Appcast.xml
 
 The Sparkle feed for v1.x is the default.</string>
     <key>Identifier</key>
@@ -21,7 +21,7 @@ The Sparkle feed for v1.x is the default.</string>
         <key>NAME</key>
         <string>Bartender</string>
         <key>SPARKLE_FEED_URL</key>
-        <string>http://www.macbartender.com/updates/Appcast.xml</string>
+        <string>https://www.macbartender.com/updates/Appcast.xml</string>
         <key>USER_AGENT</key>
         <string>Mozilla/5.0</string>
 	</dict>
