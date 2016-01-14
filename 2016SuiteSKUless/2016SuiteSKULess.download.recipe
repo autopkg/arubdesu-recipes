@@ -3,9 +3,13 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Downloads latest Microsoft Office 2016 Suite installer pkg.
-Replace the REGION key with 532572 for Europe and 532577 for Asia.
-(Defaults to 525133 for the Americas)</string>
+    <string>Downloads the latest Microsoft Office 2016 SKU-less installer package.
+
+Set the REGION key to:
+
+525133 for Americas (default)
+532572 for Europe
+532577 for Asia</string>
     <key>Identifier</key>
     <string>com.github.autopkg.arubdesu-recipes.download.Office2016Suite</string>
     <key>Input</key>
