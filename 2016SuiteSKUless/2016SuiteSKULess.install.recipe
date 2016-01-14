@@ -3,15 +3,22 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Installs the current release version of MAU.</string>
+    <string>Download and install the latest Microsoft Office 2016 
+SKU-less installer package.
+
+Set the REGION key to:
+
+525133 for Americas (default)
+532572 for Europe
+532577 for Asia</string>
     <key>Identifier</key>
-    <string>com.github.autopkg.arubdesu.install.MAU</string>
+    <string>com.github.autopkg.arubdesu-recipes.install.Office2016Suite</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>Office2016Suite</string>
         <key>REGION</key>
-        <string>525133</string>        
+        <string>525133</string>
         <key>DOWNLOAD_URL_BASE</key>
         <string>http://go.microsoft.com/fwlink/?linkid=</string>
     </dict>
@@ -24,6 +31,11 @@
         <dict>
             <key>Processor</key>
             <string>Installer</string>
+            <key>Arguments</key>
+            <dict>
+                <key>pkg_path</key>
+                <string>%pathname%</string>
+            </dict>
         </dict>
     </array>
 </dict>
