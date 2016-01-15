@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Finds latest MAU installer, downloads the pkg.</string>
+    <string>Finds latest Microsoft AutoUpdate (MAU) installer, downloads the pkg.</string>
     <key>Identifier</key>
     <string>com.github.autopkg.arubdesu.pkg.MAU</string>
     <key>MinimumVersion</key>

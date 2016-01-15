@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Installs the current release version of MAU.</string>
+    <string>Installs the current release version of Microsoft AutoUpdate (MAU).</string>
     <key>Identifier</key>
     <string>com.github.autopkg.arubdesu.install.MAU</string>
     <key>Input</key>

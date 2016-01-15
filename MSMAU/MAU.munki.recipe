@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Finds latest MAU installer, downloads the pkg. Set CULTURE_CODE to a different 
+    <string>Finds latest Microsoft AutoUpdate (MAU) installer, downloads the pkg. Set CULTURE_CODE to a different 
 value to get a different localization. See http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx 
 for a table of Culture Codes.</string>
     <key>Identifier</key>
