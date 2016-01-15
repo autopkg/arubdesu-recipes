@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Description</key>
+    <string>Downloads the latest Microsoft Office 2016 SKU-less installer package, 
+appends the version to the end of the filename, and imports into Munki.
+
+Set the REGION key to:
+
+525133 for Americas (default)
+532572 for Europe
+532577 for Asia</string>
+    <key>Identifier</key>
+    <string>com.github.autopkg.arubdesu-recipes.munki.Office2016Suite</string>
+    <key>ParentRecipe</key>
+    <string>com.github.autopkg.arubdesu-recipes.download.Office2016Suite</string>
+    <key>Input</key>
+    <dict>
+        <key>NAME</key>
+        <string>Office2016Suite</string>
+        <key>REGION</key>
+        <string>525133</string>        
+        <key>DOWNLOAD_URL_BASE</key>
+        <string>http://go.microsoft.com/fwlink/?linkid=</string>
+        <key>MUNKI_REPO_SUBDIR</key>
+        <string>apps/Office2016</string>
+        <key>pkginfo</key>
+        <dict>
+            <key>blocking_applications</key>
+            <array>
+                    <string>Microsoft Autoupdate</string>
+                    <string>Microsoft Outlook</string>
+                    <string>Microsoft Excel</string>
+                    <string>Microsoft PowerPoint</string>
+                    <string>Microsoft Word</string>
+                    <string>Microsoft OneNote</string>
+            </array>
+            <key>catalogs</key>
+            <array>
+                <string>testing</string>
+            </array>
+        </dict>
+    </dict>
+    <key>MinimumVersion</key>
+    <string>0.4.1</string>
+    <key>Process</key>
+    <array>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>pkg_path</key>
+                <string>%pathname%</string>
+                <key>repo_subdirectory</key>
+                <string>%MUNKI_REPO_SUBDIR%</string>
+            </dict>
+            <key>Processor</key>
+            <string>MunkiImporter</string>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright 2014 Allister Banks, wholesale lifted from code by Greg Neagle
+# Copyright 2016 Allister Banks, wholesale lifted from code by Greg Neagle
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -24,18 +24,14 @@ from operator import itemgetter
 from autopkglib import Processor, ProcessorError
 
 
-__all__ = ["MSLyncURLandUpdateInfoProvider"]
+__all__ = ["MAUURLandUpdateInfoProvider"]
 
-# Some interesting URLs, for more see main MSOffice2011UpdateInfoProvider:
-
-# Office 2011
-# http://www.microsoft.com/mac/autoupdate/0409UCCP14.xml
 CULTURE_CODE = "0409"
-BASE_URL = "http://www.microsoft.com/mac/autoupdate/%sUCCP14.xml"
-MUNKI_UPDATE_NAME = "Lync_Installer"
+BASE_URL = "http://www.microsoft.com/mac/autoupdate/%sMSau03.xml"
+MUNKI_UPDATE_NAME = "Microsoft Auto Update"
 
-class MSLyncURLandUpdateInfoProvider(Processor):
-    """Provides a download URL for the most recent version of MS Lync."""
+class MAUURLandUpdateInfoProvider(Processor):
+    """Provides a download URL for the most recent version of MAU."""
     input_variables = {
         "culture_code": {
             "required": False,
@@ -49,25 +45,14 @@ class MSLyncURLandUpdateInfoProvider(Processor):
             "description": ("Default is %s. If this is given, culture_code "
                 "is ignored." % (BASE_URL % CULTURE_CODE)),
         },
-        "version": {
-            "required": False,
-            "description": "Update version number. Defaults to latest.",
-        },
     }
     output_variables = {
         "url": {
-            "description": "URL to the latest Lync installer.",
+            "description": "URL to the latest MAU installer.",
         },
-        "pkg_name": {
-            "description": "Name of the package within the disk image.",
-        }, 
         "additional_pkginfo": {
             "description": 
                 "Some pkginfo fields extracted from the Microsoft metadata.",
-        },
-        "display_name": {
-            "description": 
-                "The name of the package that includes the version.",
         },
     }
     description = __doc__
@@ -76,35 +61,10 @@ class MSLyncURLandUpdateInfoProvider(Processor):
         """Raises an exeception if the Trigger Condition or
         Triggers for an update don't match what we expect.
         Protects us if these change in the future."""
-        if not item.get("Trigger Condition") == ["and", "Lync"]:
+        if not item.get("Trigger Condition") == ["and", "Registered File"]:
             raise ProcessorError(
                 "Unexpected Trigger Condition in item %s: %s" 
                 % (item["Title"], item["Trigger Condition"]))
-        if not "Lync" in item.get("Triggers", {}):
-            raise ProcessorError(
-                "Missing expected MCP Trigger in item %s" % item["Title"])
-    
-    def getRequiresFromUpdateItem(self, item):
-        """Attempts to determine what earlier updates are
-        required by this update"""
-        
-        def compare_versions(a, b):
-            """Internal comparison function for use with sorting"""
-            return cmp(LooseVersion(a), LooseVersion(b))
-        
-        self.sanityCheckExpectedTriggers(item)
-        munki_update_name = self.env.get("munki_update_name", MUNKI_UPDATE_NAME)
-        mcp_versions = item.get(
-            "Triggers", {}).get("Lync", {}).get("Versions", [])
-        if not mcp_versions:
-            return None
-        # Versions array is already sorted in current 0409MSOf14.xml,
-        # may be no need to sort; but we should just to be safe...
-        mcp_versions.sort(compare_versions)
-        if mcp_versions[0] == "14.0.0":
-            # works with original Office release, so no requires array
-            return None
-        return ["%s-%s" % (munki_update_name, mcp_versions[0])]
     
     def getInstallsItems(self, item):
         """Attempts to parse the Triggers to create an installs item"""
@@ -127,11 +87,9 @@ class MSLyncURLandUpdateInfoProvider(Processor):
     def getVersion(self, item):
         """Extracts the version of the update item."""
         # currently relies on the item having a title in the format
-        # "Lync x.y.z Update"
-        TITLE_START = "Lync "
-        TITLE_END = " Update"
+        # "Microsoft AutoUpdate x.y.z "
         title = item.get("Title", "")
-        version_str = title.replace(TITLE_START, "").replace(TITLE_END, "")
+        version_str = title[21:]
         return version_str
     
     def valueToOSVersionString(self, value):
@@ -161,23 +119,20 @@ class MSLyncURLandUpdateInfoProvider(Processor):
             raise ProcessorError("Unexpected value in version: %s" % value)
         return "%s.%s.%s" % (major, minor, patch)
 
-    def get_lyncInstaller_info(self):
-        """Gets info about a Lync installer from MS metadata."""
+    def get_mauInstaller_info(self):
+        """Gets info about a MAU installer from MS metadata."""
         if "base_url" in self.env:
             base_url = self.env["base_url"]
         else:
             culture_code = self.env.get("culture_code", CULTURE_CODE)
             base_url = BASE_URL % culture_code
-        version_str = self.env.get("version")
-        if not version_str:
-            version_str = "latest"
         # Get metadata URL
         req = urllib2.Request(base_url)
         # Add the MAU User-Agent, since MAU feed server seems to explicitly block
         # a User-Agent of 'Python-urllib/2.7' - even a blank User-Agent string
         # passes.
         req.add_header("User-Agent",
-            "Microsoft%20AutoUpdate/3.0.2 CFNetwork/720.2.4 Darwin/14.1.0 (x86_64)")
+            "Microsoft%20AutoUpdate/3.4 CFNetwork/760.2.6 Darwin/15.4.0 (x86_64)")
         try:
             f = urllib2.urlopen(req)
             data = f.read()
@@ -186,28 +141,11 @@ class MSLyncURLandUpdateInfoProvider(Processor):
             raise ProcessorError("Can't download %s: %s" % (base_url, err))
         
         metadata = plistlib.readPlistFromString(data)
-        if version_str == "latest":
-            # Lync 'update' metadata is a list of dicts.
-            # we need to sort by date.
-            sorted_metadata = sorted(metadata, key=itemgetter('Date'))
-            # choose the last item, which should be most recent.
-            item = sorted_metadata[-1]
-        else:
-            # we've been told to find a specific version. Unfortunately, the
-            # Lync updates metadata items don't have a version attibute.
-            # The version is only in text in the update's Title. So we look for 
-            # that...
-            # Titles are in the format "Lync x.y.z Update"
-            padded_version_str = " " + version_str + " "
-            matched_items = [item for item in metadata 
-                            if padded_version_str in item["Title"]]
-            if len(matched_items) != 1:
-                raise ProcessorError(
-                    "Could not find version %s in update metadata. "
-                    "Updates that are available: %s" 
-                    % (version_str, ", ".join(["'%s'" % item["Title"] 
-                                               for item in metadata])))
-            item = matched_items[0]
+        # Lync 'update' metadata is a list of dicts.
+        # we need to sort by date.
+        sorted_metadata = sorted(metadata, key=itemgetter('Date'))
+        # choose the last item, which should be most recent.
+        item = sorted_metadata[-1]
         
         self.env["url"] = item["Location"]
         self.env["pkg_name"] = item["Payload"]
@@ -227,23 +165,16 @@ class MSLyncURLandUpdateInfoProvider(Processor):
         installs_items = self.getInstallsItems(item)
         if installs_items:
             pkginfo["installs"] = installs_items
-        requires = self.getRequiresFromUpdateItem(item)
-        if requires:
-            pkginfo["requires"] = requires
-            self.output(
-                "Update requires previous update version %s" 
-                % requires[0].split("-")[1])
 
         pkginfo['name'] = self.env.get("munki_update_name", MUNKI_UPDATE_NAME)
         self.env["additional_pkginfo"] = pkginfo
-        self.env["display_name"] = pkginfo["display_name"]
         self.output("Additional pkginfo: %s" % self.env["additional_pkginfo"])
 
     def main(self):
         """Get information about an update"""
-        self.get_lyncInstaller_info()
+        self.get_mauInstaller_info()
 
 
 if __name__ == "__main__":
-    processor = MSLyncURLandUpdateInfoProvider()
+    processor = MAUURLandUpdateInfoProvider()
     processor.execute_shell()

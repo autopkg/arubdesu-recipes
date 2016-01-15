@@ -20,10 +20,11 @@
 			<string>URLTextSearcher</string>
 			<key>Arguments</key>
 			<dict>
+				<!--  "public_version": "1.3.1.1", -->
 				<key>url</key>
-				<string>http://macid.co</string>
+				<string>https://macid.co/api/v1/version/</string>
 				<key>re_pattern</key>
-				<string>(\d+\.\d+\.\d+)</string>
+				<string> "public_version"\: "(.+)"</string>
 			</dict>
 		</dict>
 		<dict>

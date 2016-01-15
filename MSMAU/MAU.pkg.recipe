@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Description</key>
+    <string>Finds latest MAU installer, downloads the pkg.</string>
+    <key>Identifier</key>
+    <string>com.github.autopkg.arubdesu.pkg.MAU</string>
+    <key>MinimumVersion</key>
+    <string>0.4.1</string>
+    <key>Input</key>
+    <dict>
+        <key>NAME</key>
+        <string>MSMAU</string>
+        <key>CULTURE_CODE</key>
+        <string>0409</string>
+    </dict>
+    <key>Process</key>
+    <array>
+        <dict>
+            <key>Processor</key>
+            <string>MAUURLandUpdateInfoProvider</string>
+            <key>Arguments</key>
+            <dict>
+                <key>culture_code</key>
+                <string>%CULTURE_CODE%</string>
+            </dict>    
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>URLDownloader</string>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>EndOfCheckPhase</string>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>CodeSignatureVerifier</string>
+            <key>Arguments</key>
+            <dict>
+                <key>input_path</key>
+                <string>%pathname%</string>
+                <key>expected_authority_names</key>
+                <array>
+                    <string>Developer ID Installer: Microsoft Corporation (UBF8T346G9)</string>
+                    <string>Developer ID Certification Authority</string>
+                    <string>Apple Root CA</string>
+                </array>
+            </dict>
+        </dict>
+    </array>
+</dict>
+</plist>

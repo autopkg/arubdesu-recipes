@@ -14,6 +14,10 @@
         <string>apps</string>
         <key>pkginfo</key>
         <dict>
+            <key>blocking_applications</key>
+            <array>
+                <string>Charles.app</string>
+            </array>
             <key>catalogs</key>
             <array>
                 <string>testing</string>
@@ -31,14 +35,12 @@
     <key>MinimumVersion</key>
     <string>0.4.0</string>
     <key>ParentRecipe</key>
-    <string>com.github.autopkg.arubdesu.download.CharlesProxy</string>
+    <string>com.github.autopkg.pkg.CharlesProxy</string>
     <key>Process</key>
     <array>
         <dict>
             <key>Arguments</key>
             <dict>
-                <key>pkg_path</key>
-                <string>%pathname%</string>
                 <key>repo_subdirectory</key>
                 <string>%MUNKI_REPO_SUBDIR%</string>
             </dict>

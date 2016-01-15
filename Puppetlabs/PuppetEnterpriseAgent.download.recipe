@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads the current release version of PuppetEnterpriseAgent.
+
+OS_VERSION can be overridden for the specific package, or left to the current
+latest OS available</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.download.PuppetEnterpriseAgent</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>PuppetEnterpriseAgent</string>
+		<key>OS_VERSION</key>
+		<string>10</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>0.4.0</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>URLTextSearcher</string>
+			<key>Arguments</key>
+			<dict>
+				<key>url</key>
+				<string>https://puppetlabs.com/download-puppet-enterprise-all</string>
+				<key>re_pattern</key>
+				<string>href="(http://pm.puppetlabs.com/puppet-agent/\d+\.\d+\.\d+/\d\.\d+\.\d+/repos/apple/10\.%OS_VERSION%/PC1/x86_64/puppet-agent-\d\.\d+\.\d+-1\.osx10\.%OS_VERSION%\.dmg)</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>URLDownloader</string>
+			<key>Arguments</key>
+			<dict>
+				<key>url</key>
+				<string>%match%</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>EndOfCheckPhase</string>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>CodeSignatureVerifier</string>
+			<key>Arguments</key>
+			<dict>
+				<key>input_path</key>
+				<string>%pathname%/*.pkg</string>
+				<key>expected_authority_names</key>
+				<array>
+					<string>Developer ID Installer: PUPPET LABS, INC. (VKGLGN2B6Y)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
