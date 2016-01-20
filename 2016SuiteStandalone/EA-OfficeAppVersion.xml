@@ -1,0 +1,21 @@
+<computer_extension_attribute>
+    <name>%JSS_INVENTORY_NAME% 2016 Version</name>
+    <description />
+    <data_type>String</data_type>
+    <input_type>
+        <type>script</type>
+        <platform>Mac</platform>
+        <script>#!/bin/sh
+
+app_plist="/Applications/%JSS_INVENTORY_NAME%/Contents/Info.plist"
+if [ -a "${app_plist}" ]; then
+    version=`defaults read "${app_plist}" CFBundleVersion`
+    echo "&lt;result&gt;${version}&lt;/result&gt;"
+else
+    echo "&lt;result&gt;&lt;/result&gt;"
+fi
+        </script>
+    </input_type>
+    <inventory_display>Extension Attributes</inventory_display>
+    <recon_display>Extension Attributes</recon_display>
+</computer_extension_attribute>

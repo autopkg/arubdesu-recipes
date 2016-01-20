@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.2016SuiteStandalone.download.MicrosoftPowerPoint</string>
+	<key>Input</key>
+	<dict>
+		<!-- Global variables -->
+		<key>NAME</key>
+		<string>Microsoft PowerPoint</string>
+		<key>SHORTNAME</key>
+		<string>MicrosoftPowerPoint</string>
+
+		<!-- MS Office 2016 options (1033 = English) -->
+        <key>MSLOCALE</key>
+        <string>1033</string>
+        <key>MSPRODUCT</key>
+        <string>PowerPoint</string>
+        <key>MSVERSION</key>
+        <string>latest-standalone</string>
+
+	</dict>
+	<key>MinimumVersion</key>
+	<string>0.4.2</string>
+	<key>Process</key>
+	<array>
+
+        <dict>
+            <key>Processor</key>
+            <string>MSOffice2016URLandUpdateInfoProvider</string>
+            <key>Arguments</key>
+            <dict>
+                <key>locale_id</key>
+                <string>%MSLOCALE%</string>
+                <key>product</key>
+                <string>%MSPRODUCT%</string>
+                <key>version</key>
+                <string>%MSVERSION%</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>URLDownloader</string>
+            <key>Arguments</key>
+            <dict>
+                <key>filename</key>
+                <string>%SHORTNAME%-standalone-%version%.pkg</string>
+            </dict>
+        </dict>
+        <dict>
+            <key>Processor</key>
+            <string>CodeSignatureVerifier</string>
+            <key>Arguments</key>
+            <dict>
+                <key>input_path</key>
+                <string>%pathname%</string>
+                <key>expected_authority_names</key>
+                <array>
+                    <string>Developer ID Installer: Microsoft Corporation (UBF8T346G9)</string>
+                    <string>Developer ID Certification Authority</string>
+                    <string>Apple Root CA</string>
+                </array>
+            </dict>
+        </dict>
+	</array>
+</dict>
+</plist>
