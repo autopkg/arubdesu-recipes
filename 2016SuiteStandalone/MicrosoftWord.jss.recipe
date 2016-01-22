@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.2016SuiteStandalone.jss.MicrosoftWord</string>
+	<key>Input</key>
+	<dict>
+		<!-- Extension Attributes -->
+		<key>EA_TEMPLATE</key>
+		<string>EA-OfficeAppVersion.xml</string>
+
+        <!-- scripts -->
+        <key>SCRIPT_FILENAME</key>
+        <string>manual_trigger_office.sh</string>
+        <key>SCRIPT_TEMPLATE</key>
+        <string>S-Standard.xml</string>
+
+        <!-- Smart group -->
+		<key>GROUP_NAME</key>
+		<string>%SHORTNAME%-install-smart</string>
+		<key>GROUP_TEMPLATE</key>
+		<string>SG-ExtendedAttributeOffice.xml</string>
+		
+		<!-- Policy -->
+		<key>POLICY_CATEGORY</key>
+		<string>Productivity</string>
+		<key>POLICY_TEMPLATE</key>
+		<string>P-SelfService.xml</string>
+
+		<!-- Package -->
+		<key>OS_REQUIREMENTS</key>
+		<string>10.11.x,10.10.x</string>
+		<key>CATEGORY</key>
+		<string>Productivity</string>
+
+		<!-- Self Service -->
+		<key>SELF_SERVICE_DESCRIPTION</key>
+		<string>Microsoft Word is a graphical word processing program that users can type with. It is made by the computer company Microsoft. The purpose of the MS Word is to allow the users to type and save documents.</string>
+		<key>SELF_SERVICE_ICON</key>
+		<string>MicrosoftWord.png</string>
+		<key>FEATURED</key>
+		<string>True</string>
+	</dict>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu-recipes.2016SuiteStandalone.download.MicrosoftWord</string>
+	<key>MinimumVersion</key>
+	<string>0.4.2</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>JSSImporter</string>
+			<key>Arguments</key>
+			<dict>
+				
+                <key>extension_attributes</key>
+                <array>
+                    <dict>
+                        <key>ext_attribute_path</key>
+                        <string>%EA_TEMPLATE%</string>
+                    </dict>
+                </array>
+                <key>scripts</key>
+                <array>
+                    <dict>
+                        <key>name</key>
+                        <string>%SCRIPT_FILENAME%</string>
+                        <key>template_path</key>
+                        <string>%SCRIPT_TEMPLATE%</string>
+                    </dict>
+                </array>
+				<key>groups</key>
+				<array>
+					<dict>
+						<key>name</key>
+						<string>%GROUP_NAME%</string>
+						<key>smart</key>
+						<true/>
+						<key>template_path</key>
+						<string>%GROUP_TEMPLATE%</string>
+					</dict>
+				</array>
+				<!-- Package -->
+
+				<key>prod_name</key>
+				<string>%NAME%</string>
+				<key>category</key>
+				<string>%CATEGORY%</string>
+				<key>os_requirements</key>
+				<string>%OS_REQUIREMENTS%</string>
+				<key>pkg_path</key>
+				<string>%pathname%</string>
+
+				<!-- Policy -->
+				<key>policy_category</key>
+				<string>%POLICY_CATEGORY%</string>
+				<key>policy_template</key>
+				<string>%POLICY_TEMPLATE%</string>
+
+				<!-- Self Service -->
+				<key>self_service_description</key>
+				<string>%SELF_SERVICE_DESCRIPTION%</string>
+				<key>self_service_icon</key>
+				<string>%SELF_SERVICE_ICON%</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

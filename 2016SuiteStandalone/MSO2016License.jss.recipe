@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+    <dict>
+        <key>Description</key>
+        <string>Installes MS Office 2016 VL License</string>
+        <key>Identifier</key>
+        <string>com.github.autopkg.arubdesu-recipes.2016SuiteStandalone.jss.MSO2016License</string>
+        <key>Input</key>
+        <dict>
+            <!-- Name displayed to the user -->
+            <key>NAME</key>
+            <string>Microsoft Office License</string>
+            <key>VERSION</key>
+            <string>1.0</string>
+
+            <!-- Name used for packaging and smart group -->
+            <key>INTERNAL_NAME</key>
+            <string>MSO2016License</string>
+
+            <!-- Category for Package -->
+            <key>CATEGORY</key>
+            <string>Productivity</string>
+
+            <!-- Category for Policy-->
+            <key>POLICY_CATEGORY</key>
+            <string>Productivity</string>
+
+            <!-- Group Template -->
+            <key>GROUP_TEMPLATE</key>
+            <string>SG-PackageInstalledByCasper.xml</string>
+
+            <!-- Policy: Other Trigger -->
+            <key>POLICY_TEMPLATE</key>
+            <string>P-OtherTrigger.xml</string>
+
+            <key>TRIGGER_OTHER</key>
+            <string>office-license</string>
+
+            <key>FREQUENCY</key>
+            <string>ongoing</string>
+
+        </dict>
+        <key>MinimumVersion</key>
+        <string>0.4.0</string>
+        <key>Process</key>
+        <array>
+            <dict>
+                <key>Processor</key>
+                <string>PkgCopier</string>
+                <key>Arguments</key>
+                <dict>
+                    <key>pkg_path</key>
+                   <string>%RECIPE_CACHE_DIR%/%INTERNAL_NAME%-%VERSION%.pkg</string>
+                   <key>source_pkg</key>
+                   <string>%RECIPE_DIR%/payload/Microsoft_Office_2016_VL_Serializer.pkg</string>
+                </dict>
+            </dict>
+            <dict>
+                <key>Arguments</key>
+                <dict>
+                   <key>pkg_path</key>
+                   <string>%pkg_path%</string>
+                   <key>version</key>
+                   <string>%VERSION%</string>
+                   <key>prod_name</key>
+                    <string>%NAME%</string>
+                    <key>category</key>
+                    <string>%CATEGORY%</string>
+                    <key>policy_category</key>
+                    <string>%POLICY_CATEGORY%</string>
+                    <key>policy_template</key>
+                    <string>%POLICY_TEMPLATE%</string>
+                    <key>groups</key>
+                    <array>
+                        <dict>
+                            <key>name</key>
+                            <string>%INTERNAL_NAME%-smart</string>
+                            <key>smart</key>
+                            <true/>
+                            <key>template_path</key>
+                            <string>%GROUP_TEMPLATE%</string>
+                        </dict>
+                    </array>
+                </dict>
+                <key>Processor</key>
+                <string>JSSImporter</string>
+            </dict>
+        </array>
+    </dict>
+</plist>

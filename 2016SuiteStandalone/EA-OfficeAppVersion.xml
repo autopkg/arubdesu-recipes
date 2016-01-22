@@ -1,0 +1,34 @@
+<computer_extension_attribute>
+    <name>%JSS_INVENTORY_NAME% 2016 Version</name>
+    <description />
+    <data_type>String</data_type>
+    <input_type>
+        <type>script</type>
+        <platform>Mac</platform>
+        <script>#!/bin/sh
+app_plist="/Applications/%JSS_INVENTORY_NAME%/Contents/Info.plist"
+
+if [ -a "${app_plist}" ]; then
+    version=`defaults read "${app_plist}" CFBundleVersion`
+
+    # Get version as major.minor.micro
+    # It seems MS prints only major.minor if micro=0
+    # Found it here http://stackoverflow.com/questions/19915452/in-shell-split-a-portion-of-a-string-with-dot-as-delimiter
+    IFS=. components=(${version})
+    major="${components[0]}"
+    minor="${components[1]}"
+    micro="${components[2]}"
+    if [ -z ${micro} ]; then
+        micro=0
+    fi
+    version="${major}.${minor}.${micro}"
+    echo "&lt;result&gt;${version}&lt;/result&gt;"
+else
+    echo "&lt;result&gt;&lt;/result&gt;"
+fi
+
+        </script>
+    </input_type>
+    <inventory_display>Extension Attributes</inventory_display>
+    <recon_display>Extension Attributes</recon_display>
+</computer_extension_attribute>

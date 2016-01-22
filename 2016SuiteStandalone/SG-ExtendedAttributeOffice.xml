@@ -1,0 +1,13 @@
+<computer_group>
+    <name>%GROUP_NAME%</name>
+    <is_smart>true</is_smart>
+    <criteria>
+        <criterion>
+            <name>%JSS_INVENTORY_NAME% 2016 Version</name>
+            <priority>0</priority>
+            <and_or>and</and_or>
+            <search_type>is not</search_type>
+            <value>%VERSION%</value>
+        </criterion>
+    </criteria>
+</computer_group>
