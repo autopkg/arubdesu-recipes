@@ -26,7 +26,7 @@ latest OS available</string>
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>https://puppetlabs.com/download-puppet-enterprise-get-expand</string>
+				<string>https://puppetlabs.com/download-puppet-enterprise-all</string>
 				<key>re_pattern</key>
 				<string>href="(http://pm.puppetlabs.com/puppet-agent/\d+\.\d+\.\d+/\d\.\d+\.\d+/repos/apple/10\.%OS_VERSION%/PC1/x86_64/puppet-agent-\d\.\d+\.\d+-1\.osx10\.%OS_VERSION%\.dmg)</string>
 			</dict>
