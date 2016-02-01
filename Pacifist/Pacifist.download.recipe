@@ -13,7 +13,7 @@
         <key>NAME</key>
         <string>Pacifist</string>
         <key>SPARKLE_FEED_URL</key>
-        <string>http://www.charlessoft.com/cgi-bin/pacifist_sparkle.cgi</string>
+        <string>https://www.charlessoft.com/cgi-bin/pacifist_sparkle.cgi</string>
 	</dict>
     <key>Process</key>
     <array>
