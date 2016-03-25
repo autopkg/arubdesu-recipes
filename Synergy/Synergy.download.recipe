@@ -23,9 +23,9 @@
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>https://github.com/synergy/synergy/releases</string>
+				<string>https://github.com/symless/synergy/releases</string>
 				<key>re_pattern</key>
-				<string>href="/synergy/synergy/releases/tag/v(\d+\.\d+\.\d+)-stable</string>
+				<string>href="/symless/synergy/releases/tag/v(\d+\.\d+\.\d+)-stable</string>
 				<key>result_output_var_name</key>
 				<string>VERSION</string>
 			</dict>
