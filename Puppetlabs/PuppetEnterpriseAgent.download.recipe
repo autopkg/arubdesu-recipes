@@ -14,10 +14,10 @@ latest OS available</string>
 		<key>NAME</key>
 		<string>PuppetEnterpriseAgent</string>
 		<key>OS_VERSION</key>
-		<string>10</string>
+		<string>11</string>
 	</dict>
 	<key>MinimumVersion</key>
-	<string>0.4.0</string>
+	<string>0.6.1</string>
 	<key>Process</key>
 	<array>
 		<dict>
@@ -26,9 +26,9 @@ latest OS available</string>
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>https://puppetlabs.com/download-puppet-enterprise-get-expand</string>
+				<string>https://s3.amazonaws.com/puppet-agents/?max-keys=9000&amp;prefix=2016.1/puppet-agent-latest/repos/apple/10.%OS_VERSION%/PC1/x86_64</string>
 				<key>re_pattern</key>
-				<string>href="(http://pm.puppetlabs.com/puppet-agent/\d+\.\d+\.\d+/\d\.\d+\.\d+/repos/apple/10\.%OS_VERSION%/PC1/x86_64/puppet-agent-\d\.\d+\.\d+-1\.osx10\.%OS_VERSION%\.dmg)</string>
+				<string>Key&gt;(.*\.dmg)&lt;</string>
 			</dict>
 		</dict>
 		<dict>
@@ -37,7 +37,7 @@ latest OS available</string>
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>%match%</string>
+				<string>https://s3.amazonaws.com/puppet-agents/%match%</string>
 			</dict>
 		</dict>
 		<dict>
