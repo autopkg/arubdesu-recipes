@@ -78,7 +78,7 @@
 						</dict>
 						<dict>
 							<key>path</key>
-							<string>Applications/Charles.app/Contents/MacOS/Charles Proxy Settings</string>
+							<string>Applications/Charles.app/Contents/Resources/Charles Proxy Settings</string>
 							<key>user</key>
 							<string>root</string>
 							<key>group</key>
