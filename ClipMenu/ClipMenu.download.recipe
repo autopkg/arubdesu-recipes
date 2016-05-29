@@ -11,7 +11,7 @@
         <key>NAME</key>
         <string>ClipMenu</string>
         <key>SPARKLE_FEED_URL</key>
-        <string>http://feeds.feedburner.com/clipmenu-appcast</string>
+        <string>https://feeds.feedburner.com/clipmenu-appcast</string>
 	</dict>
     <key>Process</key>
     <array>

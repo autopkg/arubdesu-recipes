@@ -13,7 +13,7 @@
         <key>NAME</key>
         <string>MarsEdit</string>
         <key>SPARKLE_FEED_URL</key>
-        <string>http://www.red-sweater.com/marsedit/appcast3.php</string>
+        <string>https://red-sweater.com/marsedit/appcast3.php</string>
 	</dict>
     <key>Process</key>
     <array>

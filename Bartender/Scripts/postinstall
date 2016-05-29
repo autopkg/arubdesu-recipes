@@ -1,3 +1,0 @@
-#!/bin/sh
-/usr/bin/ditto /Applications/Bartender.app/Contents/Resources/BartenderHelper.osax /Library/ScriptingAdditions/BartenderHelper.osax
-exit 0

@@ -13,7 +13,7 @@
         <key>NAME</key>
         <string>Reflector</string>
         <key>SPARKLE_FEED_URL</key>
-        <string>http://www.reflectorapp.com/updates/reflector.xml</string>
+        <string>https://updates.airsquirrels.com/Reflector/Mac/Reflector.xml</string>
 	</dict>
     <key>Process</key>
     <array>
