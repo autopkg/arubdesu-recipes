@@ -80,6 +80,8 @@
 			<string>SantaCertSha</string>
 			<key>Arguments</key>
 			<dict>
+				<key>DISABLE_APP_SIGNATURE_VERIFICATION</key>
+				<true/>
 				<key>input_path</key>
 				<string>%RECIPE_CACHE_DIR%/app/*.app</string>
 				<key>destination_sha_text_path</key>
