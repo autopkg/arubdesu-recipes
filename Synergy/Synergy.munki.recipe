@@ -32,6 +32,14 @@
                         <string>10.%OS_VERSION%.99</string>
                         <key>minimum_os_version</key>
                         <string>10.%OS_VERSION%.0</string>
+                        <key>postinstall_script</key>
+                        <string>#!/bin/sh
+# Fix permissions
+chmod -R a+rX /Applications/Synergy.app
+
+# Uncomment the next line to allow assistive access
+# sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT or REPLACE INTO access values ('kTCCServiceAccessibility', 'synergy', 0, 1, 0, NULL);"
+			</string>
 		</dict>
 	</dict>
 	<key>MinimumVersion</key>
