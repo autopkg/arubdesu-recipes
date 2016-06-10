@@ -54,6 +54,10 @@ class MAUURLandUpdateInfoProvider(Processor):
             "description": 
                 "Some pkginfo fields extracted from the Microsoft metadata.",
         },
+        "display_name": {
+            "description": 
+                "The name of the package that includes the version.",
+        },
     }
     description = __doc__
     
@@ -168,6 +172,7 @@ class MAUURLandUpdateInfoProvider(Processor):
 
         pkginfo['name'] = self.env.get("munki_update_name", MUNKI_UPDATE_NAME)
         self.env["additional_pkginfo"] = pkginfo
+        self.env["display_name"] = pkginfo["display_name"]
         self.output("Additional pkginfo: %s" % self.env["additional_pkginfo"])
 
     def main(self):
