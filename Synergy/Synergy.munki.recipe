@@ -31,9 +31,9 @@
 			<key>maximum_os_version</key>
                         <string>10.%OS_VERSION%.99</string>
                         <key>minimum_os_version</key>
+                        <string>10.%OS_VERSION%.0</string>
                         <key>mode</key>
                         <string>a+rX</string>
-                        <string>10.%OS_VERSION%.0</string>
                         <key>postinstall_script</key>
                         <string>#!/bin/sh
 # Uncomment the next line to allow assistive access
