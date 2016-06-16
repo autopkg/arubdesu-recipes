@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Installs the current (still in prerelease) version of santa from Github.
+	</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu.install.santa</string>
+	<key>Input</key>
+	<dict>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>0.6.1</string>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu.download.santa</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>InstallFromDMG</string>
+		</dict>
+	</array>
+</dict>
+</plist>
