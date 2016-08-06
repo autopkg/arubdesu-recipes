@@ -18,7 +18,12 @@
 	<array>
 		<dict>
 			<key>Processor</key>
-			<string>InstallFromDMG</string>
+			<string>Installer</string>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_path</key>
+				<string>%pathname%</string>
+			</dict>
 		</dict>
 	</array>
 </dict>
