@@ -18,8 +18,8 @@
 import plistlib
 import urllib2
 
-from distutils.version import LooseVersion
-from operator import itemgetter
+# from distutils.version import LooseVersion
+# from operator import itemgetter
 
 from autopkglib import Processor, ProcessorError
 
@@ -58,6 +58,9 @@ class MAUURLandUpdateInfoProvider(Processor):
             "description": 
                 "The name of the package that includes the version.",
         },
+        "version": {
+            "description": "Version, as per Title key in MAU feed",
+        },
     }
     description = __doc__
     
@@ -73,27 +76,22 @@ class MAUURLandUpdateInfoProvider(Processor):
     def getInstallsItems(self, item):
         """Attempts to parse the Triggers to create an installs item"""
         self.sanityCheckExpectedTriggers(item)
-        triggers = item.get("Triggers", {})
-        paths = [triggers[key].get("File") for key in triggers.keys()]
-        if "Contents/Info.plist" in paths:
-            # use the apps info.plist as installs item
-            installs_item = {
-                "CFBundleShortVersionString": self.getVersion(item),
-                "CFBundleVersion": self.getVersion(item),
-                "path": ("/Applications/Lync/"
-                         "Contents/Info.plist"),
-                "type": "bundle",
-                "version_comparison_key": "CFBundleShortVersionString"
-            }
-            return [installs_item]
-        return None
+        installs_item = {
+            "CFBundleShortVersionString": self.getVersion(item),
+            "CFBundleVersion": self.getVersion(item),
+            "path": ("/Library/Application Support/Microsoft/MAU2.0/Microsoft"
+                     " AutoUpdate.app/Contents/Info.plist"),
+            "type": "bundle",
+            "version_comparison_key": "CFBundleShortVersionString"
+        }
+        return [installs_item]
     
     def getVersion(self, item):
         """Extracts the version of the update item."""
         # currently relies on the item having a title in the format
         # "Microsoft AutoUpdate x.y.z "
         title = item.get("Title", "")
-        version_str = title[21:]
+        version_str = title.split()[-1]
         return version_str
     
     def valueToOSVersionString(self, value):
@@ -144,13 +142,8 @@ class MAUURLandUpdateInfoProvider(Processor):
         except BaseException as err:
             raise ProcessorError("Can't download %s: %s" % (base_url, err))
         
-        metadata = plistlib.readPlistFromString(data)
-        # Lync 'update' metadata is a list of dicts.
-        # we need to sort by date.
-        sorted_metadata = sorted(metadata, key=itemgetter('Date'))
-        # choose the last item, which should be most recent.
-        item = sorted_metadata[-1]
-        
+        item = plistlib.readPlistFromString(data)[-1]
+
         self.env["url"] = item["Location"]
         self.env["pkg_name"] = item["Payload"]
         self.output("Found URL %s" % self.env["url"])
@@ -160,6 +153,7 @@ class MAUURLandUpdateInfoProvider(Processor):
         pkginfo = {}
         pkginfo["description"] = "<html>%s</html>" % item["Short Description"]
         pkginfo["display_name"] = item["Title"]
+        pkginfo["version"] = self.getVersion(item)
         max_os = self.valueToOSVersionString(item['Max OS'])
         min_os = self.valueToOSVersionString(item['Min OS'])
         if max_os != "0.0.0":
@@ -169,6 +163,7 @@ class MAUURLandUpdateInfoProvider(Processor):
         installs_items = self.getInstallsItems(item)
         if installs_items:
             pkginfo["installs"] = installs_items
+            self.env["version"] = self.getVersion(item)
 
         pkginfo['name'] = self.env.get("munki_update_name", MUNKI_UPDATE_NAME)
         self.env["additional_pkginfo"] = pkginfo

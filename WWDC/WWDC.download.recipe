@@ -80,7 +80,7 @@
 		</dict>
 		<dict>
 			<key>Processor</key>
-			<string>SantaCertSha</string>
+			<string>com.github.arubdesu.shared/SantaCertSha</string>
 			<key>Arguments</key>
 			<dict>
 				<key>DISABLE_APP_SIGNATURE_VERIFICATION</key>
