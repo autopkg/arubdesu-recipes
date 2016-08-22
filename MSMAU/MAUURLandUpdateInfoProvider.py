@@ -63,35 +63,28 @@ class MAUURLandUpdateInfoProvider(Processor):
         },
     }
     description = __doc__
-    
-    def sanityCheckExpectedTriggers(self, item):
-        """Raises an exeception if the Trigger Condition or
-        Triggers for an update don't match what we expect.
-        Protects us if these change in the future."""
-        if not item.get("Trigger Condition") == ["and", "Registered File"]:
-            raise ProcessorError(
-                "Unexpected Trigger Condition in item %s: %s" 
-                % (item["Title"], item["Trigger Condition"]))
-    
+
+    def getAppPath(self, item):
+        """less hardcoding, finds path to app via feed metadata item"""
+        app_path = item.get("UpdateBaseSearchPath", 
+                            "/Library/Application Support/Microsoft/MAU2.0")
+        return app_path
+
     def getInstallsItems(self, item):
-        """Attempts to parse the Triggers to create an installs item"""
-        self.sanityCheckExpectedTriggers(item)
+        """Returns remi-hardcoded installs item + version"""
+        app_path = self.getAppPath(item)
         installs_item = {
             "CFBundleShortVersionString": self.getVersion(item),
             "CFBundleVersion": self.getVersion(item),
-            "path": ("/Library/Application Support/Microsoft/MAU2.0/Microsoft"
-                     " AutoUpdate.app/Contents/Info.plist"),
+            "path": ("%s/Contents/Info.plist" % app_path),
             "type": "bundle",
             "version_comparison_key": "CFBundleShortVersionString"
         }
         return [installs_item]
     
     def getVersion(self, item):
-        """Extracts the version of the update item."""
-        # currently relies on the item having a title in the format
-        # "Microsoft AutoUpdate x.y.z "
-        title = item.get("Title", "")
-        version_str = title.split()[-1]
+        """Extracts the version of the item."""
+        version_str = item.get("Update Version", "")
         return version_str
     
     def valueToOSVersionString(self, value):
@@ -130,9 +123,7 @@ class MAUURLandUpdateInfoProvider(Processor):
             base_url = BASE_URL % culture_code
         # Get metadata URL
         req = urllib2.Request(base_url)
-        # Add the MAU User-Agent, since MAU feed server seems to explicitly block
-        # a User-Agent of 'Python-urllib/2.7' - even a blank User-Agent string
-        # passes.
+        # Add the MAU User-Agent, out of date but still fine
         req.add_header("User-Agent",
             "Microsoft%20AutoUpdate/3.4 CFNetwork/760.2.6 Darwin/15.4.0 (x86_64)")
         try:
