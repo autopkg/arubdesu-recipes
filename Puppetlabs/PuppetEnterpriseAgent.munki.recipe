@@ -17,7 +17,7 @@ specifically for each OS, we're setting the 'minimum_os_version' and 'maximum_os
 		<key>NAME</key>
 		<string>PuppetEnterpriseAgent</string>
 		<key>OS_VERSION</key>
-		<string>10</string>
+		<string>11</string>
 		<key>pkginfo</key>
 		<dict>
 			<key>catalogs</key>
@@ -41,7 +41,7 @@ specifically for each OS, we're setting the 'minimum_os_version' and 'maximum_os
 		</dict>
 	</dict>
 	<key>MinimumVersion</key>
-	<string>0.4.1</string>
+	<string>0.6.1</string>
 	<key>ParentRecipe</key>
 	<string>com.github.autopkg.arubdesu-recipes.download.PuppetEnterpriseAgent</string>
 	<key>Process</key>

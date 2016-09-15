@@ -26,7 +26,7 @@ latest OS available</string>
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>https://s3.amazonaws.com/puppet-agents/?max-keys=9000&amp;prefix=2016.1/puppet-agent-latest/repos/apple/10.%OS_VERSION%/PC1/x86_64</string>
+				<string>https://s3.amazonaws.com/puppet-agents/?max-keys=9000&amp;prefix=2016.2/puppet-agent-latest/repos/apple/10.%OS_VERSION%/PC1/x86_64</string>
 				<key>re_pattern</key>
 				<string>Key&gt;(.*\.dmg)&lt;</string>
 			</dict>
