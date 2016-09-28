@@ -26,10 +26,10 @@ __all__ = ["SantaCertSha"]
 
 
 class SantaCertSha(DmgMounter):
-    """Verifies signed application bundles developer certificate as sha256.
+    """Verifies sha256 fingerprint on developer certificate used to sign application bundles.
        Requires santactl to be present & at the default path - 
-       /usr/local/bin/santactl, and either a bare .app bundle in a DMG,
-       or an unpacked pkg - use PkgPayloadUnpacker in a previous step.
+       /usr/local/bin/santactl, and either a bare .app bundle, either in a DMG,
+       or an unzipped/packed path - use PkgPayloadUnpacker in a previous step.
        """
 
     input_variables = {
@@ -44,21 +44,15 @@ class SantaCertSha(DmgMounter):
         "input_path": {
             "required": True,
             "description":
-                ("File path to an application bundle (.app)."
+                ("File path to an application bundle (.app). Pkg payloads must be expanded."
                  "Can point to a path inside a .dmg, which will be mounted."),
         },
-        "destination_sha_text_path": {
+        "expected_certsha": {
             "required": True,
             "description": "Destination directory to drop a file named for the sha.",
         },
     }
     output_variables = {
-        "santa_sha": {
-            "description":
-                ("The sha256 of the dev cert that the app bundle was signed with,"
-                 "for use to white/blacklist the app with Google's Santa"
-                 "(see github.com/google/santa)"),
-        },
     }
 
     description = __doc__
@@ -69,28 +63,16 @@ class SantaCertSha(DmgMounter):
         and a list of found certificate authority names
         """
         process = ["/usr/local/bin/santactl",
-                   "fileinfo",
+                   "fileinfo", "--cert-index", "1", "--key", "SHA-256",
                    path]
         proc = subprocess.Popen(process,
                                 stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         (output, error) = proc.communicate()
 
-        # Log everything
-        dev_cert_sha = ''
-        output = output.splitlines()
         if output:
-            for line in output[:6]:
-                self.output("%s" % line)
+            dev_cert_sha = output
         if error:
-            for line in error.splitlines():
-                self.output("%s" % line)
-
-        # Parse the output for certificate sha256
-        # currently sha is 31 chars in on line that starts with "1. SHA-256"
-        for line in output:
-            if "1. SHA-256" in line:
-                dev_cert_sha = line.split()[3]
-
+            raise ProcessorError("Encoutered error processing fileinfo, %s") % error
         # Return a tuple with boolean exit status & the sha256 cert fingerprint
         return proc.returncode == 0, dev_cert_sha
 
@@ -99,6 +81,7 @@ class SantaCertSha(DmgMounter):
             self.output("App dev signature verification disabled for this recipe "
                         "run.")
             return
+        expected_certsha = self.env.get('expected_certsha')
         # Check if we're trying to read something inside a dmg.
         input_path = self.env['input_path']
         (dmg_path, dmg, dmg_source_path) = self.parsePathForDMG(input_path)
@@ -128,15 +111,11 @@ class SantaCertSha(DmgMounter):
                 exit_code, sha = self.santactl_check_signature(matched_input_path)
                 if exit_code:
                     self.output(
-                        "Writing to the defined folder '%s' for the cert's sha256,\n '%s':"
-                        % (self.env['destination_sha_text_path'], sha))
-                    sha_file = os.path.join(self.env['destination_sha_text_path'],
-                                            sha)
-                    try:
-                        with open(sha_file, 'a') as sha_path:
-                            sha_path.write(sha)
-                    except:
-                        pass
+                        "Comparing found sha256 '%s' to expected cert sha256, '%s':"
+                        % (sha, expected_certsha))
+                    if sha != expected_certsha:
+                        raise ProcessorError("Certficate sha256 found does not match expected, new hash is %s"
+                        % sha)
             else:
                 raise ProcessorError("Unsupported path, expects .app bundle")
 

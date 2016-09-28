@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads the latest PuppetAgent, scans for Santa and imports into Munki.
+
+OS_VERSION can be overridden for the specific package, or left to the current
+latest OS available. As some of the vendored contents (like ruby and libraries) are compiled
+specifically for each OS, we're setting the 'minimum_os_version' and 'maximum_os_version' keys.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.santa.PuppetEnterpriseAgent</string>
+	<key>Input</key>
+	<dict>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string>support/Puppet</string>
+		<key>NAME</key>
+		<string>PuppetEnterpriseAgent</string>
+		<key>OS_VERSION</key>
+		<string>11</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>testing</string>
+			</array>
+			<key>description</key>
+			<string>Puppet is a configuration management solution that allows you to define the state of your IT infrastructure, and then automatically enforces the desired state</string>
+			<key>display_name</key>
+			<string>Puppet Enterprise Agent</string>
+			<key>name</key>
+			<string>PuppetEnterpriseAgent</string>
+			<key>minimum_os_version</key>
+			<string>10.%OS_VERSION%.0</string>
+			<key>maximum_os_version</key>
+			<string>10.%OS_VERSION%.99</string>
+			<key>developer</key>
+			<string>Puppetlabs</string>
+			<key>unattended_install</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>0.6.1</string>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu-recipes.download.PuppetEnterpriseAgent</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Comment</key>
+			<string>We need to unpack the pkg to shasum its components</string>
+			<key>Processor</key>
+			<string>FlatPkgUnpacker</string>
+			<key>Arguments</key>
+			<dict>
+				<key>flat_pkg_path</key>
+				<string>%pathname%/*.pkg</string>
+				<key>destination_path</key>
+				<string>%RECIPE_CACHE_DIR%/unpack</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>FileFinder</string>
+			<key>Arguments</key>
+			<dict>
+				<key>pattern</key>
+				<string>%destination_path%/puppet-agent-*.pkg/Payload</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>PkgPayloadUnpacker</string>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_payload_path</key>
+				<string>%found_filename%</string>
+				<key>destination_path</key>
+				<string>%RECIPE_CACHE_DIR%/payload</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.arubdesu.shared/SantaUnsignedSha</string>
+			<key>Arguments</key>
+			<dict>
+				<key>input_paths</key>
+				<array>
+					<string>%destination_path%/opt/puppetlabs/puppet/bin/ruby</string>
+					<string>%destination_path%/opt/puppetlabs/puppet/bin/facter</string>
+					<string>%destination_path%/opt/puppetlabs/puppet/bin/augparse</string>
+				</array>
+			</dict>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>additional_pkginfo</key>
+				<dict>
+					<key>preinstall_script</key>
+					<string>%preinstall_script%</string>
+				</dict>
+			</dict>
+			<key>Processor</key>
+			<string>MunkiPkginfoMerger</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_path</key>
+				<string>%pathname%</string>
+				<key>repo_subdirectory</key>
+				<string>%MUNKI_REPO_SUBDIR%</string>
+			</dict>
+			<key>Processor</key>
+			<string>MunkiImporter</string>
+		</dict>
+	</array>
+</dict>
+</plist>
