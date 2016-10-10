@@ -49,7 +49,8 @@ class SantaCertSha(DmgMounter):
         },
         "expected_certsha": {
             "required": True,
-            "description": "Destination directory to drop a file named for the sha.",
+            "description": ("Sha identifier of cert used to sign the app, which "
+                           "would require santactl to be installed.")
         },
     }
     output_variables = {
@@ -59,22 +60,19 @@ class SantaCertSha(DmgMounter):
 
     def santactl_check_signature(self, path):
         """
-        Runs 'santactl fileinfo <path>'. Returns a tuple with boolean exit status
-        and a list of found certificate authority names
+        Runs 'santactl fileinfo' commands on <path>, returns the identifier for
+        certificate used to sign the code
         """
-        process = ["/usr/local/bin/santactl",
+        cmd = ["/usr/local/bin/santactl",
                    "fileinfo", "--cert-index", "1", "--key", "SHA-256",
                    path]
-        proc = subprocess.Popen(process,
-                                stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        (output, error) = proc.communicate()
-
+        output = subprocess.check_output(cmd)
         if output:
-            dev_cert_sha = output
-        if error:
-            raise ProcessorError("Encoutered error processing fileinfo, %s") % error
-        # Return a tuple with boolean exit status & the sha256 cert fingerprint
-        return proc.returncode == 0, dev_cert_sha
+            dev_cert_sha = output.strip()
+        else:
+            raise ProcessorError("Encoutered error processing fileinfo for path")
+        # not quite sure how the first four chars are empty from stdout, but
+        return dev_cert_sha[5:]
 
     def main(self):
         if self.env.get('DISABLE_APP_SIGNATURE_VERIFICATION'):
@@ -98,24 +96,20 @@ class SantaCertSha(DmgMounter):
             matched_input_path = matches[0]
             if len(matches) > 1:
                 self.output(
-                    "WARNING: Multiple paths match 'input_path' glob '%s':"
-                    % input_path)
+                    "WARNING: Multiple paths match 'input_path' glob '%s':" % input_path)
                 for match in matches:
                     self.output("  - %s" % match)
 
             if [c for c in '*?[]!' if c in input_path]:
-                self.output("Using path '%s' matched from globbed '%s'."
-                            % (matched_input_path, input_path))
+                self.output("Using path '%s'" % matched_input_path)
             file_extension = os.path.splitext(matched_input_path)[1]
             if file_extension == ".app":
-                exit_code, sha = self.santactl_check_signature(matched_input_path)
-                if exit_code:
-                    self.output(
-                        "Comparing found sha256 '%s' to expected cert sha256, '%s':"
-                        % (sha, expected_certsha))
-                    if sha != expected_certsha:
-                        raise ProcessorError("Certficate sha256 found does not match expected, new hash is %s"
-                        % sha)
+                sha = self.santactl_check_signature(matched_input_path)
+                if sha != str(expected_certsha):
+                    raise ProcessorError(
+                        "Mismatch in found cert sha256, new hash is %s" % sha[5:])
+                else:
+                    self.output("Sha's match")
             else:
                 raise ProcessorError("Unsupported path, expects .app bundle")
 

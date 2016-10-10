@@ -87,8 +87,8 @@
 				<true/>
 				<key>input_path</key>
 				<string>%RECIPE_CACHE_DIR%/app/*.app</string>
-				<key>destination_sha_text_path</key>
-				<string>%RECIPE_CACHE_DIR%/unpack</string>
+				<key>expected_certsha</key>
+				<string>8de49b72cbb05a83da72e7757b9b6baaf9ca2c50fc8b0d5490c2406a580f0ecf</string>
 			</dict>
 		</dict>
 	</array>
