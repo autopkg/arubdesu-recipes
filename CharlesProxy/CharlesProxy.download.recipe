@@ -11,7 +11,7 @@
 		<key>NAME</key>
 		<string>CharlesProxy</string>
 		<key>URL</key>
-		<string>http://www.charlesproxy.com/latest.do</string>
+		<string>https://www.charlesproxy.com/latest.do</string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>0.4.0</string>
@@ -32,7 +32,7 @@
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>http://www.charlesproxy.com/assets/release/%match%/charles-proxy-%match%.dmg</string>
+				<string>https://www.charlesproxy.com/assets/release/%match%/charles-proxy-%match%.dmg</string>
 			</dict>
 			<key>Processor</key>
 			<string>URLDownloader</string>
