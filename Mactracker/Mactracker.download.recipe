@@ -13,7 +13,7 @@
         <key>NAME</key>
         <string>Mactracker</string>
         <key>SPARKLE_FEED_URL</key>
-        <string>http://update.mactracker.ca/appcast-b.xml</string>
+        <string>https://update.mactracker.ca/appcast-b.xml</string>
 	</dict>
     <key>Process</key>
     <array>
