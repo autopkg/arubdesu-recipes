@@ -29,9 +29,9 @@ __all__ = ["MSLyncURLandUpdateInfoProvider"]
 # Some interesting URLs, for more see main MSOffice2011UpdateInfoProvider:
 
 # Office 2011
-# http://www.microsoft.com/mac/autoupdate/0409UCCP14.xml
+# https://www.microsoft.com/mac/autoupdate/0409UCCP14.xml
 CULTURE_CODE = "0409"
-BASE_URL = "http://www.microsoft.com/mac/autoupdate/%sUCCP14.xml"
+BASE_URL = "https://www.microsoft.com/mac/autoupdate/%sUCCP14.xml"
 MUNKI_UPDATE_NAME = "Lync_Installer"
 
 class MSLyncURLandUpdateInfoProvider(Processor):
@@ -40,9 +40,9 @@ class MSLyncURLandUpdateInfoProvider(Processor):
         "culture_code": {
             "required": False,
             "description": ("See "
-                "http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx"
+                "https://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx"
                 " for a table of CultureCodes Defaults to 0409, which "
-                "corresponds to en-US (English - United States)"), 
+                "corresponds to en-US (English - United States)"),
         },
         "base_url": {
             "required": False,
@@ -60,38 +60,38 @@ class MSLyncURLandUpdateInfoProvider(Processor):
         },
         "pkg_name": {
             "description": "Name of the package within the disk image.",
-        }, 
+        },
         "additional_pkginfo": {
-            "description": 
+            "description":
                 "Some pkginfo fields extracted from the Microsoft metadata.",
         },
         "display_name": {
-            "description": 
+            "description":
                 "The name of the package that includes the version.",
         },
     }
     description = __doc__
-    
+
     def sanityCheckExpectedTriggers(self, item):
         """Raises an exeception if the Trigger Condition or
         Triggers for an update don't match what we expect.
         Protects us if these change in the future."""
         if not item.get("Trigger Condition") == ["and", "Lync"]:
             raise ProcessorError(
-                "Unexpected Trigger Condition in item %s: %s" 
+                "Unexpected Trigger Condition in item %s: %s"
                 % (item["Title"], item["Trigger Condition"]))
         if not "Lync" in item.get("Triggers", {}):
             raise ProcessorError(
                 "Missing expected MCP Trigger in item %s" % item["Title"])
-    
+
     def getRequiresFromUpdateItem(self, item):
         """Attempts to determine what earlier updates are
         required by this update"""
-        
+
         def compare_versions(a, b):
             """Internal comparison function for use with sorting"""
             return cmp(LooseVersion(a), LooseVersion(b))
-        
+
         self.sanityCheckExpectedTriggers(item)
         munki_update_name = self.env.get("munki_update_name", MUNKI_UPDATE_NAME)
         mcp_versions = item.get(
@@ -105,7 +105,7 @@ class MSLyncURLandUpdateInfoProvider(Processor):
             # works with original Office release, so no requires array
             return None
         return ["%s-%s" % (munki_update_name, mcp_versions[0])]
-    
+
     def getInstallsItems(self, item):
         """Attempts to parse the Triggers to create an installs item"""
         self.sanityCheckExpectedTriggers(item)
@@ -123,7 +123,7 @@ class MSLyncURLandUpdateInfoProvider(Processor):
             }
             return [installs_item]
         return None
-    
+
     def getVersion(self, item):
         """Extracts the version of the update item."""
         # currently relies on the item having a title in the format
@@ -133,7 +133,7 @@ class MSLyncURLandUpdateInfoProvider(Processor):
         title = item.get("Title", "")
         version_str = title.replace(TITLE_START, "").replace(TITLE_END, "")
         return version_str
-    
+
     def valueToOSVersionString(self, value):
         """Converts a value to an OS X version number"""
         if isinstance(value, int):
@@ -184,7 +184,7 @@ class MSLyncURLandUpdateInfoProvider(Processor):
             f.close()
         except BaseException as err:
             raise ProcessorError("Can't download %s: %s" % (base_url, err))
-        
+
         metadata = plistlib.readPlistFromString(data)
         if version_str == "latest":
             # Lync 'update' metadata is a list of dicts.
@@ -195,20 +195,20 @@ class MSLyncURLandUpdateInfoProvider(Processor):
         else:
             # we've been told to find a specific version. Unfortunately, the
             # Lync updates metadata items don't have a version attibute.
-            # The version is only in text in the update's Title. So we look for 
+            # The version is only in text in the update's Title. So we look for
             # that...
             # Titles are in the format "Lync x.y.z Update"
             padded_version_str = " " + version_str + " "
-            matched_items = [item for item in metadata 
+            matched_items = [item for item in metadata
                             if padded_version_str in item["Title"]]
             if len(matched_items) != 1:
                 raise ProcessorError(
                     "Could not find version %s in update metadata. "
-                    "Updates that are available: %s" 
-                    % (version_str, ", ".join(["'%s'" % item["Title"] 
+                    "Updates that are available: %s"
+                    % (version_str, ", ".join(["'%s'" % item["Title"]
                                                for item in metadata])))
             item = matched_items[0]
-        
+
         self.env["url"] = item["Location"]
         self.env["pkg_name"] = item["Payload"]
         self.output("Found URL %s" % self.env["url"])
@@ -231,7 +231,7 @@ class MSLyncURLandUpdateInfoProvider(Processor):
         if requires:
             pkginfo["requires"] = requires
             self.output(
-                "Update requires previous update version %s" 
+                "Update requires previous update version %s"
                 % requires[0].split("-")[1])
 
         pkginfo['name'] = self.env.get("munki_update_name", MUNKI_UPDATE_NAME)

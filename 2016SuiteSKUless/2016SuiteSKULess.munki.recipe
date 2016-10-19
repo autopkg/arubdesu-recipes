@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
     <key>Description</key>
-    <string>Downloads the latest Microsoft Office 2016 SKU-less installer package, 
+    <string>Downloads the latest Microsoft Office 2016 SKU-less installer package,
 appends the version to the end of the filename, and imports into Munki.
 
 Set the REGION key to:
@@ -20,9 +20,9 @@ Set the REGION key to:
         <key>NAME</key>
         <string>Office2016Suite</string>
         <key>REGION</key>
-        <string>525133</string>        
+        <string>525133</string>
         <key>DOWNLOAD_URL_BASE</key>
-        <string>http://go.microsoft.com/fwlink/?linkid=</string>
+        <string>https://go.microsoft.com/fwlink/?linkid=</string>
         <key>MUNKI_REPO_SUBDIR</key>
         <string>apps/Office2016</string>
         <key>pkginfo</key>
