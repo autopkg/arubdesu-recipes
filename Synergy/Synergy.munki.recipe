@@ -6,8 +6,6 @@
 	<string>Downloads latest version of Synergy and imports it into a Munki repo.</string>
 	<key>Identifier</key>
 	<string>com.github.autopkg.arubdesu-recipes.munki.synergy</string>
-	<key>version</key>
-	<string>%VERSION%</string>
 	<key>Input</key>
 	<dict>
 		<key>NAME</key>
@@ -29,20 +27,20 @@
 			<key>unattended_install</key>
 			<true/>
 			<key>maximum_os_version</key>
-                        <string>10.%OS_VERSION%.99</string>
-                        <key>minimum_os_version</key>
-                        <string>10.%OS_VERSION%.0</string>
-                        <key>mode</key>
-                        <string>a+rX</string>
-                        <key>postinstall_script</key>
-                        <string>#!/bin/sh
+			<string>10.%OS_VERSION%.99</string>
+			<key>minimum_os_version</key>
+			<string>10.%OS_VERSION%.0</string>
+			<key>mode</key>
+			<string>a+rX</string>
+			<key>postinstall_script</key>
+			<string>#!/bin/sh
 # Uncomment the next line to allow assistive access
 # sqlite3 /Library/Application\ Support/com.apple.TCC/TCC.db "INSERT or REPLACE INTO access values ('kTCCServiceAccessibility', 'synergy', 0, 1, 0, NULL);"
 			</string>
 		</dict>
 	</dict>
 	<key>MinimumVersion</key>
-	<string>0.5.1</string>
+	<string>0.6.1</string>
 	<key>ParentRecipe</key>
 	<string>com.github.autopkg.arubdesu-recipes.download.synergy</string>
 	<key>Process</key>
@@ -55,7 +53,7 @@
 				<key>additional_pkginfo</key>
 				<dict>
 					<key>version</key>
-					<string>%VERSION%</string>
+					<string>%version%</string>
 				</dict>
 			</dict>
 		</dict>

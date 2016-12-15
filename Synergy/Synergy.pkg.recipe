@@ -14,7 +14,7 @@
 	<key>ParentRecipe</key>
 	<string>com.github.autopkg.arubdesu-recipes.download.synergy</string>
 	<key>MinimumVersion</key>
-	<string>0.5.1</string>
+	<string>0.6.1</string>
 	<key>Process</key>
 	<array>
 		<dict>
@@ -50,9 +50,7 @@
 				<key>pkg_request</key>
 				<dict>
 					<key>pkgname</key>
-					<string>%NAME%-%VERSION%</string>
-					<key>version</key>
-					<string>%VERSION%</string>
+					<string>%NAME%-%version%</string>
 					<key>pkgdir</key>
 					<string>%RECIPE_CACHE_DIR%</string>
 					<key>id</key>

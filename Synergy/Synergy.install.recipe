@@ -12,7 +12,7 @@
 		<string>Synergy</string>
 	</dict>
 	<key>MinimumVersion</key>
-	<string>0.5.1</string>
+	<string>0.6.1</string>
 	<key>ParentRecipe</key>
 	<string>com.github.autopkg.arubdesu-recipes.pkg.synergy</string>
 	<key>Process</key>

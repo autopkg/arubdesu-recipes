@@ -14,7 +14,7 @@
 		<string>11</string>
 	</dict>
 	<key>MinimumVersion</key>
-	<string>0.5.1</string>
+	<string>0.6.1</string>
 	<key>Process</key>
 	<array>
 		<dict>
@@ -25,9 +25,9 @@
 				<key>url</key>
 				<string>https://github.com/symless/synergy/releases</string>
 				<key>re_pattern</key>
-				<string>href="/symless/synergy/releases/tag/v(\d+\.\d+\.\d+)-stable</string>
+				<string>href="/symless/synergy/releases/tag/v([\d\.]+)-stable</string>
 				<key>result_output_var_name</key>
-				<string>VERSION</string>
+				<string>version</string>
 			</dict>
 		</dict>
 		<dict>
@@ -36,12 +36,12 @@
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>http://synergy-project.org/nightly</string>
-				<!-- synergy-v1.7.5-stable-fa85a24-MacOSX1011-x86_64.dmg -->
+				<string>https://symless.com/nightly</string>
+				<!-- synergy-v1.8.6-stable-2ab21aa-MacOSX-x86_64.dmg -->
 				<key>re_pattern</key>
-				<string>href="files/nightly/synergy-v%VERSION%(-stable-.+-MacOSX10%OS_VERSION%-x86_64.dmg)"</string>
+				<string>href=&quot;(files\/nightly\/synergy-v%version%-stable-[0-9a-f]+-MacOSX-x86_64\.dmg)&quot;</string>
 				<key>result_output_var_name</key>
-				<string>match</string>
+				<string>path</string>
 			</dict>
 		</dict>
 		<dict>
@@ -50,9 +50,9 @@
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>http://synergy-project.org/files/nightly/synergy-v%VERSION%%match%</string>
+				<string>https://symless.com/%path%</string>
 				<key>filename</key>
-				<string>%NAME%.dmg</string>
+				<string>%NAME%-%version%.dmg</string>
 			</dict>
 		</dict>
 		<dict>
