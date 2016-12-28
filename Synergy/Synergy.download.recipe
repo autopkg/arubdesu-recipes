@@ -10,8 +10,6 @@
 	<dict>
 		<key>NAME</key>
 		<string>Synergy</string>
-		<key>OS_VERSION</key>
-		<string>11</string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>0.5.1</string>
@@ -36,10 +34,10 @@
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>http://synergy-project.org/nightly</string>
+				<string>https://synergy-project.org/nightly</string>
 				<!-- synergy-v1.7.5-stable-fa85a24-MacOSX1011-x86_64.dmg -->
 				<key>re_pattern</key>
-				<string>href="files/nightly/synergy-v%VERSION%(-stable-.+-MacOSX10%OS_VERSION%-x86_64.dmg)"</string>
+				<string>href="files/nightly/synergy-v%VERSION%(-stable-.+-MacOSX-x86_64.dmg)"</string>
 				<key>result_output_var_name</key>
 				<string>match</string>
 			</dict>
@@ -50,7 +48,7 @@
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>http://synergy-project.org/files/nightly/synergy-v%VERSION%%match%</string>
+				<string>https://synergy-project.org/files/nightly/synergy-v%VERSION%%match%</string>
 				<key>filename</key>
 				<string>%NAME%.dmg</string>
 			</dict>
