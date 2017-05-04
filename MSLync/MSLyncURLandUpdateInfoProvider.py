@@ -31,7 +31,7 @@ __all__ = ["MSLyncURLandUpdateInfoProvider"]
 # Office 2011
 # http://www.microsoft.com/mac/autoupdate/0409UCCP14.xml
 CULTURE_CODE = "0409"
-BASE_URL = "http://www.microsoft.com/mac/autoupdate/%sUCCP14.xml"
+BASE_URL = "https://officecdn.microsoft.com/pr/C1297A47-86C4-4C1F-97FA-950631F94777/OfficeMac/%sUCCP14.xml"
 MUNKI_UPDATE_NAME = "Lync_Installer"
 
 class MSLyncURLandUpdateInfoProvider(Processor):
