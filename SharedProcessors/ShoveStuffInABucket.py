@@ -104,7 +104,7 @@ class ShoveStuffInABucket(Processor):
         justpkg = os.path.basename(pkg_repo_path)
         bukkit = self.env['bucket']
         gcloudapp = self.env['gcloudapp']
-        shoveit = self.check(bukkit, pkg_repo_path)
+        shoveit = self.check(bukkit, justpkg)
         esthreeurl = 's3://'+ bukkit + '/'
         cloudfrontprefix = self.env['cloudfrontprefix']
         if shoveit:
