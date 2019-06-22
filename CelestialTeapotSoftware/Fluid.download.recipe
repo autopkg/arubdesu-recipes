@@ -11,7 +11,7 @@
         <key>NAME</key>
         <string>Fluid</string>
         <key>SPARKLE_FEED_URL</key>
-        <string>http://fluidapp.com/appcast/fluid1.rss</string>
+        <string>http://fluidapp.com/appcast/fluid2.rss</string>
 	</dict>
     <key>Process</key>
     <array>
@@ -58,7 +58,7 @@
 				<key>input_path</key>
 				<string>%RECIPE_CACHE_DIR%/%NAME%/Fluid.app</string>
 				<key>requirement</key>
-				<string>anchor apple generic and identifier "com.fluidapp.Fluid" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "9867TNT66D")</string>
+				<string>anchor apple generic and identifier "com.fluidapp.Fluid2" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "9867TNT66D")</string>
 			</dict>
 		</dict>
     </array>

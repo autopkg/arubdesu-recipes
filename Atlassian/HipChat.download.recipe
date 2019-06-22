@@ -6,30 +6,39 @@
     <string>Downloads the current release version of HipChat.</string>
     <key>Identifier</key>
     <string>com.github.arubdesu.download.HipChat</string>
-	<key>MinimumVersion</key>
-	<string>0.3.1</string>
+    <key>MinimumVersion</key>
+    <string>0.3.1</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
         <string>HipChat</string>
-        <key>DOWNLOAD_URL</key>
-        <string>https://www.hipchat.com/downloads/latest/mac</string>
-        </dict>
+    </dict>
     <key>Process</key>
     <array>
+        <dict>
+            <key>Arguments</key>
+            <dict>
+                <key>re_pattern</key>
+                <string>href="(https://s3.amazonaws.com/hipchat-server-stable/clients/macos/HipChat.*.dmg)"</string>
+                <key>result_output_var_name</key>
+                <string>url</string>
+                <key>url</key>
+                <string>https://www.atlassian.com/software/hipchat/downloads</string>
+            </dict>
+            <key>Processor</key>
+            <string>URLTextSearcher</string>
+        </dict>
         <dict>
             <key>Processor</key>
             <string>URLDownloader</string>
             <key>Arguments</key>
             <dict>
-                <key>url</key>
-                <string>%DOWNLOAD_URL%</string>
                 <key>filename</key>
                 <string>%NAME%.dmg</string>
                 <key>request_headers</key>
                 <dict>
-                        <key>user-agent</key>
-                        <string>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36</string>
+                    <key>user-agent</key>
+                    <string>Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36</string>
                 </dict>
             </dict>
         </dict>
@@ -37,17 +46,17 @@
             <key>Processor</key>
             <string>EndOfCheckPhase</string>
         </dict>
-		<dict>
-			<key>Processor</key>
-			<string>CodeSignatureVerifier</string>
-			<key>Arguments</key>
-			<dict>
-				<key>input_path</key>
-				<string>%RECIPE_CACHE_DIR%/downloads/%NAME%.dmg/%NAME%.app</string>
-				<key>requirement</key>
-				<string>anchor apple generic and identifier "com.hipchat.HipChat" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = SDLYW7A8F3)</string>
-			</dict>
-		</dict>
+        <dict>
+            <key>Processor</key>
+            <string>CodeSignatureVerifier</string>
+            <key>Arguments</key>
+            <dict>
+                <key>input_path</key>
+                <string>%RECIPE_CACHE_DIR%/downloads/%NAME%.dmg/%NAME%.app</string>
+                <key>requirement</key>
+                <string>anchor apple generic and identifier "com.hipchat.HipChat" and (certificate leaf[field.1.2.840.113635.100.6.1.9] /* exists */ or certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = SDLYW7A8F3)</string>
+            </dict>
+        </dict>
     </array>
 </dict>
 </plist>

@@ -17,6 +17,7 @@
 import os
 import plistlib
 import subprocess
+import urllib
 
 from autopkglib import Processor, ProcessorError
 
@@ -80,7 +81,8 @@ class ShoveStuffInABucket(Processor):
            Also makes sure unstable as only catalog in case override missed it"""
         simimport = '/usr/local/bin/shoveplist'
         existing_dict = plistlib.readPlist(pkginfo_repo_path)
-        existing_dict['PackageCompleteURL'] = cloudfrontprefix + justpkg
+        justpkg_encoded = urllib.quote(justpkg)
+        existing_dict['PackageCompleteURL'] = cloudfrontprefix + justpkg_encoded
         existing_dict['catalogs'] = ['unstable']
         plistlib.writePlist(existing_dict, pkginfo_repo_path)
         cmd = [simimport, '-pkgname', justpkg, '-pkgsinfo', pkginfo_repo_path, '-gcp.project', gcloudapp]
@@ -102,7 +104,7 @@ class ShoveStuffInABucket(Processor):
         justpkg = os.path.basename(pkg_repo_path)
         bukkit = self.env['bucket']
         gcloudapp = self.env['gcloudapp']
-        shoveit = self.check(bukkit, pkg_repo_path)
+        shoveit = self.check(bukkit, justpkg)
         esthreeurl = 's3://'+ bukkit + '/'
         cloudfrontprefix = self.env['cloudfrontprefix']
         if shoveit:

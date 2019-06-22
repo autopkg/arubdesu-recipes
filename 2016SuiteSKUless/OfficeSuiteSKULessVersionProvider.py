@@ -22,7 +22,7 @@ from autopkglib import Processor, ProcessorError
 
 __all__ = ["OfficeSuiteSKULessVersionProvider"]
 
-FEED_URL = "http://macadmins.software/versions.xml"
+FEED_URL = "http://macadmins.software/latest.xml"
 
 class OfficeSuiteSKULessVersionProvider(Processor):
     """Provides the version of the latest SKU-Less Office 2016 Suite release"""
