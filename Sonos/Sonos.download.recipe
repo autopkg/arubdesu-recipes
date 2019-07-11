@@ -52,7 +52,7 @@
             <key>Arguments</key>
             <dict>
                 <key>input_path</key>
-                <string>%pathname%/%NAME%.app</string>
+                <string>%pathname%/Sonos.app</string>
                 <key>requirement</key>
                 <string>identifier "com.sonos.macController" and anchor apple generic</string>
             </dict>

@@ -39,9 +39,9 @@
 			<key>Arguments</key>
 			<dict>
 				<key>destination_path</key>
-				<string>%pkgroot%/Applications/%NAME%.app</string>
+				<string>%pkgroot%/Applications/GoogleAppEngineLauncher.app</string>
 				<key>source_path</key>
-				<string>%pathname%/%NAME%.app</string>
+				<string>%pathname%/GoogleAppEngineLauncher.app</string>
 			</dict>
 			<key>Processor</key>
 			<string>Copier</string>
