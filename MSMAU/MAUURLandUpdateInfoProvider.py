@@ -90,6 +90,12 @@ class MAUURLandUpdateInfoProvider(Processor):
 
     def valueToOSVersionString(self, value):
         """Converts a value to an OS X version number"""
+        # Map string type for both Python 2 and Python 3.
+        try:
+            _ = basestring
+        except NameError:
+            basestring = str  # pylint: disable=W0622
+
         if isinstance(value, int):
             version_str = hex(value)[2:]
         elif isinstance(value, basestring):
