@@ -11,7 +11,7 @@
         <key>NAME</key>
         <string>Fluid</string>
         <key>SPARKLE_FEED_URL</key>
-        <string>http://fluidapp.com/appcast/fluid2.rss</string>
+        <string>https://fluidapp.com/appcast/fluid2.rss</string>
 	</dict>
     <key>Process</key>
     <array>

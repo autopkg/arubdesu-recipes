@@ -13,7 +13,7 @@
         <key>NAME</key>
         <string>Workshare</string>
         <key>SPARKLE_FEED_URL</key>
-        <string>http://install.workshare.com/installs/rel/desktop_dmg/update.xml</string>
+        <string>https://install.workshare.com/installs/rel/desktop_dmg/update.xml</string>
 	</dict>
     <key>Process</key>
     <array>
