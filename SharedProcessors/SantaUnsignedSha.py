@@ -65,7 +65,7 @@ class SantaUnsignedSha(DmgMounter):
             try:
                 with open(path, 'rb') as sha_me:
                     binary_sha = hashlib.sha256(sha_me.read()).hexdigest()
-            except Exception as error:
+            except BaseException as error:
                 raise ProcessorError(
                     "Encoutered error %s getting sha256 from path, %s" % (error, path))
         return binary_sha
@@ -105,7 +105,7 @@ class SantaUnsignedSha(DmgMounter):
                 sha = self.check_and_hash(input_path)
                 self.output("Here's some sha %s" % sha)
                 shas_forwlist.append(sha)
-            except Exception as error:
+            except BaseException as error:
                 raise ProcessorError("Error processing path '%s', '%s'" % (input_path, error))
         if dmg:
             self.unmount(dmg_path)
