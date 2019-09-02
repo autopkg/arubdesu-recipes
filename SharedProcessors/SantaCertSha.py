@@ -16,10 +16,11 @@
 """See docstring for SantaCertSha class"""
 
 from __future__ import absolute_import
+
 import os
 import subprocess
-
 from glob import glob
+
 from autopkglib import ProcessorError
 from autopkglib.DmgMounter import DmgMounter
 

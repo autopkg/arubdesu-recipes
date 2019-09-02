@@ -16,14 +16,13 @@
 
 
 from __future__ import absolute_import
+
 import plistlib
 import urllib2
-
 from distutils.version import LooseVersion
 from operator import itemgetter
 
 from autopkglib import Processor, ProcessorError
-
 
 __all__ = ["MSLyncURLandUpdateInfoProvider"]
 

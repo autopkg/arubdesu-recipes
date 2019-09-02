@@ -16,13 +16,15 @@
 
 
 from __future__ import absolute_import
+
 import plistlib
 import urllib2
+
+from autopkglib import Processor, ProcessorError
 
 # from distutils.version import LooseVersion
 # from operator import itemgetter
 
-from autopkglib import Processor, ProcessorError
 
 
 __all__ = ["MAUURLandUpdateInfoProvider"]
