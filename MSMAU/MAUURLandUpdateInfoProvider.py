@@ -139,7 +139,7 @@ class MAUURLandUpdateInfoProvider(Processor):
             f = urllib2.urlopen(req)
             data = f.read()
             f.close()
-        except BaseException as err:
+        except Exception as err:
             raise ProcessorError("Can't download %s: %s" % (base_url, err))
 
         item = plistlib.readPlistFromString(data)[-1]
