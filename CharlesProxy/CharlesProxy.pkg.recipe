@@ -76,16 +76,6 @@
 							<key>group</key>
 							<string>admin</string>
 						</dict>
-						<dict>
-							<key>path</key>
-							<string>Applications/Charles.app/Contents/Resources/Charles Proxy Settings</string>
-							<key>user</key>
-							<string>root</string>
-							<key>group</key>
-							<string>admin</string>
-							<key>mode</key>
-							<string>4755</string>
-						</dict>
 					</array>
 				</dict>
 			</dict>
