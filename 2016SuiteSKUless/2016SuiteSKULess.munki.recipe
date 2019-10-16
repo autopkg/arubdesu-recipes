@@ -25,6 +25,8 @@ Set the REGION key to:
         <string>http://go.microsoft.com/fwlink/?linkid=</string>
         <key>MUNKI_REPO_SUBDIR</key>
         <string>apps/Office2016</string>
+		<key>pkg_ids_set_optional_true</key>
+		<array/>
         <key>pkginfo</key>
         <dict>
             <key>blocking_applications</key>
@@ -57,6 +59,10 @@ Set the REGION key to:
             <key>Processor</key>
             <string>MunkiImporter</string>
         </dict>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.keeleysam.recipes.GoogleTalkPlugin/MunkiPkginfoReceiptsEditor</string>
+		</dict>
     </array>
 </dict>
 </plist>
