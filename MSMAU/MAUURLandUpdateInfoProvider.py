@@ -15,13 +15,16 @@
 # limitations under the License.
 
 
+from __future__ import absolute_import
+
 import plistlib
 import urllib2
+
+from autopkglib import Processor, ProcessorError
 
 # from distutils.version import LooseVersion
 # from operator import itemgetter
 
-from autopkglib import Processor, ProcessorError
 
 
 __all__ = ["MAUURLandUpdateInfoProvider"]
@@ -38,7 +41,7 @@ class MAUURLandUpdateInfoProvider(Processor):
             "description": ("See "
                 "http://msdn.microsoft.com/en-us/library/ee825488(v=cs.20).aspx"
                 " for a table of CultureCodes Defaults to 0409, which "
-                "corresponds to en-US (English - United States)"), 
+                "corresponds to en-US (English - United States)"),
         },
         "base_url": {
             "required": False,
@@ -51,11 +54,11 @@ class MAUURLandUpdateInfoProvider(Processor):
             "description": "URL to the latest MAU installer.",
         },
         "additional_pkginfo": {
-            "description": 
+            "description":
                 "Some pkginfo fields extracted from the Microsoft metadata.",
         },
         "display_name": {
-            "description": 
+            "description":
                 "The name of the package that includes the version.",
         },
         "version": {
@@ -66,7 +69,7 @@ class MAUURLandUpdateInfoProvider(Processor):
 
     def getAppPath(self, item):
         """less hardcoding, finds path to app via feed metadata item"""
-        app_path = item.get("UpdateBaseSearchPath", 
+        app_path = item.get("UpdateBaseSearchPath",
                             "/Library/Application Support/Microsoft/MAU2.0")
         return app_path
 
@@ -81,14 +84,20 @@ class MAUURLandUpdateInfoProvider(Processor):
             "version_comparison_key": "CFBundleShortVersionString"
         }
         return [installs_item]
-    
+
     def getVersion(self, item):
         """Extracts the version of the item."""
         version_str = item.get("Update Version", "")
         return version_str
-    
+
     def valueToOSVersionString(self, value):
         """Converts a value to an OS X version number"""
+        # Map string type for both Python 2 and Python 3.
+        try:
+            _ = basestring
+        except NameError:
+            basestring = str  # pylint: disable=W0622
+
         if isinstance(value, int):
             version_str = hex(value)[2:]
         elif isinstance(value, basestring):
@@ -130,9 +139,9 @@ class MAUURLandUpdateInfoProvider(Processor):
             f = urllib2.urlopen(req)
             data = f.read()
             f.close()
-        except BaseException as err:
+        except Exception as err:
             raise ProcessorError("Can't download %s: %s" % (base_url, err))
-        
+
         item = plistlib.readPlistFromString(data)[-1]
 
         self.env["url"] = item["Location"]

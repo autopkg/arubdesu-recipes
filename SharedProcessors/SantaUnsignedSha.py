@@ -15,10 +15,12 @@
 # limitations under the License.
 """See docstring for SantaCertSha class"""
 
+from __future__ import absolute_import
+
 import hashlib
 import os
-
 from stat import S_IXOTH
+
 from autopkglib import ProcessorError
 from autopkglib.DmgMounter import DmgMounter
 
