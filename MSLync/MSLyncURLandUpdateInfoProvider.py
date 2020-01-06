@@ -18,11 +18,10 @@
 from __future__ import absolute_import
 
 import plistlib
-import urllib2
 from distutils.version import LooseVersion
 from operator import itemgetter
 
-from autopkglib import Processor, ProcessorError
+from autopkglib import Processor, ProcessorError, URLGetter
 
 __all__ = ["MSLyncURLandUpdateInfoProvider"]
 
@@ -34,7 +33,8 @@ CULTURE_CODE = "0409"
 BASE_URL = "https://officecdn.microsoft.com/pr/C1297A47-86C4-4C1F-97FA-950631F94777/OfficeMac/%sUCCP14.xml"
 MUNKI_UPDATE_NAME = "Lync_Installer"
 
-class MSLyncURLandUpdateInfoProvider(Processor):
+
+class MSLyncURLandUpdateInfoProvider(URLGetter):
     """Provides a download URL for the most recent version of MS Lync."""
     input_variables = {
         "culture_code": {
@@ -177,17 +177,14 @@ class MSLyncURLandUpdateInfoProvider(Processor):
         version_str = self.env.get("version")
         if not version_str:
             version_str = "latest"
-        # Get metadata URL
-        req = urllib2.Request(base_url)
         # Add the MAU User-Agent, since MAU feed server seems to explicitly block
         # a User-Agent of 'Python-urllib/2.7' - even a blank User-Agent string
         # passes.
-        req.add_header("User-Agent",
-            "Microsoft%20AutoUpdate/3.0.2 CFNetwork/720.2.4 Darwin/14.1.0 (x86_64)")
+        headers = {
+            "User-Agent": "Microsoft%20AutoUpdate/3.0.2 CFNetwork/720.2.4 Darwin/14.1.0 (x86_64)",
+        }
         try:
-            f = urllib2.urlopen(req)
-            data = f.read()
-            f.close()
+            data = self.download(base_url, headers=headers)
         except Exception as err:
             raise ProcessorError("Can't download %s: %s" % (base_url, err))
 
