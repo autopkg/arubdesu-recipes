@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2016 Allister Banks, mostly stolen from Hannes Juutilainen
 #

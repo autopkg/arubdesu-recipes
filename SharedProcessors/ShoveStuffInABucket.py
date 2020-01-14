@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2017 Allister Banks, with herculean help from Clayton Burlison
 #
