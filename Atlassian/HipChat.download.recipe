@@ -54,7 +54,7 @@
                 <key>input_path</key>
                 <string>%RECIPE_CACHE_DIR%/downloads/%NAME%.dmg/HipChat.app</string>
                 <key>requirement</key>
-                <string>identifier "com.hipchat.HipChat" and anchor apple generic and certificate leaf[subject.CN] = "Mac Developer: Build Agent (HGAXT6PX93)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */
+                <string>identifier "com.hipchat.HipChat" and anchor apple generic and certificate leaf[subject.CN] = "Mac Developer: Build Agent (HGAXT6PX93)" and certificate 1[field.1.2.840.113635.100.6.2.1] /* exists */</string>
             </dict>
         </dict>
     </array>
