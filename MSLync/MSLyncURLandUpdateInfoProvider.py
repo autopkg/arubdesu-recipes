@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2014 Allister Banks, wholesale lifted from code by Greg Neagle
 #
