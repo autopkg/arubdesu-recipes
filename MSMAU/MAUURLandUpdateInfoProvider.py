@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2016 Allister Banks, wholesale lifted from code by Greg Neagle
 #
@@ -18,22 +19,24 @@
 from __future__ import absolute_import
 
 import plistlib
-import urllib2
 
-from autopkglib import Processor, ProcessorError
+from autopkglib import Processor, ProcessorError, URLGetter
 
 # from distutils.version import LooseVersion
 # from operator import itemgetter
 
 
-
 __all__ = ["MAUURLandUpdateInfoProvider"]
 
 CULTURE_CODE = "0409"
-BASE_URL = "http://www.microsoft.com/mac/autoupdate/%sMSau03.xml"
+BASE_URL = (
+    "https://officecdn-microsoft-com.akamaized.net/pr/"
+    "C1297A47-86C4-4C1F-97FA-950631F94777/MacAutoupdate/%sMSau04.xml"
+)
 MUNKI_UPDATE_NAME = "Microsoft Auto Update"
 
-class MAUURLandUpdateInfoProvider(Processor):
+
+class MAUURLandUpdateInfoProvider(URLGetter):
     """Provides a download URL for the most recent version of MAU."""
     input_variables = {
         "culture_code": {
@@ -130,15 +133,12 @@ class MAUURLandUpdateInfoProvider(Processor):
         else:
             culture_code = self.env.get("culture_code", CULTURE_CODE)
             base_url = BASE_URL % culture_code
-        # Get metadata URL
-        req = urllib2.Request(base_url)
         # Add the MAU User-Agent, out of date but still fine
-        req.add_header("User-Agent",
-            "Microsoft%20AutoUpdate/3.4 CFNetwork/760.2.6 Darwin/15.4.0 (x86_64)")
+        headers = {
+            "User-Agent": "Microsoft%20AutoUpdate/3.4 CFNetwork/760.2.6 Darwin/15.4.0 (x86_64)",
+        }
         try:
-            f = urllib2.urlopen(req)
-            data = f.read()
-            f.close()
+            data = self.download(base_url, headers=headers)
         except Exception as err:
             raise ProcessorError("Can't download %s: %s" % (base_url, err))
 
