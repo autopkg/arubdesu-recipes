@@ -18,13 +18,15 @@
 
 from __future__ import absolute_import
 
-import plistlib
-
 from autopkglib import Processor, ProcessorError, URLGetter
 
 # from distutils.version import LooseVersion
 # from operator import itemgetter
 
+try:
+    from plistlib import loads as readPlistFromString  # Python 3
+except ImportError:
+    from plistlib import readPlistFromString  # Python 2
 
 __all__ = ["MAUURLandUpdateInfoProvider"]
 
@@ -142,7 +144,7 @@ class MAUURLandUpdateInfoProvider(URLGetter):
         except Exception as err:
             raise ProcessorError("Can't download %s: %s" % (base_url, err))
 
-        item = plistlib.readPlistFromString(data)[-1]
+        item = readPlistFromString(data)[-1]
 
         self.env["url"] = item["Location"]
         self.env["pkg_name"] = item["Payload"]
