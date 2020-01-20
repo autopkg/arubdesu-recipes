@@ -105,7 +105,7 @@ class MSLyncURLandUpdateInfoProvider(URLGetter):
             return None
         # Versions array is already sorted in current 0409MSOf14.xml,
         # may be no need to sort; but we should just to be safe...
-        mcp_versions.sort(compare_versions)
+        mcp_versions = sorted(mcp_versions, key=LooseVersion)
         if mcp_versions[0] == "14.0.0":
             # works with original Office release, so no requires array
             return None
