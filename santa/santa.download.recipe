@@ -4,7 +4,7 @@
 <dict>
 	<key>Description</key>
 	<string>Downloads the current (still in prerelease) version of santa from Github.
-Waiting on https://github.com/autopkg/autopkg/pull/264 to be merged before running 
+Waiting on https://github.com/autopkg/autopkg/pull/264 to be merged before running
 CodeSigVerification on the kext in addition to the GUI.
 	</string>
 	<key>Identifier</key>

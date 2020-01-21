@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 #
 # Copyright 2016 Allister Banks, mostly stolen from Hannes Juutilainen
 #
@@ -29,7 +30,7 @@ __all__ = ["SantaCertSha"]
 
 class SantaCertSha(DmgMounter):
     """Verifies sha256 fingerprint on developer certificate used to sign application bundles.
-       Requires santactl to be present & at the default path - 
+       Requires santactl to be present & at the default path -
        /usr/local/bin/santactl, and either a bare .app bundle, either in a DMG,
        or an unzipped/packed path - use PkgPayloadUnpacker in a previous step.
        """
