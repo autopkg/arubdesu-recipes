@@ -18,11 +18,15 @@
 
 from __future__ import absolute_import
 
-import plistlib
 from distutils.version import LooseVersion
 from operator import itemgetter
 
 from autopkglib import Processor, ProcessorError, URLGetter
+
+try:
+    from plistlib import loads as readPlistFromString  # Python 3
+except ImportError:
+    from plistlib import readPlistFromString  # Python 2
 
 __all__ = ["MSLyncURLandUpdateInfoProvider"]
 
@@ -101,7 +105,7 @@ class MSLyncURLandUpdateInfoProvider(URLGetter):
             return None
         # Versions array is already sorted in current 0409MSOf14.xml,
         # may be no need to sort; but we should just to be safe...
-        mcp_versions.sort(compare_versions)
+        mcp_versions = sorted(mcp_versions, key=LooseVersion)
         if mcp_versions[0] == "14.0.0":
             # works with original Office release, so no requires array
             return None
@@ -189,7 +193,7 @@ class MSLyncURLandUpdateInfoProvider(URLGetter):
         except Exception as err:
             raise ProcessorError("Can't download %s: %s" % (base_url, err))
 
-        metadata = plistlib.readPlistFromString(data)
+        metadata = readPlistFromString(data)
         if version_str == "latest":
             # Lync 'update' metadata is a list of dicts.
             # we need to sort by date.
