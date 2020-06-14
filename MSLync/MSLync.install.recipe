@@ -17,7 +17,12 @@
     <array>
         <dict>
             <key>Processor</key>
-            <string>Installer</string>
+            <string>DeprecationWarning</string>
+            <key>Arguments</key>
+            <dict>
+                <key>warning_message</key>
+                <string>This recipe is no longer maintained</string>
+            </dict>
         </dict>
     </array>
 </dict>
