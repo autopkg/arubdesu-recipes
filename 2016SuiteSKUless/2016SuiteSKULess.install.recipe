@@ -2,41 +2,31 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-    <key>Description</key>
-    <string>Download and install the latest Microsoft Office 2016
-SKU-less installer package.
+	<key>Description</key>
+	<string>DEPRECATED - pardon the abrupt removal, use rtrouton-recipes or arubdesu/office-recipes instead</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.install.Office2016Suite</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>Office2016Suite</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>0.4.1</string>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu-recipes.download.Office2016Suite</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>DeprecationWarning</string>
+			<key>Arguments</key>
+			<dict>
+				<key>warning_message</key>
+				<string>This recipe was no longer functional, please use one of the fixed versions found at github.com/arubdesu/office-recipes or within rtrouton-recipes. Entire 2016SuiteSKUless folder in repo will be removed soon</string>
+			</dict>
+		</dict>
 
-Set the REGION key to:
-
-525133 for Americas (default)
-532572 for Europe
-532577 for Asia</string>
-    <key>Identifier</key>
-    <string>com.github.autopkg.arubdesu-recipes.install.Office2016Suite</string>
-    <key>Input</key>
-    <dict>
-        <key>NAME</key>
-        <string>Office2016Suite</string>
-        <key>REGION</key>
-        <string>525133</string>
-        <key>DOWNLOAD_URL_BASE</key>
-        <string>http://go.microsoft.com/fwlink/?linkid=</string>
-    </dict>
-    <key>MinimumVersion</key>
-    <string>0.4.1</string>
-    <key>ParentRecipe</key>
-    <string>com.github.autopkg.arubdesu-recipes.download.Office2016Suite</string>
-    <key>Process</key>
-    <array>
-        <dict>
-            <key>Processor</key>
-            <string>Installer</string>
-            <key>Arguments</key>
-            <dict>
-                <key>pkg_path</key>
-                <string>%pathname%</string>
-            </dict>
-        </dict>
-    </array>
+	</array>
 </dict>
 </plist>
