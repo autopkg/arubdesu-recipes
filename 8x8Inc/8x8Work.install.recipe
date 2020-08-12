@@ -3,20 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>Comment</key>
-	<string>Created with Recipe Robot v1.1.2 (https://github.com/homebysix/recipe-robot)</string>
+	<string>Originally created with Recipe Robot (https://github.com/homebysix/recipe-robot)</string>
 	<key>Description</key>
-	<string>Installs the latest version of 8x8 - Virtual Office.</string>
+	<string>Installs the latest version of 8x8 Work</string>
 	<key>Identifier</key>
-	<string>com.github.arubdesu.install.8x8-VirtualOffice</string>
+	<string>com.github.arubdesu.install.8x8Work</string>
 	<key>Input</key>
 	<dict>
 		<key>NAME</key>
-		<string>8x8 - Virtual Office</string>
+		<string>8x8 Work</string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>1.0.0</string>
 	<key>ParentRecipe</key>
-	<string>com.github.arubdesu.download.8x8-VirtualOffice</string>
+	<string>com.github.arubdesu.download.8x8Work</string>
 	<key>Process</key>
 	<array>
 		<dict>
@@ -30,7 +30,7 @@
 						<key>destination_path</key>
 						<string>/Applications</string>
 						<key>source_item</key>
-						<string>8x8 - Virtual Office.app</string>
+						<string>8x8 Work.app</string>
 					</dict>
 				</array>
 			</dict>
