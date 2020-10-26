@@ -10,8 +10,6 @@
 	<string>com.github.arubdesu.download.8x8Work</string>
 	<key>Input</key>
 	<dict>
-		<key>DOWNLOAD_URL</key>
-		<string>https://support.8x8.com/@api/deki/files/</string>
 		<key>NAME</key>
 		<string>8x8Work</string>
 	</dict>
@@ -25,9 +23,9 @@
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>https://support.8x8.com/us/cloud-phone-service/voice/virtual-office-desktop/download-virtual-office-desktop</string>
+				<string>https://support.8x8.com/cloud-phone-service/voice/work-desktop/download-8x8-work-for-desktop</string>
 				<key>re_pattern</key>
-				<string>(\d+\/.*?\.dmg\?revision=\d+)</string>
+				<string>href="(https://vod-updates.8x8.com/ga/work-dmg-.*.dmg)"</string>
 			</dict>
 		</dict>
 		<dict>
@@ -36,7 +34,7 @@
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>%DOWNLOAD_URL%%match%.dmg</string>
+				<string>%match%</string>
 				<key>filename</key>
 				<string>%NAME%.dmg</string>
 			</dict>
