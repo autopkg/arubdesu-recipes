@@ -10,8 +10,6 @@
 	<string>com.github.autopkg.arubdesu-recipes.pkg.JetBrainsToolbox</string>
 	<key>Input</key>
 	<dict>
-		<key>BUNDLE_ID</key>
-		<string>com.jetbrains.apps.activator</string>
 		<key>NAME</key>
 		<string>JetBrains Toolbox</string>
 	</dict>
