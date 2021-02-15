@@ -10,8 +10,6 @@
 	<string>com.github.arubdesu.pkg.8x8Work</string>
 	<key>Input</key>
 	<dict>
-		<key>BUNDLE_ID</key>
-		<string>com.electron.8x8---virtual-office</string>
 		<key>NAME</key>
 		<string>8x8 - Virtual Office</string>
 	</dict>
