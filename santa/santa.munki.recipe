@@ -15,6 +15,9 @@
 		<string>santa</string>
 		<key>pkginfo</key>
 		<dict>
+			<key>blocking_applications</key>
+			<array>
+			</array>
 			<key>catalogs</key>
 			<array>
 				<string>testing</string>
