@@ -34,7 +34,7 @@ ARCH can be one of 'mac' or 'macM1'
 			<key>Arguments</key>
 			<dict>
 				<key>filename</key>
-				<string>%NAME%.dmg</string>
+				<string>%NAME%-%ARCH%.dmg</string>
 				<key>url</key>
 				<string>%match%</string>
 			</dict>
