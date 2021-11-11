@@ -3,13 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>Description</key>
-	<string>Downloads the latest version of JetBrains Toolbox.</string>
+	<string>Downloads the latest version of JetBrains Toolbox.
+ARCH can be one of 'mac' or 'macM1'
+	</string>
 	<key>Identifier</key>
 	<string>com.github.autopkg.arubdesu-recipes.download.JetBrainsToolbox</string>
 	<key>Input</key>
 	<dict>
 		<key>NAME</key>
 		<string>JetBrainsToolbox</string>
+		<key>ARCH</key>
+		<string>mac</string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>1.0.0</string>
@@ -23,7 +27,7 @@
 				<key>url</key>
 				<string>https://data.services.jetbrains.com/products/releases?code=TBA</string>
 				<key>re_pattern</key>
-				<string>mac":{"link":"(.+?dmg)"</string>
+				<string>%ARCH%":{"link":"(.+?dmg)"</string>
 			</dict>
 		</dict>
 		<dict>
