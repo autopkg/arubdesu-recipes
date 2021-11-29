@@ -14,14 +14,12 @@
         <string></string>
     </dict>
     <key>MinimumVersion</key>
-    <string>6.3.1</string>
+    <string>0.5.0</string>
     <key>ParentRecipe</key>
     <string>com.github.arubdesu-recipes.aws-vault</string>
     <key>Process</key>
     <array>
         <dict>
-            <key>Processor</key>
-            <string>InstallFromDMG</string>
             <key>Arguments</key>
             <dict>
                 <key>items_to_copy</key>
@@ -34,6 +32,8 @@
                     </dict>
                 </array>
             </dict>
+            <key>Processor</key>
+            <string>InstallFromDMG</string>
         </dict>
     </array>
 </dict>

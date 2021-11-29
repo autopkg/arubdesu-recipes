@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Identifier</key>
-	<string>local.munki.aws-vault</string>
+	<string>com.github.autopkg.arubdesu-recipes.munki.aws-vault</string>
 	<key>Input</key>
 	<dict>
 		<key>MUNKI_REPO_SUBDIR</key>
@@ -16,21 +16,15 @@
 			<array>
 				<string>testing</string>
 			</array>
-			<key>category</key>
-			<string>Developer</string>
 			<key>description</key>
 			<string>AWS Vault is a tool to securely store and access AWS credentials in a development environment.</string>
 			<key>developer</key>
 			<string>99designs</string>
 			<key>display_name</key>
 			<string>aws-vault</string>
-			<key>minimum_os_version</key>
-			<string>10.14.0</string>
 			<key>name</key>
 			<string>%NAME%</string>
 			<key>unattended_install</key>
-			<true/>
-			<key>unattended_uninstall</key>
 			<true/>
 		</dict>
 	</dict>
