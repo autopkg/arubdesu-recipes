@@ -31,7 +31,7 @@
 	<key>MinimumVersion</key>
 	<string>0.5.0</string>
 	<key>ParentRecipe</key>
-	<string>com.github.arubdesu-recipes.download.aws-vault</string>
+	<string>com.github.autopkg.arubdesu-recipes.aws-vault.download</string>
 	<key>Process</key>
 	<array>
 		<dict>
