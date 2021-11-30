@@ -10,8 +10,6 @@
 	<dict>
 		<key>NAME</key>
 		<string>aws-vault</string>
-		<key>PRERELEASE</key>
-		<string></string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>0.5.0</string>
@@ -28,9 +26,11 @@
 						<key>source_item</key>
 						<string>aws-vault</string>
 						<key>destination_path</key>
-						<string>/usr/local/bin/aws-vault</string>
+						<string>/usr/local/bin/</string>
 					</dict>
 				</array>
+				<key>dmg_path</key>
+				<string>%pathname%</string>
 			</dict>
 			<key>Processor</key>
 			<string>InstallFromDMG</string>

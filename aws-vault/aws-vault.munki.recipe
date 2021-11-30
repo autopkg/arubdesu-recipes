@@ -16,6 +16,8 @@
 			<array>
 				<string>testing</string>
 			</array>
+			<key>category</key>
+			<string>Developer</string>
 			<key>description</key>
 			<string>AWS Vault is a tool to securely store and access AWS credentials in a development environment.</string>
 			<key>developer</key>
@@ -31,14 +33,12 @@
 	<key>MinimumVersion</key>
 	<string>0.5.0</string>
 	<key>ParentRecipe</key>
-	<string>com.github.autopkg.arubdesu-recipes.aws-vault.download</string>
+	<string>com.github.autopkg.arubdesu-recipes.aws-vault.pkg</string>
 	<key>Process</key>
 	<array>
 		<dict>
 			<key>Arguments</key>
 			<dict>
-				<key>pkg_path</key>
-				<string>%pathname%</string>
 				<key>repo_subdirectory</key>
 				<string>%MUNKI_REPO_SUBDIR%</string>
 			</dict>
