@@ -12,8 +12,6 @@
 	<dict>
 		<key>NAME</key>
 		<string>8x8Work</string>
-		<key>ARCH</key>
-		<string>arm64</string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>1.0.0</string>
@@ -27,7 +25,7 @@
 				<key>url</key>
 				<string>https://support.8x8.com/cloud-phone-service/voice/work-desktop/download-8x8-work-for-desktop</string>
 				<key>re_pattern</key>
-				<string>href="(https://vod-updates.8x8.com/ga/work-%ARCH%\-dmg-.*.dmg)"</string>
+				<string>href="(https://vod-updates.8x8.com/ga/work-arm64-dmg-.*.dmg)"</string>
 			</dict>
 		</dict>
 		<dict>
