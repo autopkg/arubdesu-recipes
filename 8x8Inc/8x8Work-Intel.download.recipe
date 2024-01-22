@@ -5,11 +5,11 @@
 	<key>Description</key>
 	<string>Downloads the latest Intel (x64) version of 8x8 Work</string>
 	<key>Identifier</key>
-	<string>com.github.arubdesu.download.8x8Work</string>
+	<string>com.github.arubdesu.download.8x8Work-Intel</string>
 	<key>Input</key>
 	<dict>
 		<key>NAME</key>
-		<string>8x8Work</string>
+		<string>8x8Work-Intel</string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>1.0.0</string>
