@@ -9,7 +9,7 @@
 	<key>Input</key>
 	<dict>
 		<key>NAME</key>
-		<string>8x8Work</string>
+		<string>8x8Work-Intel</string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>1.0.0</string>
