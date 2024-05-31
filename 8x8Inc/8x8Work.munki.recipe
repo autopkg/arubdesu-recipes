@@ -53,8 +53,8 @@
             <string>StopProcessingIf</string>   
             <key>Arguments</key>   
             <dict>   
-                <key>predicate</key>   
-                <string>%MUNKI_ARCHITECTURE% != "arm64" AND %MUNKI_ARCHITECTURE% != "x86_64"</string>
+                <key>predicate</key>
+                <string>%MUNKI_ARCHITECTURE% != arm64 AND %MUNKI_ARCHITECTURE% != x86_64</string>
             </dict>
         </dict>
         <dict>
