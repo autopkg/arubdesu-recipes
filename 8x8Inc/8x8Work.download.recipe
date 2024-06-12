@@ -27,7 +27,7 @@
                 <key>url</key>
                 <string>https://support-portal.8x8.com/docrenderservice/services/rest/documents/8bff4970-6fbf-4daf-842d-8ae9b533153d?mandatorKey=MANDATOR_USU&amp;contentLanguage=en&amp;additionalData=references=true&amp;additionalData=referencedDocs=true&amp;additionalData=withGraph=true&amp;additionalData=includeReferencesUpToLevel=all</string>
                 <key>re_pattern</key>
-                <string>href=\\\"(https://vod-updates\.8x8\.com/ga/work%ARCHITECTURE%-dmg-v8.*?\.dmg)</string>
+                <string>href=\\\"(https://work-desktop-assets\.8x8\.com/prod-publish/tests/work%ARCHITECTURE%-dmg-v8.*?\.dmg)</string>
             </dict>
         </dict>
         <dict>
