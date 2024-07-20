@@ -21,7 +21,7 @@
 				<string>testing</string>
 			</array>
 			<key>description</key>
-			<string>Surf the Web with confidence, customize your browsing experience, maximize privacy, content enjoyment, and productivity.</string>
+			<string>OrbStack is a fast, light, and simple way to run containers and Linux machines on macOS. It's a supercharged alternative to Docker Desktop and WSL, all in one easy-to-use app.</string>
 			<key>developer</key>
 			<string>Orbital Labs, LLC (U.S.)</string>
 			<key>display_name</key>
