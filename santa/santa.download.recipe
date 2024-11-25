@@ -24,7 +24,7 @@ CodeSigVerification on the kext in addition to the GUI.
 			<key>Arguments</key>
 			<dict>
 				<key>github_repo</key>
-				<string>google/santa</string>
+				<string>northpolesec/santa</string>
 				<key>include_prereleases</key>
 				<true/>
 			</dict>
@@ -51,7 +51,7 @@ CodeSigVerification on the kext in addition to the GUI.
 				<string>%pathname%/*anta*pkg</string>
 				<key>requirement</key>
 				<array>
-					<string>Developer ID Installer: Google Inc.</string>
+					<string>Developer ID Installer: North Pole Security, Inc.</string>
 					<string>Developer ID Certification Authority</string>
 					<string>Apple Root CA</string>
 				</array>
