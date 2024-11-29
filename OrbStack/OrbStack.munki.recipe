@@ -5,11 +5,16 @@
 	<key>Comment</key>
 	<string>Created with Recipe Robot v2.3.1 (https://github.com/homebysix/recipe-robot)</string>
 	<key>Description</key>
-	<string>Downloads the latest version of OrbStack and imports it into Munki.</string>
+	<string>Downloads the latest version of OrbStack and imports it into Munki.
+
+For Apple Silicon use: "arm64" in the ARCH variable (default)
+For Intel use: "amd64" in the ARCH variable</string>
 	<key>Identifier</key>
 	<string>com.github.arubdesu.munki.OrbStack</string>
 	<key>Input</key>
 	<dict>
+		<key>ARCH</key>
+		<string>arm64</string>
 		<key>MUNKI_REPO_SUBDIR</key>
 		<string>apps/%NAME%</string>
 		<key>NAME</key>
@@ -20,15 +25,19 @@
 			<array>
 				<string>testing</string>
 			</array>
+			<key>category</key>
+			<string>Development</string>
 			<key>description</key>
 			<string>OrbStack is a fast, light, and simple way to run containers and Linux machines on macOS. It's a supercharged alternative to Docker Desktop and WSL, all in one easy-to-use app.</string>
 			<key>developer</key>
-			<string>Orbital Labs, LLC (U.S.)</string>
+			<string>Orbital Labs, LLC</string>
 			<key>display_name</key>
 			<string>OrbStack</string>
 			<key>name</key>
 			<string>%NAME%</string>
 			<key>unattended_install</key>
+			<true/>
+			<key>unattended_uninstall</key>
 			<true/>
 		</dict>
 	</dict>
@@ -38,6 +47,33 @@
 	<string>com.github.arubdesu.download.OrbStack</string>
 	<key>Process</key>
 	<array>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>find</key>
+				<string>amd64</string>
+				<key>input_string</key>
+				<string>%ARCH%</string>
+				<key>replace</key>
+				<string>x86_64</string>
+			</dict>
+			<key>Processor</key>
+			<string>com.github.homebysix.FindAndReplace/FindAndReplace</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>additional_pkginfo</key>
+				<dict>
+					<key>supported_architectures</key>
+					<array>
+						<string>%output_string%</string>
+					</array>
+				</dict>
+			</dict>
+			<key>Processor</key>
+			<string>MunkiPkginfoMerger</string>
+		</dict>
 		<dict>
 			<key>Arguments</key>
 			<dict>
