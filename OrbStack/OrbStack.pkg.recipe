@@ -5,11 +5,16 @@
 	<key>Comment</key>
 	<string>Created with Recipe Robot v2.3.1 (https://github.com/homebysix/recipe-robot)</string>
 	<key>Description</key>
-	<string>Downloads the latest version of OrbStack and creates a package.</string>
+	<string>Downloads the latest version of OrbStack and creates a package.
+
+For Apple Silicon use: "arm64" in the ARCH variable (default)
+For Intel use: "amd64" in the ARCH variable</string>
 	<key>Identifier</key>
 	<string>com.github.arubdesu.pkg.OrbStack</string>
 	<key>Input</key>
 	<dict>
+		<key>ARCH</key>
+		<string>arm64</string>
 		<key>NAME</key>
 		<string>OrbStack</string>
 	</dict>
