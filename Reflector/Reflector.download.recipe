@@ -7,7 +7,7 @@
     <key>Identifier</key>
     <string>com.github.arubdesu.download.Reflector</string>
 	<key>MinimumVersion</key>
-	<string>0.3.1</string>
+	<string>1.1</string>
     <key>Input</key>
     <dict>
         <key>NAME</key>
@@ -17,6 +17,15 @@
 	</dict>
     <key>Process</key>
     <array>
+        <dict>
+            <key>Processor</key>
+            <string>DeprecationWarning</string>
+            <key>Arguments</key>
+            <dict>
+                <key>warning_message</key>
+                <string>Consider switching to the Reflector 4 recipes in the dataJAR-recipes repo. This recipe is deprecated and will be removed in the future.</string>
+            </dict>
+        </dict>
         <dict>
             <key>Processor</key>
             <string>SparkleUpdateInfoProvider</string>
