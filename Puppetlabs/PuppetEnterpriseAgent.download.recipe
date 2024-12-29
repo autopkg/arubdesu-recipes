@@ -6,7 +6,10 @@
 	<string>Downloads the current release version of PuppetEnterpriseAgent.
 
 OS_VERSION can be overridden for the specific package, or left to the current
-latest OS available</string>
+latest OS available
+
+Set ARCH to "x86_64" for Intel or "arm64" for Apple Silicon.
+</string>
 	<key>Identifier</key>
 	<string>com.github.autopkg.arubdesu-recipes.download.PuppetEnterpriseAgent</string>
 	<key>Input</key>
@@ -14,7 +17,11 @@ latest OS available</string>
 		<key>NAME</key>
 		<string>PuppetEnterpriseAgent</string>
 		<key>OS_VERSION</key>
-		<string>11</string>
+		<string>14</string>
+		<key>PUPPET_VERSION</key>
+		<string>8</string>
+		<key>ARCH</key>
+		<string>x86_64</string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>0.6.1</string>
@@ -22,22 +29,11 @@ latest OS available</string>
 	<array>
 		<dict>
 			<key>Processor</key>
-			<string>URLTextSearcher</string>
-			<key>Arguments</key>
-			<dict>
-				<key>url</key>
-				<string>https://s3.amazonaws.com/puppet-agents/?max-keys=9000&amp;prefix=2016.4/puppet-agent-latest/repos/apple/10.%OS_VERSION%/PC1/x86_64</string>
-				<key>re_pattern</key>
-				<string>Key&gt;(.*\.dmg)&lt;</string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Processor</key>
 			<string>URLDownloader</string>
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>https://s3.amazonaws.com/puppet-agents/%match%</string>
+				<string>https://downloads.puppetlabs.com/mac/puppet%PUPPET_VERSION%/%OS_VERSION%/%ARCH%/puppet-agent-latest.dmg</string>
 			</dict>
 		</dict>
 		<dict>
