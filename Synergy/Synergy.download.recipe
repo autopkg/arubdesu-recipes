@@ -3,13 +3,20 @@
 <plist version="1.0">
 <dict>
 	<key>Description</key>
-	<string>Downloads the current stable version of Synergy</string>
+	<string>Downloads the current stable version of Synergy.
+	
+Valid values for ARCH include:
+- "x64" (default, Intel)
+- "arm64" (Apple Silicon)
+</string>
 	<key>Identifier</key>
 	<string>com.github.autopkg.arubdesu-recipes.download.synergy</string>
 	<key>Input</key>
 	<dict>
 		<key>NAME</key>
 		<string>Synergy</string>
+		<key>ARCH</key>
+		<string>x64</string>
 	</dict>
 	<key>MinimumVersion</key>
 	<string>0.5.1</string>
@@ -21,25 +28,11 @@
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>https://github.com/symless/synergy/releases</string>
+				<string>https://symless.com/synergy/download</string>
 				<key>re_pattern</key>
-				<string>href="/symless/synergy/releases/tag/v(\d+\.\d+\.\d+)-stable</string>
+				<string>\bsynergy-([\d\.]+)-macos-%ARCH%\.dmg\b</string>
 				<key>result_output_var_name</key>
-				<string>VERSION</string>
-			</dict>
-		</dict>
-		<dict>
-			<key>Processor</key>
-			<string>URLTextSearcher</string>
-			<key>Arguments</key>
-			<dict>
-				<key>url</key>
-				<string>https://synergy-project.org/nightly</string>
-				<!-- synergy-v1.7.5-stable-fa85a24-MacOSX1011-x86_64.dmg -->
-				<key>re_pattern</key>
-				<string>href="files/nightly/synergy-v%VERSION%(-stable-.+-MacOSX-x86_64.dmg)"</string>
-				<key>result_output_var_name</key>
-				<string>match</string>
+				<string>version</string>
 			</dict>
 		</dict>
 		<dict>
@@ -48,9 +41,9 @@
 			<key>Arguments</key>
 			<dict>
 				<key>url</key>
-				<string>https://synergy-project.org/files/nightly/synergy-v%VERSION%%match%</string>
+				<string>https://symless.com/synergy/synergy/api/download/synergy-%version%-macos-%ARCH%.dmg</string>
 				<key>filename</key>
-				<string>%NAME%.dmg</string>
+				<string>%NAME%-%version%.dmg</string>
 			</dict>
 		</dict>
 		<dict>
@@ -65,7 +58,7 @@
 				<key>input_path</key>
 				<string>%pathname%/Synergy.app</string>
 				<key>requirement</key>
-				<string>identifier synergy and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "4HX897Y6GJ"</string>
+				<string>identifier "com.symless.synergy" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = "4HX897Y6GJ"</string>
 			</dict>
 		</dict>
 	</array>
