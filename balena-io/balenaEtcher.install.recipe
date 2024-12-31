@@ -16,7 +16,7 @@
 	<key>MinimumVersion</key>
 	<string>1.0.0</string>
 	<key>ParentRecipe</key>
-	<string>com.github.autopkg.arubdesu-recipes.download.balenaEtcher</string>
+	<string>com.github.dataJAR-recipes.download.balenaEtcher</string>
 	<key>Process</key>
 	<array>
 		<dict>
