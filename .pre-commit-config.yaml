@@ -19,6 +19,5 @@ repos:
   - id: check-executables-have-shebangs
   - id: check-merge-conflict
   - id: end-of-file-fixer
-  - id: fix-encoding-pragma
   - id: mixed-line-ending
   - id: trailing-whitespace
