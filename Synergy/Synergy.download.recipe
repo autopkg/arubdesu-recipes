@@ -4,7 +4,7 @@
 <dict>
 	<key>Description</key>
 	<string>Downloads the current stable version of Synergy.
-	
+
 Valid values for ARCH include:
 - "x64" (default, Intel)
 - "arm64" (Apple Silicon)
