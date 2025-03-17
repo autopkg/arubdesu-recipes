@@ -49,10 +49,10 @@
         <dict>
             <key>Comment</key>
             <string>If the MUNKI_ARCHITECTURE is not set, then the recipe will stop here</string>
-            <key>Processor</key>   
-            <string>StopProcessingIf</string>   
-            <key>Arguments</key>   
-            <dict>   
+            <key>Processor</key>
+            <string>StopProcessingIf</string>
+            <key>Arguments</key>
+            <dict>
                 <key>predicate</key>
                 <string>%MUNKI_ARCHITECTURE% != arm64 AND %MUNKI_ARCHITECTURE% != x86_64</string>
             </dict>

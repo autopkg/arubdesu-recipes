@@ -48,7 +48,7 @@ class S3BucketStuffer(Processor):
         },
         "prefix": {
             "required": False,
-            "description": 
+            "description":
                 ("If you want it to check for/write to a path like a 'subfolder'."
                  "Note that this is being lazily string-concat'd to an s3 'url', so measure twice"),
         },
