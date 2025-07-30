@@ -26,6 +26,11 @@
 				<string>%URL%</string>
 				<key>re_pattern</key>
 				<string>.*</string>
+				<key>curl_opts</key>
+				<array>
+					<string>-X</string>
+					<string>POST</string>
+				</array>
 			</dict>
 		</dict>
 		<dict>
@@ -33,6 +38,11 @@
 			<dict>
 				<key>url</key>
 				<string>https://www.charlesproxy.com/assets/release/%match%/charles-proxy-%match%.dmg</string>
+				<key>curl_opts</key>
+				<array>
+					<string>-X</string>
+					<string>GET</string>
+				</array>
 			</dict>
 			<key>Processor</key>
 			<string>URLDownloader</string>
