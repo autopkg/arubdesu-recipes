@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads the latest darwin release of ToolHive (the thv CLI) from
+		stacklok/toolhive on GitHub, verifies it against the release's published
+		checksums manifest, then unpacks the thv binary.
+
+		The thv binary is ad-hoc/sigstore-signed (no Apple Developer ID), so
+		CodeSignatureVerifier cannot be used. CosignVerifier confirms via cosign
+		that the artifact was signed by ToolHive's GitHub Actions release
+		workflow; if cosign is not installed it falls back (require_cosign=false)
+		to verifying the published checksums manifest, logging the downgrade.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.toolhive.download</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>toolhive</string>
+		<key>arch</key>
+		<string>arm64</string>
+		<key>Comment</key>
+		<string>set to amd64 for intel; darwin assets are toolhive_&lt;version&gt;_darwin_&lt;arch&gt;.tar.gz</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.0</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>GitHubReleasesInfoProvider</string>
+			<key>Arguments</key>
+			<dict>
+				<key>github_repo</key>
+				<string>stacklok/toolhive</string>
+				<key>asset_regex</key>
+				<string>toolhive_.*_darwin_%arch%\.tar\.gz$</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>URLDownloader</string>
+			<key>Arguments</key>
+			<dict>
+				<key>filename</key>
+				<string>%NAME%-%version%.tar.gz</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>EndOfCheckPhase</string>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.arubdesu.shared/CosignVerifier</string>
+			<key>Arguments</key>
+			<dict>
+				<key>artifact_path</key>
+				<string>%pathname%</string>
+				<key>bundle_url</key>
+				<string>%url%.sigstore.json</string>
+				<key>certificate_identity_regexp</key>
+				<string>^https://github\.com/stacklok/toolhive/\.github/workflows/releaser\.yml@refs/tags/v[0-9][0-9.]*$</string>
+				<key>certificate_oidc_issuer</key>
+				<string>https://token.actions.githubusercontent.com</string>
+				<key>require_cosign</key>
+				<false/>
+				<key>checksums_url</key>
+				<string>https://github.com/stacklok/toolhive/releases/download/v%version%/toolhive_%version%_checksums.txt</string>
+				<key>asset_filename</key>
+				<string>toolhive_%version%_darwin_%arch%.tar.gz</string>
+				<key>algorithm</key>
+				<string>SHA256</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>Unarchiver</string>
+			<key>Arguments</key>
+			<dict>
+				<key>archive_path</key>
+				<string>%pathname%</string>
+				<key>destination_path</key>
+				<string>%RECIPE_CACHE_DIR%/%NAME%</string>
+				<key>purge_destination</key>
+				<true/>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

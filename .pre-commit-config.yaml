@@ -1,23 +1,28 @@
 repos:
-- repo: https://github.com/homebysix/pre-commit-macadmin
-  rev: v1.18.0
-  hooks:
-  - id: check-autopkg-recipes
-    args: ['--recipe-prefix', 'com.github.autopkg.arubdesu-recipes.', 'com.github.arubdesu.']
-  - id: forbid-autopkg-overrides
-  - id: forbid-autopkg-trust-info
-  - id: check-plists
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v5.0.0
-  hooks:
-  - id: check-added-large-files
-    args: ['--maxkb=100']
-  - id: check-ast
-  - id: check-byte-order-marker
-  - id: check-case-conflict
-  - id: check-docstring-first
-  - id: check-executables-have-shebangs
-  - id: check-merge-conflict
-  - id: end-of-file-fixer
-  - id: mixed-line-ending
-  - id: trailing-whitespace
+  - repo: https://github.com/homebysix/pre-commit-macadmin
+    rev: v1.18.0
+    hooks:
+      - id: check-autopkg-recipes
+        args:
+          [
+            "--recipe-prefix",
+            "com.github.autopkg.arubdesu-recipes.",
+            "com.github.arubdesu.",
+          ]
+      - id: forbid-autopkg-overrides
+      - id: forbid-autopkg-trust-info
+      - id: check-plists
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: check-added-large-files
+        args: ["--maxkb=100"]
+      - id: check-ast
+      - id: fix-byte-order-marker
+      - id: check-case-conflict
+      - id: check-docstring-first
+      - id: check-executables-have-shebangs
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: mixed-line-ending
+      - id: trailing-whitespace
