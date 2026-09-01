@@ -25,9 +25,9 @@
             <key>Arguments</key>
             <dict>
                 <key>url</key>
-                <string>https://support-portal.8x8.com/helpcenter/viewArticle.html?d=8bff4970-6fbf-4daf-842d-8ae9b533153d</string>
+                <string>https://help.8x8.com/support/docs/download-8x8-work-for-desktop</string>
                 <key>re_pattern</key>
-                <string>href="(https://work-desktop-assets.8x8.com/prod-publish/ga/work%ARCHITECTURE%-dmg-v[0-9].*\.dmg)"</string>
+                <string>href="(https://work-desktop-assets\.8x8\.com/prod-publish/ga/work%ARCHITECTURE%-dmg-v[0-9.-]+\.dmg)"</string>
             </dict>
         </dict>
         <dict>
