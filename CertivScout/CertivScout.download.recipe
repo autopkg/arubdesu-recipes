@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Description</key>
-	<string>Downloads the latest stable Certiv Scout package from the authenticated macOS release feed and verifies its Developer ID Installer signature. CERTIV_PROVISIONING_KEY is required; supply a customer key privately in an override or through your runner. No key is included in this recipe.</string>
+	<string>Downloads and verifies the latest stable macOS Certiv Scout package. Supply CERTIV_PROVISIONING_KEY in a private override.</string>
 	<key>Identifier</key>
 	<string>com.github.arubdesu.download.CertivScout</string>
 	<key>Input</key>
@@ -39,7 +39,7 @@
 				<string>%CERTIV_API_URL%/scout/releases/latest?platform=mac</string>
 			</dict>
 			<key>Comment</key>
-			<string>Certiv's release feed returns the latest version plus the current and previous releases. The regex takes the download URL of the release whose version matches 'latest', so it does not depend on release order.</string>
+			<string>Select the release matching the feed's latest version.</string>
 			<key>Processor</key>
 			<string>URLTextSearcher</string>
 		</dict>
@@ -52,7 +52,7 @@
 				<dict/>
 			</dict>
 			<key>Comment</key>
-			<string>The feed returns a signed artifact URL. Clear the feed Authorization header before downloading the package or following its redirect.</string>
+			<string>Do not forward the feed's bearer token to the artifact URL.</string>
 			<key>Processor</key>
 			<string>URLDownloader</string>
 		</dict>

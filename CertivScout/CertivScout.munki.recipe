@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>Description</key>
-	<string>Downloads the latest stable Certiv Scout package and imports it into Munki with managed-install preinstall, provisioning postinstall, and uninstall scripts. Requires a customer-supplied CERTIV_PROVISIONING_KEY and the vendor's configuration profiles. For Scout 2026.10.95 and later, provisioning waits for daemon health without waiting for the CA certificate before registration. The generated pkginfo contains the supplied key and must remain private.</string>
+	<string>Downloads Certiv Scout and imports it into Munki. Requires CERTIV_PROVISIONING_KEY and Certiv's configuration profiles. The generated pkginfo contains the key and must remain private.</string>
 	<key>Identifier</key>
 	<string>com.github.arubdesu.munki.CertivScout</string>
 	<key>Input</key>
@@ -12,6 +12,7 @@
 		<string></string>
 		<key>NAME</key>
 		<string>CertivScout</string>
+		<!-- Preserve UTC date formats during AutoPkg variable substitution. -->
 		<key>dT</key>
 		<string>%dT%</string>
 		<key>pkginfo</key>
@@ -36,16 +37,13 @@
 			<string>%NAME%</string>
 			<key>preinstall_script</key>
 			<string>#!/bin/bash
-# Mark the endpoint as managed before installing the Scout package.
-# The package defers its app launch to the provisioning postinstall script.
+# Mark the installation as managed before the package installs.
 
 # Adapted from the vendor's managed-install scripts for AutoPkg.
 # shellcheck disable=SC2034
 SCRIPT_VERSION="autopkg-2026.10.95"
 
-# No `set -e`: the ERR trap reports an unguarded failure and execution continues,
-# so the marker write is still attempted. The marker check in main() is what
-# aborts. -E so the trap is inherited by functions.
+# Handle failures explicitly and inherit ERR traps in functions.
 set -uEo pipefail
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 
@@ -55,12 +53,8 @@ MDM_LOG="$SUPPORT_DIR/logs/mdm-install.log"
 MDM_LOG_MAX_BYTES=524288
 MDM_SCRIPT="pre-install"
 
-# Mirrors this run to $MDM_LOG so Scout diagnostic bundles retain the output. The
-# whole body is piped in so output the script never sees is captured too, such as
-# a missing command's own stderr. A pipeline, not `exec &gt; &gt;(...)`: bash waits for
-# a pipeline's reader but not a process substitution, so the unwaited version
-# loses buffered lines on abort. Lines are logrus-shaped because that is the only
-# stamp format log_dump.go's LogsDir sweep can parse.
+# Mirror output to Scout diagnostics and redact credentials.
+# Use a pipeline so Bash waits for the log writer before exiting.
 mdm_mirror() {
     local ts line
     # || [ -n "$line" ] keeps a final line that has no trailing newline.
@@ -71,10 +65,7 @@ mdm_mirror() {
             -e 's/"/'"'"'/g')
         printf '%s\n' "$line"
         ts=$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ)
-        # 2&gt;/dev/null precedes the append because redirections are applied left
-        # to right: after it, a failed open reports into the null sink rather
-        # than onto the operator's terminal. This script is run by hand often
-        # enough that a forgotten sudo must not bury its own diagnosis.
+        # Ignore logging errors so they do not hide script failures.
         printf 'time="%s" level=info script=%s version=%s msg="%s"\n' \
             "$ts" "$MDM_SCRIPT" "$SCRIPT_VERSION" "$line" 2&gt;/dev/null &gt;&gt;"$MDM_LOG" || true
     done
@@ -89,15 +80,13 @@ fi
 : 2&gt;/dev/null &gt;&gt;"$MDM_LOG" || true
 /bin/chmod 600 "$MDM_LOG" 2&gt;/dev/null || true
 
-# Non-fatal: records the failure and continues. No $LINENO, because bash reports
-# the enclosing function's definition line here rather than the failing one.
-# Invoked through `trap on_err ERR`.
+# Log failures without interrupting the remaining checks.
 # shellcheck disable=SC2329
 on_err() {
     echo "WARN: command failed (rc=$?): $BASH_COMMAND"
 }
 
-# Only has to be shorter than compliance.sh's registration grace window.
+# Maximum acceptable age of the refreshed management marker.
 MARKER_MAX_AGE_SECS=60
 
 marker_age_secs() {
@@ -116,8 +105,7 @@ main() {
         exit 1
     fi
 
-    # Scout treats this marker as proof of enterprise management, so the
-    # root-owned parent directory is what makes it trustworthy.
+    # Keep the management marker root-owned.
     mkdir -p "$SUPPORT_DIR"
     chown root:wheel "$SUPPORT_DIR"
     chmod 755 "$SUPPORT_DIR"
@@ -125,10 +113,7 @@ main() {
     chown root:wheel "$MDM_MARKER"
     chmod 644 "$MDM_MARKER"
 
-    # compliance.sh measures its registration grace window from this mtime, so
-    # the touch is load-bearing and verified rather than assumed: without set -e
-    # it can fail and still reach here, leaving a previous attempt's mtime in
-    # place.
+    # Verify the marker was refreshed for this installation.
     local age
     age=$(marker_age_secs)
     if [ -z "$age" ]; then
@@ -143,30 +128,23 @@ main() {
     echo "pre-install complete (script=$SCRIPT_VERSION): .mdm-managed marker refreshed"
 }
 
-# PIPESTATUS, not $?, so the caller sees the body's exit code and not the
-# mirror's. Munki keys the install result off it.
+# Return main's exit status, not the logger's.
 main 2&gt;&amp;1 | mdm_mirror
 exit "${PIPESTATUS[0]}"
 </string>
 			<key>postinstall_script</key>
 			<string>#!/bin/bash
-# Register a managed Scout installation and launch Scout.app.
-# AutoPkg supplies the customer provisioning key from a private input.
+# Register Scout and launch it for the console user.
 
 # Adapted from the vendor's managed-install scripts for AutoPkg.
 # shellcheck disable=SC2034
 SCRIPT_VERSION="autopkg-2026.10.95"
 
-# Deliberately NO `set -e`: every dead end here is an explicit check with its own
-# message and exit, so an implicit abort could only replace a specific diagnosis
-# with a bare exit code. -E so the ERR trap is inherited by functions and
-# command substitutions.
+# Handle failures explicitly and inherit ERR traps in functions.
 set -uEo pipefail
 export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
 
-# Checked inside main() instead of with `:?` here: only main() is piped through
-# mdm_mirror, so aborting at this point would leave nothing in the log.
-# Replace this draft placeholder with the bounded PoV provisioning key before
+# Populated from the private AutoPkg override.
 export PROVISIONING_API_KEY="%CERTIV_PROVISIONING_KEY%"
 
 PROVISIONING_API_KEY="${PROVISIONING_API_KEY:-${1:-}}"
@@ -179,28 +157,21 @@ APP_PATH="/Applications/Scout.app"
 TIMEOUT=60
 MAX_RETRIES=5
 
-# curl's connect default is ~75s and an unroutable endpoint stalls rather than
-# refusing, so one attempt would otherwise eat the whole retry budget.
+# Bound each provisioning request.
 CONNECT_TIMEOUT=10
 MAX_TIME=30
 
-# Bounds a single daemon probe. A daemon that accepts the socket and never
-# answers would otherwise block each probe for the CLI's own 30s default, so the
-# wait below would run far past the TIMEOUT it reports.
+# Bound individual health probes as well as the overall readiness wait.
 DAEMON_CALL_TIMEOUT=10s
 
 MDM_LOG="$SUPPORT_DIR/logs/mdm-install.log"
 MDM_LOG_MAX_BYTES=524288
 MDM_SCRIPT="provision"
 
-# Set by main(); read by start_app() to decide whether Scout.app is already
-# running as an unmanaged install and has to be replaced.
+# Restart an unmanaged app instance if the marker was missing.
 MARKER_WAS_PRESENT=yes
 
-# See pre-install.sh for why this log exists; duplicated because each script is
-# pasted or extracted on its own. Redaction runs before the echo so a terminal
-# transcript and Munki's own log are scrubbed too, and this is the script
-# handling a live key and a live ULT.
+# Redact credentials before writing terminal and diagnostic output.
 mdm_mirror() {
     local ts line
     # || [ -n "$line" ] keeps a final line that has no trailing newline.
@@ -211,10 +182,7 @@ mdm_mirror() {
             -e 's/"/'"'"'/g')
         printf '%s\n' "$line"
         ts=$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ)
-        # 2&gt;/dev/null precedes the append because redirections are applied left
-        # to right: after it, a failed open reports into the null sink rather
-        # than onto the operator's terminal. This script is run by hand often
-        # enough that a forgotten sudo must not bury its own diagnosis.
+        # Ignore logging errors so they do not hide script failures.
         printf 'time="%s" level=info script=%s version=%s msg="%s"\n' \
             "$ts" "$MDM_SCRIPT" "$SCRIPT_VERSION" "$line" 2&gt;/dev/null &gt;&gt;"$MDM_LOG" || true
     done
@@ -242,17 +210,13 @@ curl_failure_name() {
     esac
 }
 
-# Non-fatal: records the failure and continues. No $LINENO, because bash reports
-# the enclosing function's definition line here rather than the failing one.
-# Invoked through `trap on_err ERR`.
+# Log failures without interrupting the remaining checks.
 # shellcheck disable=SC2329
 on_err() {
     echo "WARN: command failed (rc=$?): $BASH_COMMAND"
 }
 
-# Reads a key from the JSON on stdin; empty when absent or unparseable. Guarded
-# here, not at call sites: macOS 15 prints plutil's "no value" diagnostic on
-# stdout, so a caller's `|| echo ""` would capture it and read it as a value.
+# Return an empty value for missing or invalid JSON fields.
 json_value() {
     local out
     out=$(/usr/bin/plutil -extract "$1" raw - 2&gt;/dev/null) || out=""
@@ -277,17 +241,13 @@ main() {
 
     ensure_marker
 
-    # Scout 2026.10.95 and later create the CA certificate after registration.
-    # Wait for daemon health below; requiring the certificate here blocks enrollment.
-
     if [ ! -x "$CERTIV" ]; then
         echo "ERROR: $CERTIV is missing or not executable"
         echo "       Check the pkg postinstall log at '$SUPPORT_DIR/logs/install.log'"
         exit 1
     fi
 
-    # Wall-clock deadline, not an iteration count: each probe can block for its
-    # own timeout, so counting loops would run well past the TIMEOUT reported.
+    # Use a deadline because each health probe can block.
     echo "Waiting for daemon socket..."
     local deadline
     deadline=$(($(/bin/date +%s) + TIMEOUT))
@@ -309,13 +269,7 @@ main() {
     echo "Certiv provisioning complete"
 }
 
-# Recovery path, not the expected one. If the marker is missing here, the pkg
-# installed unmarked and Scout.app is already running as an unmanaged install,
-# which takes the consumer first-run path instead of the MDM coordinator. The app
-# samples managed state once at launch, so fixing it needs a restart, handled in
-# start_app.
-# Inlined rather than shelling out to pre-install.sh: this script is extracted
-# alone by Munki, so it cannot rely on a sibling file.
+# Restore a missing marker and restart Scout so it reads managed state.
 ensure_marker() {
     if [ -f "$MDM_MARKER" ]; then
         return 0
@@ -330,9 +284,7 @@ ensure_marker() {
     chown root:wheel "$MDM_MARKER"
     chmod 644 "$MDM_MARKER"
 
-    # Verified rather than assumed: without set -e the writes above can fail and
-    # still reach here, and compliance.sh reads this marker both as proof of
-    # management and as the start of its registration grace window.
+    # Verify the marker was created before provisioning.
     if [ ! -f "$MDM_MARKER" ]; then
         echo "ERROR: could not create $MDM_MARKER"
         echo "       Scout will keep treating this device as an unmanaged install."
@@ -340,11 +292,9 @@ ensure_marker() {
     fi
 }
 
-# Skip provisioning if the device is already registered (upgrade / reinstall).
-# Registration state lives in SQLite; query the daemon rather than checking files.
+# Use the daemon's registration state to handle upgrades and reinstalls.
 provision_and_register() {
-    # Status is captured separately with `|| :` so a non-zero exit cannot discard
-    # an org id the daemon printed successfully.
+    # Keep status output even when the daemon exits unsuccessfully.
     local status_json registered
     status_json=$(CERTIV_CLIENT_TIMEOUT="$DAEMON_CALL_TIMEOUT" "$CERTIV" status --json 2&gt;/dev/null) || :
     registered=$(printf '%s' "$status_json" | json_value identity.organization_id)
@@ -356,12 +306,8 @@ provision_and_register() {
     echo "Requesting provisioning token..."
     local ult_token="" attempt curl_rc response http_code body backoff
     for attempt in $(seq 1 "$MAX_RETRIES"); do
-        # The key goes to curl through a stdin config file, not an -H argument,
-        # so it never appears in this host's process table.
-        #
-        # No -f: it turns every HTTP error into the same opaque exit 22, which is
-        # what made a rejected key indistinguishable from an unreachable server.
-        # The status code is appended on its own line and split back off below.
+        # Pass the key on stdin to keep it out of process arguments.
+        # Keep HTTP error bodies for diagnostics.
         curl_rc=0
         response=$(printf 'header = "Authorization: Bearer %s"\n' "$PROVISIONING_API_KEY" |
             curl -s -K - -w '\n%{http_code}' -X POST "$CERTIV_API_URL/provision/token" \
@@ -374,9 +320,7 @@ provision_and_register() {
             http_code=$(printf '%s' "$response" | /usr/bin/tail -n1)
             body=$(printf '%s' "$response" | /usr/bin/sed '$d')
             if [ "$http_code" = "200" ]; then
-                # The mint already consumed a single-use token server-side, so
-                # failing to read it back is terminal: retrying would silently
-                # burn another one.
+                # Do not mint another token if this response cannot be parsed.
                 ult_token=$(printf '%s' "$body" | json_value token)
                 if [ -z "$ult_token" ]; then
                     echo "ERROR: minted a provisioning token but could not read it from the response"
@@ -385,8 +329,7 @@ provision_and_register() {
                 fi
                 break
             fi
-            # Reached the server and was refused. This is a configuration fault,
-            # not a network one, and retrying will not fix it.
+            # Fail immediately when the key is rejected.
             echo "Provisioning attempt $attempt/$MAX_RETRIES: $CERTIV_API_URL answered HTTP $http_code"
             echo "       Response body: $body"
             if [ "$http_code" = "401" ] || [ "$http_code" = "403" ]; then
@@ -396,9 +339,7 @@ provision_and_register() {
             fi
         fi
 
-        # Backoff grows so the budget spans a plausible network-comes-up window
-        # (1+2+4+8 = 15s of sleep across 5 attempts). A device whose network is
-        # simply slow to come up after enrollment is the common case.
+        # Retry transient failures with exponential backoff.
         if [ "$attempt" -lt "$MAX_RETRIES" ]; then
             backoff=$((2 ** (attempt - 1)))
             echo "       retrying in ${backoff}s..."
@@ -414,8 +355,7 @@ provision_and_register() {
         exit 1
     fi
 
-    # "already_registered" counts as success: the daemon has an identity, and the
-    # creds reappear on its next health check.
+    # Treat an existing daemon identity as successful registration.
     echo "Registering..."
     local register_stderr rc
     register_stderr=$("$CERTIV" register --ult "$ult_token" 2&gt;&amp;1 &gt;/dev/null) &amp;&amp; rc=0 || rc=$?
@@ -440,9 +380,7 @@ console_uid() {
     id -u "$user" 2&gt;/dev/null || true
 }
 
-# With the marker in place before the pkg, the pkg deferred the launch to us and
-# this is the first start, so the app reads managed state correctly. On the
-# recovery path it is already running unmanaged and has to be replaced.
+# Restart Scout only if it was launched without the management marker.
 start_app() {
     local uid
     uid=$(console_uid)
@@ -467,8 +405,7 @@ start_app() {
     launchctl asuser "$uid" open "$APP_PATH" || true
 }
 
-# PIPESTATUS, not $?, so the caller sees the body's exit code and not the
-# mirror's. Munki keys the install result off it.
+# Return main's exit status, not the logger's.
 main 2&gt;&amp;1 | mdm_mirror
 exit "${PIPESTATUS[0]}"
 </string>
