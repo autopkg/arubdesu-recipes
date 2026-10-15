@@ -1,0 +1,445 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads Certiv Scout and imports it into Munki. Requires CERTIV_PROVISIONING_KEY and Certiv's configuration profiles. The generated pkginfo contains the key and must remain private.</string>
+	<key>Identifier</key>
+	<string>com.github.arubdesu.munki.CertivScout</string>
+	<key>Input</key>
+	<dict>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string></string>
+		<key>NAME</key>
+		<string>CertivScout</string>
+		<!-- Preserve UTC date formats during AutoPkg variable substitution. -->
+		<key>dT</key>
+		<string>%dT%</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>blocking_applications</key>
+			<array/>
+			<key>catalogs</key>
+			<array>
+				<string>testing</string>
+			</array>
+			<key>category</key>
+			<string>Security</string>
+			<key>description</key>
+			<string>Certiv Scout is an endpoint agent for monitoring and securing AI agent activity.</string>
+			<key>developer</key>
+			<string>Certiv Inc</string>
+			<key>display_name</key>
+			<string>Certiv Scout</string>
+			<key>minimum_os_version</key>
+			<string>15.0</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>preinstall_script</key>
+			<string>#!/bin/bash
+# Mark the installation as managed before the package installs.
+
+# Adapted from the vendor's managed-install scripts for AutoPkg.
+# shellcheck disable=SC2034
+SCRIPT_VERSION="autopkg-2026.10.95"
+
+# Handle failures explicitly and inherit ERR traps in functions.
+set -uEo pipefail
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+SUPPORT_DIR="/Library/Application Support/ai.certiv.scout"
+MDM_MARKER="$SUPPORT_DIR/.mdm-managed"
+MDM_LOG="$SUPPORT_DIR/logs/mdm-install.log"
+MDM_LOG_MAX_BYTES=524288
+MDM_SCRIPT="pre-install"
+
+# Mirror output to Scout diagnostics and redact credentials.
+# Use a pipeline so Bash waits for the log writer before exiting.
+mdm_mirror() {
+    local ts line
+    # || [ -n "$line" ] keeps a final line that has no trailing newline.
+    while IFS= read -r line || [ -n "$line" ]; do
+        line=$(printf '%s' "$line" | /usr/bin/sed \
+            -e 's/pk_[A-Za-z0-9]\{8,\}/pk_REDACTED/g' \
+            -e 's/eyJ[A-Za-z0-9_.-]\{16,\}/JWT_REDACTED/g' \
+            -e 's/"/'"'"'/g')
+        printf '%s\n' "$line"
+        ts=$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ)
+        # Ignore logging errors so they do not hide script failures.
+        printf 'time="%s" level=info script=%s version=%s msg="%s"\n' \
+            "$ts" "$MDM_SCRIPT" "$SCRIPT_VERSION" "$line" 2&gt;/dev/null &gt;&gt;"$MDM_LOG" || true
+    done
+}
+
+/bin/mkdir -p "$(/usr/bin/dirname "$MDM_LOG")" 2&gt;/dev/null || true
+if [ -f "$MDM_LOG" ] &amp;&amp;
+    [ "$(/usr/bin/stat -f%z "$MDM_LOG" 2&gt;/dev/null || echo 0)" -gt "$MDM_LOG_MAX_BYTES" ]; then
+    /bin/mv -f "$MDM_LOG" "$MDM_LOG.1" 2&gt;/dev/null || true
+fi
+# chmod before the first append, not after: the first "&gt;&gt;" would create it 0644.
+: 2&gt;/dev/null &gt;&gt;"$MDM_LOG" || true
+/bin/chmod 600 "$MDM_LOG" 2&gt;/dev/null || true
+
+# Log failures without interrupting the remaining checks.
+# shellcheck disable=SC2329
+on_err() {
+    echo "WARN: command failed (rc=$?): $BASH_COMMAND"
+}
+
+# Maximum acceptable age of the refreshed management marker.
+MARKER_MAX_AGE_SECS=60
+
+marker_age_secs() {
+    local mtime now
+    mtime=$(/usr/bin/stat -f%m "$MDM_MARKER" 2&gt;/dev/null) || return 0
+    [ -n "$mtime" ] || return 0
+    now=$(/bin/date +%s)
+    echo $((now - mtime))
+}
+
+main() {
+    trap on_err ERR
+
+    if [ "$(id -u)" -ne 0 ]; then
+        echo "ERROR: must run as root (Munki already does; add sudo by hand)."
+        exit 1
+    fi
+
+    # Keep the management marker root-owned.
+    mkdir -p "$SUPPORT_DIR"
+    chown root:wheel "$SUPPORT_DIR"
+    chmod 755 "$SUPPORT_DIR"
+    touch "$MDM_MARKER"
+    chown root:wheel "$MDM_MARKER"
+    chmod 644 "$MDM_MARKER"
+
+    # Verify the marker was refreshed for this installation.
+    local age
+    age=$(marker_age_secs)
+    if [ -z "$age" ]; then
+        echo "ERROR: could not create $MDM_MARKER; compliance.sh cannot measure this install attempt"
+        exit 1
+    fi
+    if [ "$age" -gt "$MARKER_MAX_AGE_SECS" ]; then
+        echo "ERROR: $MDM_MARKER is ${age}s old; the refresh did not take effect"
+        exit 1
+    fi
+
+    echo "pre-install complete (script=$SCRIPT_VERSION): .mdm-managed marker refreshed"
+}
+
+# Return main's exit status, not the logger's.
+main 2&gt;&amp;1 | mdm_mirror
+exit "${PIPESTATUS[0]}"
+</string>
+			<key>postinstall_script</key>
+			<string>#!/bin/bash
+# Register Scout and launch it for the console user.
+
+# Adapted from the vendor's managed-install scripts for AutoPkg.
+# shellcheck disable=SC2034
+SCRIPT_VERSION="autopkg-2026.10.95"
+
+# Handle failures explicitly and inherit ERR traps in functions.
+set -uEo pipefail
+export PATH="/usr/bin:/bin:/usr/sbin:/sbin"
+
+# Populated from the private AutoPkg override.
+export PROVISIONING_API_KEY="%CERTIV_PROVISIONING_KEY%"
+
+PROVISIONING_API_KEY="${PROVISIONING_API_KEY:-${1:-}}"
+CERTIV_API_URL="%CERTIV_API_URL%"
+
+SUPPORT_DIR="/Library/Application Support/ai.certiv.scout"
+CERTIV="$SUPPORT_DIR/certiv"
+MDM_MARKER="$SUPPORT_DIR/.mdm-managed"
+APP_PATH="/Applications/Scout.app"
+TIMEOUT=60
+MAX_RETRIES=5
+
+# Bound each provisioning request.
+CONNECT_TIMEOUT=10
+MAX_TIME=30
+
+# Bound individual health probes as well as the overall readiness wait.
+DAEMON_CALL_TIMEOUT=10s
+
+MDM_LOG="$SUPPORT_DIR/logs/mdm-install.log"
+MDM_LOG_MAX_BYTES=524288
+MDM_SCRIPT="provision"
+
+# Restart an unmanaged app instance if the marker was missing.
+MARKER_WAS_PRESENT=yes
+
+# Redact credentials before writing terminal and diagnostic output.
+mdm_mirror() {
+    local ts line
+    # || [ -n "$line" ] keeps a final line that has no trailing newline.
+    while IFS= read -r line || [ -n "$line" ]; do
+        line=$(printf '%s' "$line" | /usr/bin/sed \
+            -e 's/pk_[A-Za-z0-9]\{8,\}/pk_REDACTED/g' \
+            -e 's/eyJ[A-Za-z0-9_.-]\{16,\}/JWT_REDACTED/g' \
+            -e 's/"/'"'"'/g')
+        printf '%s\n' "$line"
+        ts=$(/bin/date -u +%Y-%m-%dT%H:%M:%SZ)
+        # Ignore logging errors so they do not hide script failures.
+        printf 'time="%s" level=info script=%s version=%s msg="%s"\n' \
+            "$ts" "$MDM_SCRIPT" "$SCRIPT_VERSION" "$line" 2&gt;/dev/null &gt;&gt;"$MDM_LOG" || true
+    done
+}
+
+/bin/mkdir -p "$(/usr/bin/dirname "$MDM_LOG")" 2&gt;/dev/null || true
+if [ -f "$MDM_LOG" ] &amp;&amp;
+    [ "$(/usr/bin/stat -f%z "$MDM_LOG" 2&gt;/dev/null || echo 0)" -gt "$MDM_LOG_MAX_BYTES" ]; then
+    /bin/mv -f "$MDM_LOG" "$MDM_LOG.1" 2&gt;/dev/null || true
+fi
+# chmod before the first append, not after: the first "&gt;&gt;" would create it 0644.
+: 2&gt;/dev/null &gt;&gt;"$MDM_LOG" || true
+/bin/chmod 600 "$MDM_LOG" 2&gt;/dev/null || true
+
+# "could not reach" covers several very different faults, and reporting them
+# identically sends the reader to the network when the key may be the problem.
+curl_failure_name() {
+    case "$1" in
+    6) echo "could not resolve host" ;;
+    7) echo "failed to connect" ;;
+    28) echo "timed out" ;;
+    35) echo "TLS handshake failed" ;;
+    60) echo "server certificate not trusted" ;;
+    *) echo "curl error" ;;
+    esac
+}
+
+# Log failures without interrupting the remaining checks.
+# shellcheck disable=SC2329
+on_err() {
+    echo "WARN: command failed (rc=$?): $BASH_COMMAND"
+}
+
+# Return an empty value for missing or invalid JSON fields.
+json_value() {
+    local out
+    out=$(/usr/bin/plutil -extract "$1" raw - 2&gt;/dev/null) || out=""
+    printf '%s' "$out"
+}
+
+main() {
+    trap on_err ERR
+
+    echo "provision starting (endpoint=$CERTIV_API_URL, script=$SCRIPT_VERSION)"
+
+    if [ -z "$PROVISIONING_API_KEY" ]; then
+        echo "ERROR: PROVISIONING_API_KEY is empty; nothing can be provisioned"
+        echo "       Set it in the environment of the Munki postinstall_script, or pass it as \$1 by hand."
+        exit 1
+    fi
+
+    if [ "$(id -u)" -ne 0 ]; then
+        echo "ERROR: must run as root (Munki already does; add sudo by hand)."
+        exit 1
+    fi
+
+    ensure_marker
+
+    if [ ! -x "$CERTIV" ]; then
+        echo "ERROR: $CERTIV is missing or not executable"
+        echo "       Check the pkg postinstall log at '$SUPPORT_DIR/logs/install.log'"
+        exit 1
+    fi
+
+    # Use a deadline because each health probe can block.
+    echo "Waiting for daemon socket..."
+    local deadline
+    deadline=$(($(/bin/date +%s) + TIMEOUT))
+    until CERTIV_CLIENT_TIMEOUT="$DAEMON_CALL_TIMEOUT" "$CERTIV" health &gt;/dev/null 2&gt;&amp;1 ||
+        [ "$(/bin/date +%s)" -ge "$deadline" ]; do
+        sleep 1
+    done
+    if ! CERTIV_CLIENT_TIMEOUT="$DAEMON_CALL_TIMEOUT" "$CERTIV" health &gt;/dev/null 2&gt;&amp;1; then
+        echo "ERROR: daemon not reachable via socket after ${TIMEOUT}s"
+        # || true so the ERR trap cannot fire inside the substitution and name
+        # the pipeline's last element instead of the command that failed.
+        echo "       Daemon health said: $(CERTIV_CLIENT_TIMEOUT="$DAEMON_CALL_TIMEOUT" "$CERTIV" health 2&gt;&amp;1 | head -5 || true)"
+        exit 1
+    fi
+
+    provision_and_register
+    start_app
+
+    echo "Certiv provisioning complete"
+}
+
+# Restore a missing marker and restart Scout so it reads managed state.
+ensure_marker() {
+    if [ -f "$MDM_MARKER" ]; then
+        return 0
+    fi
+    MARKER_WAS_PRESENT=no
+    echo "WARNING: MDM marker absent. Run pre-install.sh BEFORE the Scout pkg to"
+    echo "         avoid Scout starting as an unmanaged install. Recovering now."
+    mkdir -p "$SUPPORT_DIR"
+    chown root:wheel "$SUPPORT_DIR"
+    chmod 755 "$SUPPORT_DIR"
+    touch "$MDM_MARKER"
+    chown root:wheel "$MDM_MARKER"
+    chmod 644 "$MDM_MARKER"
+
+    # Verify the marker was created before provisioning.
+    if [ ! -f "$MDM_MARKER" ]; then
+        echo "ERROR: could not create $MDM_MARKER"
+        echo "       Scout will keep treating this device as an unmanaged install."
+        exit 1
+    fi
+}
+
+# Use the daemon's registration state to handle upgrades and reinstalls.
+provision_and_register() {
+    # Keep status output even when the daemon exits unsuccessfully.
+    local status_json registered
+    status_json=$(CERTIV_CLIENT_TIMEOUT="$DAEMON_CALL_TIMEOUT" "$CERTIV" status --json 2&gt;/dev/null) || :
+    registered=$(printf '%s' "$status_json" | json_value identity.organization_id)
+    if [ -n "$registered" ]; then
+        echo "Device already registered (org: $registered), skipping provisioning"
+        return 0
+    fi
+
+    echo "Requesting provisioning token..."
+    local ult_token="" attempt curl_rc response http_code body backoff
+    for attempt in $(seq 1 "$MAX_RETRIES"); do
+        # Pass the key on stdin to keep it out of process arguments.
+        # Keep HTTP error bodies for diagnostics.
+        curl_rc=0
+        response=$(printf 'header = "Authorization: Bearer %s"\n' "$PROVISIONING_API_KEY" |
+            curl -s -K - -w '\n%{http_code}' -X POST "$CERTIV_API_URL/provision/token" \
+                --connect-timeout "$CONNECT_TIMEOUT" --max-time "$MAX_TIME" \
+                -H "Content-Type: application/json") || curl_rc=$?
+
+        if [ "$curl_rc" -ne 0 ]; then
+            echo "Provisioning attempt $attempt/$MAX_RETRIES: $(curl_failure_name "$curl_rc") (curl exit $curl_rc) talking to $CERTIV_API_URL"
+        else
+            http_code=$(printf '%s' "$response" | /usr/bin/tail -n1)
+            body=$(printf '%s' "$response" | /usr/bin/sed '$d')
+            if [ "$http_code" = "200" ]; then
+                # Do not mint another token if this response cannot be parsed.
+                ult_token=$(printf '%s' "$body" | json_value token)
+                if [ -z "$ult_token" ]; then
+                    echo "ERROR: minted a provisioning token but could not read it from the response"
+                    echo "       Response body was: $body"
+                    exit 1
+                fi
+                break
+            fi
+            # Fail immediately when the key is rejected.
+            echo "Provisioning attempt $attempt/$MAX_RETRIES: $CERTIV_API_URL answered HTTP $http_code"
+            echo "       Response body: $body"
+            if [ "$http_code" = "401" ] || [ "$http_code" = "403" ]; then
+                echo "ERROR: the provisioning key was rejected (HTTP $http_code). Retrying cannot help."
+                echo "       Check that PROVISIONING_API_KEY is current and belongs to this tenant."
+                exit 1
+            fi
+        fi
+
+        # Retry transient failures with exponential backoff.
+        if [ "$attempt" -lt "$MAX_RETRIES" ]; then
+            backoff=$((2 ** (attempt - 1)))
+            echo "       retrying in ${backoff}s..."
+            sleep "$backoff"
+        fi
+    done
+
+    if [ -z "$ult_token" ]; then
+        echo "ERROR: failed to obtain provisioning token after $MAX_RETRIES attempts"
+        echo "       Scout is installed but UNREGISTERED and will not inspect traffic."
+        echo "       compliance.sh reports this state as a failure. Re-run this script"
+        echo "       once the endpoint can reach $CERTIV_API_URL."
+        exit 1
+    fi
+
+    # Treat an existing daemon identity as successful registration.
+    echo "Registering..."
+    local register_stderr rc
+    register_stderr=$("$CERTIV" register --ult "$ult_token" 2&gt;&amp;1 &gt;/dev/null) &amp;&amp; rc=0 || rc=$?
+    if [ "$rc" -eq 0 ]; then
+        echo "Registration successful"
+        return 0
+    fi
+    if [ "$rc" -eq 1 ] &amp;&amp; echo "$register_stderr" | grep -q "already_registered"; then
+        echo "Daemon already registered (creds will reappear on next health check)"
+        return 0
+    fi
+    echo "ERROR: certiv register failed (rc=$rc): $register_stderr"
+    exit 1
+}
+
+console_uid() {
+    local user
+    user=$(stat -f "%Su" /dev/console 2&gt;/dev/null || echo "root")
+    case "$user" in
+    root | loginwindow | _mbsetupuser | "") return 0 ;;
+    esac
+    id -u "$user" 2&gt;/dev/null || true
+}
+
+# Restart Scout only if it was launched without the management marker.
+start_app() {
+    local uid
+    uid=$(console_uid)
+    if [ ! -d "$APP_PATH" ]; then
+        echo "NOTE: $APP_PATH not present; skipping launch"
+        return 0
+    fi
+    if [ -z "$uid" ]; then
+        echo "No GUI console user; Scout.app starts at next login"
+        return 0
+    fi
+
+    if [ "$MARKER_WAS_PRESENT" = no ]; then
+        echo "Replacing the unmanaged Scout.app instance..."
+        launchctl asuser "$uid" osascript -e 'quit app "Scout"' &gt;/dev/null 2&gt;&amp;1 || true
+        sleep 2
+        killall Scout 2&gt;/dev/null || true
+        sleep 1
+    fi
+
+    echo "Launching Scout.app..."
+    launchctl asuser "$uid" open "$APP_PATH" || true
+}
+
+# Return main's exit status, not the logger's.
+main 2&gt;&amp;1 | mdm_mirror
+exit "${PIPESTATUS[0]}"
+</string>
+			<key>unattended_install</key>
+			<true/>
+			<key>uninstall_method</key>
+			<string>uninstall_script</string>
+			<key>uninstall_script</key>
+			<string>#!/bin/bash
+uninstaller="/Library/Application Support/ai.certiv.scout/uninstall.sh"
+[ -f "$uninstaller" ] || exit 0
+/bin/bash "$uninstaller" --yes
+</string>
+			<key>uninstallable</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.0</string>
+	<key>ParentRecipe</key>
+	<string>com.github.arubdesu.download.CertivScout</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>MunkiImporter</string>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_path</key>
+				<string>%pathname%</string>
+				<key>repo_subdirectory</key>
+				<string>%MUNKI_REPO_SUBDIR%</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
