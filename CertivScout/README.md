@@ -19,6 +19,26 @@ into the `testing` catalog. `MUNKI_REPO_SUBDIR` defaults to the repository root.
 Use an override to set your catalogs, repository subdirectory, and other Munki
 metadata. No repackaging is needed for the vendor's signed package.
 
+## Supplying the provisioning key
+
+Create a local override:
+
+```sh
+autopkg make-override CertivScout.munki
+```
+
+Add these entries to the override's `Input` dictionary, replacing the
+placeholder with your organization's Certiv provisioning key:
+
+```xml
+<key>CERTIV_PROVISIONING_KEY</key>
+<string>YOUR_PROVISIONING_KEY</string>
+```
+
+Keep the populated override private. Do not add the key to the public recipe
+or put it in a command that will be saved in shell history. Your runner may
+instead supply this input through its secret handling.
+
 ## Managed installation
 
 The Munki recipe includes the vendor-derived managed-install scripts:
