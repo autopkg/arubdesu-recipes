@@ -51,10 +51,6 @@ The Munki recipe includes the vendor-derived managed-install scripts:
   and registers the device, then launches Scout for the console user.
 - `uninstall_script` invokes Scout's installed uninstaller with `--yes`.
 
-Scout 2026.10.95 changed first-time setup to create the CA certificate after
-registration. The postinstall deliberately does not require that certificate
-before provisioning. Its bounded daemon health check remains in place.
-
 Deploy Certiv's configuration profiles through your management system before
 installation. Profile identifiers and deployment targeting are organization
 specific and are not enforced by this recipe. Keep the profiles assigned until
