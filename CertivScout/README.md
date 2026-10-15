@@ -28,7 +28,8 @@ autopkg make-override CertivScout.munki
 ```
 
 Add these entries to the override's `Input` dictionary, replacing the
-placeholder with your organization's Certiv provisioning key:
+placeholder with your organization's Certiv provisioning key (starts with
+`pk_`):
 
 ```xml
 <key>CERTIV_PROVISIONING_KEY</key>
