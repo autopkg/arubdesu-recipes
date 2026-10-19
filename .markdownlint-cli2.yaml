@@ -1,0 +1,5 @@
+config:
+  # Prose is not hard-wrapped; paragraphs, list items and table rows are single
+  # lines so they stay editable without reflowing. Python keeps its 100-column
+  # limit via flake8 / ruff instead.
+  MD013: false

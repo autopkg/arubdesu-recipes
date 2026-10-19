@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Audits every .terraform.lock.hcl under the given roots against the
+		provider registry and writes a JSON report. Downloads nothing and installs
+		nothing - the artifact is the report.
+
+		This is the network half of provider currency, deliberately split from the
+		judgement half by a file. Whatever consumes the report - a traffic-light
+		daemon, a dashboard, a pre-commit hook - reads local JSON and spends no
+		network of its own, so the question "are my provider pins current" can be
+		answered offline between runs of this recipe.
+
+		LOCK_SEARCH_ROOTS and IGNORE_PROVIDERS are comma-separated strings rather
+		than arrays because AutoPkg substitutes %VARIABLES% only inside strings; an
+		array in Input could not be overridden, and `autopkg run -k` could not set
+		one at all.
+
+		Providers on a private registry host are reported as unchecked_host, not as
+		failures: the public registry has no opinion about them, and an absence of
+		information is not a stale pin.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.terraformprovider.audit</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>TerraformLockAudit</string>
+		<key>LOCK_SEARCH_ROOTS</key>
+		<string>~/Documents/GitHub</string>
+		<key>MAX_DEPTH</key>
+		<string>3</string>
+		<key>IGNORE_PROVIDERS</key>
+		<string></string>
+		<key>REPORT_PATH</key>
+		<string></string>
+		<key>Comment</key>
+		<string>Empty REPORT_PATH means terraform-lock-report.json in this recipe's cache directory. Do not name the cache-dir variable here: Input values are substituted before that key exists, so it would resolve to a literal directory of that name.</string>
+		<key>FAIL_ON_STALE</key>
+		<string>false</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.0</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.arubdesu.shared/TerraformLockAuditor</string>
+			<key>Arguments</key>
+			<dict>
+				<key>lock_search_roots</key>
+				<string>%LOCK_SEARCH_ROOTS%</string>
+				<key>max_depth</key>
+				<string>%MAX_DEPTH%</string>
+				<key>ignore_providers</key>
+				<string>%IGNORE_PROVIDERS%</string>
+				<key>report_path</key>
+				<string>%REPORT_PATH%</string>
+				<key>fail_on_stale</key>
+				<string>%FAIL_ON_STALE%</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

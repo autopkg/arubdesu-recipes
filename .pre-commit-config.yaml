@@ -26,3 +26,15 @@ repos:
       - id: end-of-file-fixer
       - id: mixed-line-ending
       - id: trailing-whitespace
+  - repo: local
+    hooks:
+      # AutoPkg loads a processor by file path and never puts its directory on sys.path, so a
+      # shared processor cannot import a sibling. Duplication is the only portable way to share
+      # a helper here, which makes silent drift the risk - PRERELEASE_MARKER decides whether a
+      # tag is a stable release, and one drifted copy reports a behind pin as current.
+      - id: check-duplicated-constants
+        name: shared processor constants agree
+        entry: python scripts/check_duplicated_constants.py
+        language: python
+        pass_filenames: false
+        files: ^SharedProcessors/.*\.py$

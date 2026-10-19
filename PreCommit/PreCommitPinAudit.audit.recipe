@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Audits every .pre-commit-config.yaml under the given roots against
+		upstream GitHub and writes a JSON report. Downloads nothing and installs
+		nothing - the artifact is the report.
+
+		A pre-commit hook repo is third-party code that executes on every commit,
+		pinned by a rev: string, and nothing in pre-commit tells you that pin is
+		old. `autoupdate` moves pins without asking whether you wanted them moved,
+		and it only ever sees the one repo you run it in.
+
+		Each upstream repo is resolved once no matter how many configs pin it,
+		which is what keeps a fleet-wide audit inside an hourly API rate limit.
+		Releases are consulted first and tags second, because several hook repos
+		publish tags and no Releases at all - pre-commit/mirrors-mypy and
+		shellcheck-py/shellcheck-py both 404 on /releases/latest, and those pins
+		need checking as much as any other.
+
+		AutoPkg's GITHUB_TOKEN preference or ~/.autopkg_gh_token is used if
+		present. Unauthenticated runs work but share a 60-call hourly limit, which
+		is under one full audit of ~20 configs.
+
+		CONFIG_SEARCH_ROOTS and IGNORE_REPOS are comma-separated strings rather
+		than arrays because AutoPkg substitutes %VARIABLES% only inside strings.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.precommit.audit</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>PreCommitPinAudit</string>
+		<key>CONFIG_SEARCH_ROOTS</key>
+		<string>~/Documents/GitHub</string>
+		<key>MAX_DEPTH</key>
+		<string>3</string>
+		<key>IGNORE_REPOS</key>
+		<string></string>
+		<key>REPORT_PATH</key>
+		<string></string>
+		<key>Comment</key>
+		<string>Empty REPORT_PATH means pre-commit-pin-report.json in this recipe's cache directory. Do not name the cache-dir variable here: Input values are substituted before that key exists, so it would resolve to a literal directory of that name.</string>
+		<key>FAIL_ON_STALE</key>
+		<string>false</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.0</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.arubdesu.shared/PreCommitPinAuditor</string>
+			<key>Arguments</key>
+			<dict>
+				<key>config_search_roots</key>
+				<string>%CONFIG_SEARCH_ROOTS%</string>
+				<key>max_depth</key>
+				<string>%MAX_DEPTH%</string>
+				<key>ignore_repos</key>
+				<string>%IGNORE_REPOS%</string>
+				<key>report_path</key>
+				<string>%REPORT_PATH%</string>
+				<key>fail_on_stale</key>
+				<string>%FAIL_ON_STALE%</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

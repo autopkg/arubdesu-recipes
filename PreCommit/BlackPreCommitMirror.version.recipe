@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Resolves the newest stable tag of one pre-commit hook repo, and nothing else: no download, no package, no report. The artifact is %tag%, which is exactly what a `rev:` pins, alongside %version% with the tag prefix stripped.
+
+Tags only, and tagged without a leading `v` - `26.5.1`. Worth an example because a version parser that assumes the prefix silently yields nothing here.
+
+Use this to check one dependency deliberately. Use PreCommitPinAudit.audit to check every pin under your roots at once - it resolves each upstream repo once however many configs pin it, which is what keeps a fleet-wide audit inside an hourly rate limit.
+
+No asset_regex is set, so this is a version-only lookup. Setting one would make the run fail on these repos rather than succeed quietly: a tag-only project has no release assets to match against.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.black-pre-commit-mirror.version</string>
+	<key>Input</key>
+	<dict>
+		<key>Comment</key>
+		<string>VERSION_PREFIX empty means newest stable overall. Set it to hold a lookup to one line, e.g. '0.' to stay below 1.0 while a 1.x exists.</string>
+		<key>GITHUB_REPO</key>
+		<string>psf/black-pre-commit-mirror</string>
+		<key>NAME</key>
+		<string>black-pre-commit-mirror</string>
+		<key>VERSION_PREFIX</key>
+		<string></string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.0</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>github_repo</key>
+				<string>%GITHUB_REPO%</string>
+				<key>version_prefix</key>
+				<string>%VERSION_PREFIX%</string>
+			</dict>
+			<key>Processor</key>
+			<string>com.github.arubdesu.shared/GitHubLatestStableProvider</string>
+		</dict>
+	</array>
+</dict>
+</plist>

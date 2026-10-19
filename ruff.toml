@@ -1,0 +1,5 @@
+# ruff's default rules plus bugbear (B) and import sorting (I), wrapped at 100 columns
+line-length = 100
+
+[lint]
+select = ["B", "E4", "E7", "E9", "F", "I"]
