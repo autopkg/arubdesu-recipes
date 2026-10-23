@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads the highest-versioned macOS installer package from Apple's
+		software update catalog and installs it on this machine, which places the
+		Install macOS application in /Applications without upgrading macOS.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.install.macosinstallassistant</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>MacOSInstallAssistant</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>2.0.0</string>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu-recipes.macosinstallassistant.download</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>Installer</string>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_path</key>
+				<string>%pathname%</string>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

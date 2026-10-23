@@ -13,8 +13,12 @@ Recipes for <http://autopkg.github.io/autopkg/>
 | `GitHubLatestStableProvider` | the newest stable release *or tag* of any GitHub project |
 | `TerraformLockAuditor` | which provider pins across many repos are behind the Terraform registry |
 | `PreCommitPinAuditor` | which hook `rev:` pins across many repos are behind upstream |
+| `AppleSoftwareUpdateCatalogProvider` | the highest version of a package, such as a macOS installer, in Apple's software update catalog |
+| `AppleSoftwareUpdateProductDownloader` | every package of a software update product, and its .dist, checked against the catalog |
+| `AppleSoftwareUpdateProductBuilder` | that product rebuilt from Apple's .dist, after each component's signature is checked |
+| `Rsync` | a copy of selected paths with rsync's include and exclude rules, keeping symlinks and modes |
 
-`GitHubLatestStableProvider` answers "what is the latest stable version" for one project. The two auditors answer "is what I already pin still current" across a whole directory of repos, and write a JSON report rather than downloading anything.
+`GitHubLatestStableProvider` answers "what is the latest stable version" for one project. The two auditors answer "is what I already pin still current" across a whole directory of repos, and write a JSON report rather than downloading anything. The catalog provider, the product downloader and builder, and `Rsync` serve `Apple/`; see [Apple catalog packages](#apple-catalog-packages).
 
 #### Shared helpers are copied, and a hook keeps the copies equal
 
@@ -42,7 +46,13 @@ AutoPkg's own `GitHubReleasesInfoProvider` is close, and its `sort_by_highest_ta
 
 If all three land, `GitHubLatestStableProvider` becomes a thin shim over the core processor and should be deleted. `PreCommitPinAuditor` carries its own copy of the same tag logic and would lose it too.
 
+`Rsync` here is a copy of `com.github.nmcspadden.shared/Rsync` from autopkg/nmcspadden-recipes, listed on AutoPkg's Noteworthy Processors page. Upstream's copy raises `NameError` on AutoPkg 3's Python, because it tests `isinstance(rsync_args, basestring)`, and it treats any stderr output as failure while ignoring rsync's exit status. This copy uses `str` and checks the exit status. `AppleGit.pkg` calls this copy until the fix is merged; then delete it and point the recipe at the nmcspadden identifier.
+
 `TerraformLockAuditor` is not an upstream candidate: the registry protocol is Terraform-specific and belongs in a recipe repo, not in core. It asks the registry rather than GitHub because the registry is what `terraform init` consults; a GitHub tag can name a version the registry never published, which no `init` will install.
+
+### Apple catalog packages
+
+`Apple/` finds packages in Apple's software update catalog: macOS installers, the Command Line Tools component package, and from that, Apple's Git with its keychain credential helper, packaged without the rest of the Command Line Tools (`AppleGit`). `Apple/README.md` covers the catalog, the processor's control flow and its origin in macadmins/sofa, and each recipe.
 
 ### The two audit recipes
 
@@ -106,7 +116,7 @@ Use these to check one dependency. Use `PreCommitPinAudit.audit` to check every 
 
 Inside an AutoPkg run, every processor here signals failure the way AutoPkg understands: `ProcessorError`, which stops the run at the processor that raised it. No processor here sets an exit code during a normal `autopkg run`, and there are no Slack notifications; the run's own output is the record.
 
-Exit codes exist only for the two auditors, which are the only processors worth running standalone. They are numbered in the order the control flow can first encounter them, and are identical between `PreCommitPinAuditor` and `TerraformLockAuditor`:
+Among the processors, exit codes exist only for the two auditors, which are the only processors worth running standalone; every other processor exits 10 on any `ProcessorError` when run standalone. `Apple/README.md` has the failure map for the `Apple/` recipes. The auditors' codes are numbered in the order the control flow can first encounter them, and are identical between `PreCommitPinAuditor` and `TerraformLockAuditor`:
 
 | Code | Condition |
 | --- | --- |

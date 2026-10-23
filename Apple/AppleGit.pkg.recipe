@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Extracts Apple's Git from the Command Line Tools package and builds a
+		package installing it at /opt/apple-git, with its keychain credential
+		helper, manual pages, /etc/paths.d and /etc/manpaths.d entries and /usr/local/bin wrappers
+		for the five git commands macOS shims in /usr/bin. Every file ships
+		exactly as Apple signed it, and git, git-remote-http and the keychain
+		helper are checked against Apple's signature before packaging. Apple's
+		Git finds its helpers and templates relative to its own location, so it
+		needs no other part of the Command Line Tools.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.applegit.pkg</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>AppleGit</string>
+		<key>MINIMUM_OS_VERSION</key>
+		<string>14.0</string>
+		<key>Comment</key>
+		<string>Set MINIMUM_OS_VERSION by hand from the minos in otool -l's LC_BUILD_VERSION for git in the current Command Line Tools: 14.0 for 27.0. It is lower than the Command Line Tools installer's own minimum, because Apple's Git needs only /usr/lib and system frameworks. CLT_ARCH comes from AppleCLTools.download.</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>2.0.0</string>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu-recipes.applecltools.download</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>FlatPkgUnpacker</string>
+			<key>Arguments</key>
+			<dict>
+				<key>flat_pkg_path</key>
+				<string>%pathname%</string>
+				<key>destination_path</key>
+				<string>%RECIPE_CACHE_DIR%/unpack</string>
+				<key>purge_destination</key>
+				<true/>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>PkgPayloadUnpacker</string>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_payload_path</key>
+				<string>%RECIPE_CACHE_DIR%/unpack/Payload</string>
+				<key>destination_path</key>
+				<string>%RECIPE_CACHE_DIR%/payload</string>
+				<key>purge_destination</key>
+				<true/>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>CodeSignatureVerifier</string>
+			<key>Arguments</key>
+			<dict>
+				<key>input_path</key>
+				<string>%RECIPE_CACHE_DIR%/payload/Library/Developer/CommandLineTools/usr/bin/git</string>
+				<key>requirement</key>
+				<string>identifier "com.apple.git" and anchor apple</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>CodeSignatureVerifier</string>
+			<key>Arguments</key>
+			<dict>
+				<key>input_path</key>
+				<string>%RECIPE_CACHE_DIR%/payload/Library/Developer/CommandLineTools/usr/libexec/git-core/git-remote-http</string>
+				<key>requirement</key>
+				<string>identifier "com.apple.git-remote-http" and anchor apple</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>CodeSignatureVerifier</string>
+			<key>Arguments</key>
+			<dict>
+				<key>input_path</key>
+				<string>%RECIPE_CACHE_DIR%/payload/Library/Developer/CommandLineTools/usr/libexec/git-core/git-credential-osxkeychain</string>
+				<key>requirement</key>
+				<string>identifier "com.apple.git-credential-osxkeychain" and anchor apple</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>PkgRootCreator</string>
+			<key>Arguments</key>
+			<dict>
+				<key>pkgroot</key>
+				<string>%RECIPE_CACHE_DIR%/pkgroot</string>
+				<key>pkgdirs</key>
+				<dict>
+					<key>opt</key>
+					<string>0755</string>
+					<key>opt/apple-git</key>
+					<string>0755</string>
+					<key>private</key>
+					<string>0755</string>
+					<key>private/etc</key>
+					<string>0755</string>
+					<key>private/etc/manpaths.d</key>
+					<string>0755</string>
+					<key>private/etc/paths.d</key>
+					<string>0755</string>
+					<key>usr</key>
+					<string>0755</string>
+					<key>usr/local</key>
+					<string>0775</string>
+					<key>usr/local/bin</key>
+					<string>0775</string>
+				</dict>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.arubdesu.shared/Rsync</string>
+			<key>Arguments</key>
+			<dict>
+				<key>source_path</key>
+				<string>%RECIPE_CACHE_DIR%/payload/Library/Developer/CommandLineTools/usr/</string>
+				<key>destination_path</key>
+				<string>%RECIPE_CACHE_DIR%/pkgroot/opt/apple-git/</string>
+				<key>rsync_arguments</key>
+				<array>
+					<string>-a</string>
+					<string>-m</string>
+					<string>--include=/bin/</string>
+					<string>--include=/bin/git</string>
+					<string>--include=/bin/git-*</string>
+					<string>--include=/libexec/</string>
+					<string>--include=/libexec/git-core/***</string>
+					<string>--include=/share/</string>
+					<string>--include=/share/git-core/***</string>
+					<string>--include=/share/man/</string>
+					<string>--include=/share/man/man*/</string>
+					<string>--include=/share/man/man*/git*</string>
+					<string>--exclude=*</string>
+				</array>
+				<key>Comment</key>
+				<string>-a keeps symlinks, modes and times; -m drops folders left empty. The rules keep git and its four other commands from bin, all of libexec/git-core and share/git-core, and Git's manual pages, and exclude everything else in the Command Line Tools.</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>FileCreator</string>
+			<key>Arguments</key>
+			<dict>
+				<key>file_path</key>
+				<string>%RECIPE_CACHE_DIR%/pkgroot/private/etc/manpaths.d/apple-git</string>
+				<key>file_content</key>
+				<string>/opt/apple-git/share/man
+</string>
+				<key>file_mode</key>
+				<string>0644</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>FileCreator</string>
+			<key>Arguments</key>
+			<dict>
+				<key>Comment</key>
+				<string>This entry is what makes man find Git's pages. With MANPATH unset, as it is by default, path_helper ignores /etc/manpaths.d and man builds its search path from PATH, taking share/man beside each bin folder. path_helper appends this folder after /usr/bin, where Apple's shims already shadow all five commands in it, so it changes nothing else. The manpaths.d entry above covers people who set MANPATH.</string>
+				<key>file_path</key>
+				<string>%RECIPE_CACHE_DIR%/pkgroot/private/etc/paths.d/apple-git</string>
+				<key>file_content</key>
+				<string>/opt/apple-git/bin
+</string>
+				<key>file_mode</key>
+				<string>0644</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>FileCreator</string>
+			<key>Arguments</key>
+			<dict>
+				<key>Comment</key>
+				<string>A wrapper, not a symlink. Git on macOS finds its own path with _NSGetExecutablePath and does not resolve symlinks (exec-cmd.c), so a /usr/local/bin/git symlink makes it look for helpers and templates under /usr/local and HTTPS remotes fail with &quot;git: 'remote-https' is not a git command&quot;. exec runs the real file, so Git sees /opt/apple-git/bin and finds everything beside it.</string>
+				<key>file_path</key>
+				<string>%RECIPE_CACHE_DIR%/pkgroot/usr/local/bin/git</string>
+				<key>file_content</key>
+				<string>#!/bin/sh
+exec /opt/apple-git/bin/git "$@"
+</string>
+				<key>file_mode</key>
+				<string>0755</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>FileCreator</string>
+			<key>Arguments</key>
+			<dict>
+				<key>file_path</key>
+				<string>%RECIPE_CACHE_DIR%/pkgroot/usr/local/bin/git-receive-pack</string>
+				<key>file_content</key>
+				<string>#!/bin/sh
+exec /opt/apple-git/bin/git-receive-pack "$@"
+</string>
+				<key>file_mode</key>
+				<string>0755</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>FileCreator</string>
+			<key>Arguments</key>
+			<dict>
+				<key>file_path</key>
+				<string>%RECIPE_CACHE_DIR%/pkgroot/usr/local/bin/git-shell</string>
+				<key>file_content</key>
+				<string>#!/bin/sh
+exec /opt/apple-git/bin/git-shell "$@"
+</string>
+				<key>file_mode</key>
+				<string>0755</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>FileCreator</string>
+			<key>Arguments</key>
+			<dict>
+				<key>file_path</key>
+				<string>%RECIPE_CACHE_DIR%/pkgroot/usr/local/bin/git-upload-archive</string>
+				<key>file_content</key>
+				<string>#!/bin/sh
+exec /opt/apple-git/bin/git-upload-archive "$@"
+</string>
+				<key>file_mode</key>
+				<string>0755</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>FileCreator</string>
+			<key>Arguments</key>
+			<dict>
+				<key>file_path</key>
+				<string>%RECIPE_CACHE_DIR%/pkgroot/usr/local/bin/git-upload-pack</string>
+				<key>file_content</key>
+				<string>#!/bin/sh
+exec /opt/apple-git/bin/git-upload-pack "$@"
+</string>
+				<key>file_mode</key>
+				<string>0755</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>PkgCreator</string>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_request</key>
+				<dict>
+					<key>pkgroot</key>
+					<string>%RECIPE_CACHE_DIR%/pkgroot</string>
+					<key>pkgname</key>
+					<string>%NAME%-%CLT_ARCH%-%version%</string>
+					<key>id</key>
+					<string>com.github.arubdesu.apple-git</string>
+					<key>version</key>
+					<string>%version%</string>
+					<key>chown</key>
+					<array>
+						<dict>
+							<key>path</key>
+							<string>opt</string>
+							<key>user</key>
+							<string>root</string>
+							<key>group</key>
+							<string>wheel</string>
+						</dict>
+						<dict>
+							<key>path</key>
+							<string>private</string>
+							<key>user</key>
+							<string>root</string>
+							<key>group</key>
+							<string>wheel</string>
+						</dict>
+						<dict>
+							<key>path</key>
+							<string>usr</string>
+							<key>user</key>
+							<string>root</string>
+							<key>group</key>
+							<string>admin</string>
+						</dict>
+					</array>
+				</dict>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

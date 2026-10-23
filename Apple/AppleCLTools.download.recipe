@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Finds the highest-versioned Command Line Tools product in Apple's software
+		update catalog and downloads every component package it lists, about 530 MB
+		for 27.0, plus Apple's .dist for the product, checking each package's size
+		and digest against the catalog. Set MAJOR_VERSION, e.g. 16, to follow one
+		Command Line Tools line; empty follows the newest. Signatures are checked by
+		the child recipe that packages what it uses.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.applecltools.download</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>AppleCLTools</string>
+		<key>MAJOR_VERSION</key>
+		<string></string>
+		<key>CLT_ARCH</key>
+		<string>arm64</string>
+		<key>Comment</key>
+		<string>CLT_ARCH is only for AppleGit: set it by hand to what lipo -archs reports for git in the current Command Line Tools, arm64 for 27.0. AppleCLTools.munki takes its architectures and macOS range from the product's .dist.</string>
+		<key>CATALOG_URL</key>
+		<string>https://swscan.apple.com/content/catalogs/others/index-27-26-15-14-13-12-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog.gz</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>2.0.0</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>URLDownloader</string>
+			<key>Arguments</key>
+			<dict>
+				<key>url</key>
+				<string>%CATALOG_URL%</string>
+				<key>filename</key>
+				<string>software-update-catalog.sucatalog.gz</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.arubdesu.shared/AppleSoftwareUpdateCatalogProvider</string>
+			<key>Arguments</key>
+			<dict>
+				<key>catalog_path</key>
+				<string>%pathname%</string>
+				<key>package_filename</key>
+				<string>CLTools_Executables.pkg</string>
+				<key>pkg_ref_id</key>
+				<string>com.apple.pkg.CLTools_Executables</string>
+				<key>title_contains</key>
+				<string>Command Line Tools</string>
+				<key>major_version</key>
+				<string>%MAJOR_VERSION%</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.arubdesu.shared/AppleSoftwareUpdateProductDownloader</string>
+			<key>Arguments</key>
+			<dict>
+				<key>package_filename</key>
+				<string>CLTools_Executables.pkg</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>EndOfCheckPhase</string>
+		</dict>
+	</array>
+</dict>
+</plist>

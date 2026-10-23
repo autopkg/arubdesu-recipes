@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Builds a package of Apple's Git, taken unmodified from the Command Line
+		Tools, and imports it into Munki.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.munki.applegit</string>
+	<key>Input</key>
+	<dict>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string></string>
+		<key>NAME</key>
+		<string>AppleGit</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>testing</string>
+			</array>
+			<key>category</key>
+			<string>Development</string>
+			<key>description</key>
+			<string>Apple's Git from the Command Line Tools, without the rest of them: git, git subtree, git send-email (which runs on macOS's own Perl), the manual pages, and Apple's keychain credential helper, preconfigured as Apple's Git does. Installs at /opt/apple-git, with links in /usr/local/bin for git and the four other commands macOS shims in /usr/bin. git p4 needs the Command Line Tools' Python and is not usable without them.</string>
+			<key>developer</key>
+			<string>Apple Inc.</string>
+			<key>display_name</key>
+			<string>Git (Apple)</string>
+			<key>minimum_os_version</key>
+			<string>%MINIMUM_OS_VERSION%</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>supported_architectures</key>
+			<array>
+				<string>%CLT_ARCH%</string>
+			</array>
+			<key>unattended_install</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>2.0.0</string>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu-recipes.applegit.pkg</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>repo_subdirectory</key>
+				<string>%MUNKI_REPO_SUBDIR%</string>
+			</dict>
+			<key>Processor</key>
+			<string>MunkiImporter</string>
+		</dict>
+	</array>
+</dict>
+</plist>

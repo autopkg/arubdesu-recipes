@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Finds the highest-versioned macOS installer package (InstallAssistant.pkg)
+		in Apple's software update catalog, downloads it and verifies Apple's
+		Software Update signature. Set MAJOR_VERSION, e.g. 26, to follow one macOS
+		line; empty follows the newest. The package is 15-18 GB.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.macosinstallassistant.download</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>MacOSInstallAssistant</string>
+		<key>CATALOG_URL</key>
+		<string>https://swscan.apple.com/content/catalogs/others/index-27-26-15-14-13-12-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog.gz</string>
+		<key>MAJOR_VERSION</key>
+		<string></string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>2.0.0</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>URLDownloader</string>
+			<key>Arguments</key>
+			<dict>
+				<key>url</key>
+				<string>%CATALOG_URL%</string>
+				<key>filename</key>
+				<string>software-update-catalog.sucatalog.gz</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.arubdesu.shared/AppleSoftwareUpdateCatalogProvider</string>
+			<key>Arguments</key>
+			<dict>
+				<key>catalog_path</key>
+				<string>%pathname%</string>
+				<key>package_filename</key>
+				<string>InstallAssistant.pkg</string>
+				<key>major_version</key>
+				<string>%MAJOR_VERSION%</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>URLDownloader</string>
+			<key>Arguments</key>
+			<dict>
+				<key>url</key>
+				<string>%url%</string>
+				<key>filename</key>
+				<string>InstallAssistant-%version%-%build%.pkg</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>EndOfCheckPhase</string>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>CodeSignatureVerifier</string>
+			<key>Arguments</key>
+			<dict>
+				<key>input_path</key>
+				<string>%pathname%</string>
+				<key>expected_authority_names</key>
+				<array>
+					<string>Software Update</string>
+					<string>Apple Software Update Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>

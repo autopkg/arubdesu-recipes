@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads the highest-versioned macOS installer package from Apple's
+		software update catalog and imports it into Munki. Installing it places the
+		Install macOS application in /Applications; it does not upgrade macOS. Give
+		each macOS line its own override, with MAJOR_VERSION and NAME both set, e.g.
+		26 and MacOSInstallAssistant26, so one line's installer never replaces
+		another's.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.munki.macosinstallassistant</string>
+	<key>Input</key>
+	<dict>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string></string>
+		<key>NAME</key>
+		<string>MacOSInstallAssistant</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>testing</string>
+			</array>
+			<key>category</key>
+			<string>Utilities</string>
+			<key>description</key>
+			<string>Places Apple's %title% installer application (macOS %version%, build %build%) in /Applications. It does not upgrade macOS by itself; run the installer application, or use it with startosinstall, to do that.</string>
+			<key>developer</key>
+			<string>Apple Inc.</string>
+			<key>display_name</key>
+			<string>Install %title%</string>
+			<key>minimum_os_version</key>
+			<string>%minimum_os_version%</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>unattended_install</key>
+			<false/>
+			<key>version</key>
+			<string>%version%</string>
+		</dict>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>2.0.0</string>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu-recipes.macosinstallassistant.download</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_path</key>
+				<string>%pathname%</string>
+				<key>repo_subdirectory</key>
+				<string>%MUNKI_REPO_SUBDIR%</string>
+			</dict>
+			<key>Processor</key>
+			<string>MunkiImporter</string>
+		</dict>
+	</array>
+</dict>
+</plist>

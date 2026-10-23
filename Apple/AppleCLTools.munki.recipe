@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Builds the Command Line Tools product from Apple's .dist and every
+		component package, and imports it into Munki with the .dist's macOS range
+		and architectures. Overrides with different MAJOR_VERSION values and the
+		same NAME give each Mac the newest Command Line Tools its macOS can run,
+		as softwareupdate does.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.munki.applecltools</string>
+	<key>Input</key>
+	<dict>
+		<key>MUNKI_REPO_SUBDIR</key>
+		<string></string>
+		<key>NAME</key>
+		<string>AppleCLTools</string>
+		<key>pkginfo</key>
+		<dict>
+			<key>catalogs</key>
+			<array>
+				<string>testing</string>
+			</array>
+			<key>category</key>
+			<string>Development</string>
+			<key>description</key>
+			<string>Apple's %title%: clang, git, make, the macOS SDKs and the other developer tools in /Library/Developer/CommandLineTools, built from the same component packages and install logic softwareupdate uses. If you use Xcode, these tools are also embedded within the Xcode IDE.</string>
+			<key>developer</key>
+			<string>Apple Inc.</string>
+			<key>display_name</key>
+			<string>Xcode Command Line Tools</string>
+			<key>name</key>
+			<string>%NAME%</string>
+			<key>unattended_install</key>
+			<true/>
+		</dict>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>2.0.0</string>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu-recipes.applecltools.pkg</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>MunkiPkginfoMerger</string>
+			<key>Arguments</key>
+			<dict>
+				<key>Comment</key>
+				<string>additional_pkginfo comes from AppleSoftwareUpdateCatalogProvider: minimum_os_version, maximum_os_version and supported_architectures from the product's .dist.</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>pkg_path</key>
+				<string>%pkg_path%</string>
+				<key>repo_subdirectory</key>
+				<string>%MUNKI_REPO_SUBDIR%</string>
+			</dict>
+			<key>Processor</key>
+			<string>MunkiImporter</string>
+		</dict>
+	</array>
+</dict>
+</plist>

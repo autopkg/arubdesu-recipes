@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Rebuilds the Command Line Tools product as one installer package from
+		Apple's own .dist and every component package it names, after checking
+		each component's Software Update signature. It installs what
+		softwareupdate installs, under the same architecture and macOS version
+		checks.</string>
+	<key>Identifier</key>
+	<string>com.github.autopkg.arubdesu-recipes.applecltools.pkg</string>
+	<key>Input</key>
+	<dict>
+		<key>NAME</key>
+		<string>AppleCLTools</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>2.0.0</string>
+	<key>ParentRecipe</key>
+	<string>com.github.autopkg.arubdesu-recipes.applecltools.download</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Processor</key>
+			<string>com.github.arubdesu.shared/AppleSoftwareUpdateProductBuilder</string>
+			<key>Arguments</key>
+			<dict>
+				<key>product_dir</key>
+				<string>%product_dir%</string>
+				<key>product_dist_path</key>
+				<string>%product_dist_path%</string>
+				<key>pkgname</key>
+				<string>%NAME%-%version%</string>
+				<key>expected_authority_names</key>
+				<array>
+					<string>Software Update</string>
+					<string>Apple Software Update Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+			</dict>
+		</dict>
+	</array>
+</dict>
+</plist>
