@@ -38,7 +38,7 @@
                 <key>input_path</key>
                 <string>%pathname%/Sonos.app</string>
                 <key>requirement</key>
-                <string>identifier "com.sonos.macController" and anchor apple generic</string>
+                <string>identifier "com.sonos.macController2" and anchor apple generic</string>
             </dict>
         </dict>
     </array>
