@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Description</key>
+	<string>Downloads and verifies the latest stable macOS Certiv Scout package. Supply CERTIV_PROVISIONING_KEY in a private override.</string>
+	<key>Identifier</key>
+	<string>com.github.arubdesu.download.CertivScout</string>
+	<key>Input</key>
+	<dict>
+		<key>CERTIV_API_URL</key>
+		<string>https://api.certiv.ai</string>
+		<key>CERTIV_PROVISIONING_KEY</key>
+		<string></string>
+		<key>NAME</key>
+		<string>CertivScout</string>
+	</dict>
+	<key>MinimumVersion</key>
+	<string>1.0.0</string>
+	<key>Process</key>
+	<array>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>re_flags</key>
+				<array>
+					<string>DOTALL</string>
+				</array>
+				<key>re_pattern</key>
+				<string>"latest":\s*"(?P&lt;version&gt;[0-9]+(?:\.[0-9]+)+)".*?\{\s*"version":\s*"(?P=version)",\s*"filename":\s*"[^"]+",\s*"download_url":\s*"(?P&lt;url&gt;[^"]+)"</string>
+				<key>request_headers</key>
+				<dict>
+					<key>Authorization</key>
+					<string>Bearer %CERTIV_PROVISIONING_KEY%</string>
+				</dict>
+				<key>result_output_var_name</key>
+				<string>url</string>
+				<key>url</key>
+				<string>%CERTIV_API_URL%/scout/releases/latest?platform=mac</string>
+			</dict>
+			<key>Comment</key>
+			<string>Select the release matching the feed's latest version.</string>
+			<key>Processor</key>
+			<string>URLTextSearcher</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>filename</key>
+				<string>%NAME%-%version%.pkg</string>
+				<key>request_headers</key>
+				<dict/>
+			</dict>
+			<key>Comment</key>
+			<string>Do not forward the feed's bearer token to the artifact URL.</string>
+			<key>Processor</key>
+			<string>URLDownloader</string>
+		</dict>
+		<dict>
+			<key>Processor</key>
+			<string>EndOfCheckPhase</string>
+		</dict>
+		<dict>
+			<key>Arguments</key>
+			<dict>
+				<key>expected_authority_names</key>
+				<array>
+					<string>Developer ID Installer: Certiv Inc (F556AUHXTW)</string>
+					<string>Developer ID Certification Authority</string>
+					<string>Apple Root CA</string>
+				</array>
+				<key>input_path</key>
+				<string>%pathname%</string>
+			</dict>
+			<key>Processor</key>
+			<string>CodeSignatureVerifier</string>
+		</dict>
+	</array>
+</dict>
+</plist>
