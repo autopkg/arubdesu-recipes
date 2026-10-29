@@ -111,9 +111,9 @@
 					<key>usr</key>
 					<string>0755</string>
 					<key>usr/local</key>
-					<string>0775</string>
+					<string>0755</string>
 					<key>usr/local/bin</key>
-					<string>0775</string>
+					<string>0755</string>
 				</dict>
 			</dict>
 		</dict>
@@ -292,7 +292,7 @@ exec /opt/apple-git/bin/git-upload-pack "$@"
 							<key>user</key>
 							<string>root</string>
 							<key>group</key>
-							<string>admin</string>
+							<string>wheel</string>
 						</dict>
 					</array>
 				</dict>
