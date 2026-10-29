@@ -37,6 +37,17 @@ DIST_FILENAME = "product.dist"
 # lengths, checksum algorithm.
 XAR_HEADER = struct.Struct(">4sHHQQI")
 XAR_MAGIC = b"xar!"
+# autopkg's %VAR% substitution hands a recipe's <true/> over as "True" and <false/> as "".
+TRUE_STRINGS = ("true", "yes", "1", "on")
+
+
+def truthy(value: Any, default: bool = False) -> bool:
+    """Recipe plists hand us real bools; execute_shell and env vars hand us strings."""
+    if value is None or value == "":
+        return default
+    if isinstance(value, str):
+        return value.strip().lower() in TRUE_STRINGS
+    return bool(value)
 
 
 def toc_sha1(path: str) -> str:
@@ -67,8 +78,10 @@ class AppleSoftwareUpdateProductDownloader(URLGetter):
     downloads during the check phase.
 
     It sets pathname to the package named package_filename, so a recipe that uses one component
-    keeps working. Signatures are not checked here: AppleSoftwareUpdateProductBuilder checks
-    every component before it builds the product."""
+    keeps working. With only_package_filename set, that package is the only one downloaded: a
+    recipe unpacking one component has no use for the rest, which were 181.5 MB of 531.9 MB for the
+    Command Line Tools 27.0. Signatures are not checked here: AppleSoftwareUpdateProductBuilder
+    checks every component before it builds the product."""
 
     description = __doc__
     input_variables = {
@@ -84,6 +97,15 @@ class AppleSoftwareUpdateProductDownloader(URLGetter):
         "package_filename": {
             "required": True,
             "description": "The package pathname points at, e.g. CLTools_Executables.pkg.",
+        },
+        "only_package_filename": {
+            "required": False,
+            "default": False,
+            "description": (
+                "When true, download package_filename and the .dist, and none of the product's "
+                "other packages. For a recipe that uses one component; leave false for one that "
+                "builds the whole product."
+            ),
         },
         "download_dir": {
             "required": False,
@@ -114,6 +136,15 @@ class AppleSoftwareUpdateProductDownloader(URLGetter):
         packages: List[Dict[str, Any]] = self.env["product_packages"]
         if not packages:
             raise ProcessorError("product_packages is empty.")
+        if truthy(self.env.get("only_package_filename")):
+            # A list comprehension keeping the one package the recipe goes on to use.
+            packages = [
+                package
+                for package in packages
+                if package["filename"] == self.env["package_filename"]
+            ]
+            if not packages:
+                raise ProcessorError(f"The product has no {self.env['package_filename']}.")
         downloaded = 0
         for package in packages:
             path = os.path.join(product_dir, package["filename"])

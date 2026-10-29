@@ -19,6 +19,8 @@
 		<string>AppleGit</string>
 		<key>MINIMUM_OS_VERSION</key>
 		<string>14.0</string>
+		<key>DOWNLOAD_EXECUTABLES_ONLY</key>
+		<true/>
 		<key>Comment</key>
 		<string>Set MINIMUM_OS_VERSION by hand from the minos in otool -l's LC_BUILD_VERSION for git in the current Command Line Tools: 14.0 for 27.0. It is lower than the Command Line Tools installer's own minimum, because Apple's Git needs only /usr/lib and system frameworks. CLT_ARCH comes from AppleCLTools.download.</string>
 	</dict>

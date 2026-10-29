@@ -5,7 +5,7 @@
 	<key>Description</key>
 	<string>Finds the highest-versioned Command Line Tools product in Apple's software
 		update catalog and downloads every component package it lists, about 530 MB
-		for 27.0, plus Apple's .dist for the product, checking each package's size
+		for 27.0 (only CLTools_Executables.pkg with DOWNLOAD_EXECUTABLES_ONLY), plus Apple's .dist for the product, checking each package's size
 		and digest against the catalog. Set MAJOR_VERSION, e.g. 16, to follow one
 		Command Line Tools line; empty follows the newest. Signatures are checked by
 		the child recipe that packages what it uses.</string>
@@ -19,8 +19,10 @@
 		<string></string>
 		<key>CLT_ARCH</key>
 		<string>arm64</string>
+		<key>DOWNLOAD_EXECUTABLES_ONLY</key>
+		<false/>
 		<key>Comment</key>
-		<string>CLT_ARCH is only for AppleGit: set it by hand to what lipo -archs reports for git in the current Command Line Tools, arm64 for 27.0. AppleCLTools.munki takes its architectures and macOS range from the product's .dist.</string>
+		<string>CLT_ARCH is only for AppleGit: set it by hand to what lipo -archs reports for git in the current Command Line Tools, arm64 for 27.0. AppleCLTools.munki takes its architectures and macOS range from the product's .dist. DOWNLOAD_EXECUTABLES_ONLY downloads CLTools_Executables.pkg and skips the other components; AppleGit sets it, and AppleCLTools.pkg, which builds the whole product, must not.</string>
 		<key>CATALOG_URL</key>
 		<string>https://swscan.apple.com/content/catalogs/others/index-27-26-15-14-13-12-10.16-10.15-10.14-10.13-10.12-10.11-10.10-10.9-mountainlion-lion-snowleopard-leopard.merged-1.sucatalog.gz</string>
 	</dict>
@@ -63,6 +65,8 @@
 			<dict>
 				<key>package_filename</key>
 				<string>CLTools_Executables.pkg</string>
+				<key>only_package_filename</key>
+				<string>%DOWNLOAD_EXECUTABLES_ONLY%</string>
 			</dict>
 		</dict>
 		<dict>

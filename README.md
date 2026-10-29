@@ -14,7 +14,7 @@ Recipes for <http://autopkg.github.io/autopkg/>
 | `TerraformLockAuditor` | which provider pins across many repos are behind the Terraform registry |
 | `PreCommitPinAuditor` | which hook `rev:` pins across many repos are behind upstream |
 | `AppleSoftwareUpdateCatalogProvider` | the highest version of a package, such as a macOS installer, in Apple's software update catalog |
-| `AppleSoftwareUpdateProductDownloader` | every package of a software update product, and its .dist, checked against the catalog |
+| `AppleSoftwareUpdateProductDownloader` | every package of a software update product, or only the one a recipe uses, and its .dist, checked against the catalog |
 | `AppleSoftwareUpdateProductBuilder` | that product rebuilt from Apple's .dist, after each component's signature is checked |
 | `Rsync` | a copy of selected paths with rsync's include and exclude rules, keeping symlinks and modes |
 
